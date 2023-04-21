@@ -1,7 +1,6 @@
 package org.joinmastodon.android.fragments;
 
 import static org.joinmastodon.android.GlobalUserPreferences.reduceMotion;
-import static org.joinmastodon.android.GlobalUserPreferences.showNewPostsButton;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -47,6 +46,7 @@ import org.joinmastodon.android.events.HashtagUpdatedEvent;
 import org.joinmastodon.android.events.ListDeletedEvent;
 import org.joinmastodon.android.events.ListUpdatedCreatedEvent;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
+import org.joinmastodon.android.fragments.settings.SettingsFragment;
 import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;

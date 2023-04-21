@@ -1,4 +1,4 @@
-package org.joinmastodon.android.fragments;
+package org.joinmastodon.android.fragments.settings;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -12,7 +12,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -45,7 +44,6 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
-import org.joinmastodon.android.PushNotificationReceiver;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -54,6 +52,7 @@ import org.joinmastodon.android.api.session.AccountActivationInfo;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
+import org.joinmastodon.android.fragments.MastodonToolbarFragment;
 import org.joinmastodon.android.fragments.onboarding.InstanceRulesFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
@@ -66,7 +65,6 @@ import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
@@ -82,7 +80,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class SettingsFragment extends MastodonToolbarFragment{
+public class SettingsFragment extends MastodonToolbarFragment {
 	private View view;
 	private UsableRecyclerView list;
 	private ArrayList<Item> items=new ArrayList<>();
