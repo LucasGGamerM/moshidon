@@ -39,4 +39,5 @@
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Wyłącz przełączanie się między kartami podwójnym kliknięciem</string>
     <string name="mo_swap_bookmark_with_reblog">Użyj akcji reblogowania zamiast akcji zakładki w powiadomieniach</string>
     <string name="mo_download_latest_nightly_release">Pobierz najnowsze nocne wydanie</string>
+    <string name="mo_load_remote_followers">Wczytaj listę obserwujących i obserwowanych profilu zdalnego</string>
 </resources>

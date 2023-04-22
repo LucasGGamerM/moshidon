@@ -16,6 +16,7 @@ import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
+import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
@@ -24,6 +25,7 @@ import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -88,6 +90,13 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	protected List<StatusDisplayItem> buildDisplayItems(Notification n){
 		Account reportTarget = n.report == null ? null : n.report.targetAccount == null ? null :
 				n.report.targetAccount;
+		Emoji emoji = new Emoji();
+		if(n.emojiUrl!=null){
+			emoji.shortcode=n.emoji.substring(1,n.emoji.length()-1);
+			emoji.url=n.emojiUrl;
+			emoji.staticUrl=n.emojiUrl;
+			emoji.visibleInPicker=false;
+		}
 		String extraText=switch(n.type){
 			case FOLLOW -> getString(R.string.user_followed_you);
 			case FOLLOW_REQUEST -> getString(R.string.user_sent_follow_request);
@@ -98,8 +107,9 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			case UPDATE -> getString(R.string.sk_post_edited);
 			case SIGN_UP -> getString(R.string.sk_signed_up);
 			case REPORT -> getString(R.string.sk_reported);
+			case EMOJI_REACTION -> getString(R.string.sk_reacted, n.emoji);
 		};
-		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, extraText, n, null) : null;
+		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, n.emojiUrl!=null ? HtmlParser.parseCustomEmoji(extraText, Collections.singletonList(emoji)) : extraText, n, null) : null;
 		if(n.status!=null){
 			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n, false, Filter.FilterContext.NOTIFICATIONS);
 			if(titleItem!=null)

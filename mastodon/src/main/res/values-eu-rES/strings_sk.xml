@@ -35,7 +35,7 @@
     <string name="sk_settings_contribute">Lagundu Megalodon</string>
     <string name="sk_translated_using">%s-ekin itzulia</string>
     <string name="sk_post_language">Hizkuntza: %s</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_bookmark_as">Beste kontu baten laster-marka</string>
     <string name="sk_bookmarked_as">%s bezala laster-markara eramana</string>
     <string name="sk_already_bookmarked">Dagoeneko laster-marka da</string>
@@ -261,4 +261,14 @@
     <string name="sk_follow_as">Jarraitu beste kontu batetik</string>
     <string name="sk_followed_as">%s-(d/t)ik jarraitua</string>
     <string name="sk_settings_hide_fab">Automatikoki ezkutatu Idatzi botoia</string>
+    <string name="sk_in_reply">Erantzunez</string>
+    <string name="sk_settings_reply_visibility">Erantzunaren ikusgarritasuna</string>
+    <string name="sk_settings_reply_visibility_all">Erantzun guztiak</string>
+    <string name="sk_settings_reply_visibility_following">Jarraitzen ditudanei eginiko erantzunak</string>
+    <string name="sk_reply_line_above_avatar">\"Honi erantzunez\" abatarraren gaineko lerroa</string>
+    <string name="sk_show_thread">Erakutsi haria</string>
+    <string name="sk_compact_reblog_reply_line">Bultzada/erantzun lerro trinkoa</string>
+    <string name="sk_quoting_user">%s aipatzen</string>
+    <string name="sk_settings_reply_visibility_self">Niri eginiko erantzunak</string>
+    <string name="sk_notification_action_replied">%s-(r)i erantzun</string>
 </resources>

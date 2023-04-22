@@ -29,6 +29,16 @@ public class CustomEmojiHelper{
 		}
 	}
 
+	public void addText(CharSequence text) {
+		if(!(text instanceof Spanned))
+			return;
+		CustomEmojiSpan[] spans=((Spanned) text).getSpans(0, text.length(), CustomEmojiSpan.class);
+		for(List<CustomEmojiSpan> group:Arrays.stream(spans).collect(Collectors.groupingBy(s->s.emoji)).values()){
+			this.spans.add(group);
+			requests.add(group.get(0).createImageLoaderRequest());
+		}
+	}
+
 	public int getImageCount(){
 		return requests.size();
 	}

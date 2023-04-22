@@ -29,4 +29,13 @@
     <string name="mo_duration_hours_1">1 uur</string>
     <string name="mo_duration_days_7">7 dagen</string>
     <string name="mo_miscellaneous_settings">Diverse instellingen</string>
+    <string name="mo_swap_bookmark_with_reblog">Gebruik reblog actie in plaats van bookmark actie bij notificaties</string>
+    <string name="mo_notification_action_replied">Succesvol gereageerd op het bericht door %s</string>
+    <string name="mo_load_remote_followers">Laad remote profiel follows en volgers</string>
+    <string name="mo_download_latest_nightly_release">Download nieuwste nightly versie</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">Uitschakelen dubbele tik om te vegen tussen tabs</string>
+    <string name="mo_fab_compose">Samenstellen</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Verander standaard zichtbaarheid reactie naar unlisted</string>
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_add_custom_server_local_timeline">Toevoegen lokale tijdlijn van een aangepaste server</string>
 </resources>

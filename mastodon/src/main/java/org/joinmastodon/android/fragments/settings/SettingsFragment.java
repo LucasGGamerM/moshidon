@@ -247,6 +247,11 @@ public class SettingsFragment extends MastodonToolbarFragment {
 			GlobalUserPreferences.defaultToUnlistedReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		// TODO find a good icon for this setting
+		items.add(new SwitchItem(R.string.mo_mention_reblogger_automatically, R.drawable.ic_fluent_balloon_24_regular, GlobalUserPreferences.mentionRebloggerAutomatically, i -> {
+			GlobalUserPreferences.mentionRebloggerAutomatically=i.checked;
+			GlobalUserPreferences.save();
+		}));
 		items.add(new SwitchItem(R.string.mo_disable_reminder_to_add_alt_text, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
 			GlobalUserPreferences.disableAltTextReminder=i.checked;
 			GlobalUserPreferences.save();

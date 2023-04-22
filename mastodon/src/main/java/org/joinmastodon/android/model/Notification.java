@@ -20,6 +20,8 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 	public Account account;
 	public Status status;
 	public Report report;
+	public String emoji;
+	public String emojiUrl;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -54,7 +56,9 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 		@SerializedName("admin.sign_up")
 		SIGN_UP,
 		@SerializedName("admin.report")
-		REPORT
+		REPORT,
+		@SerializedName("pleroma:emoji_reaction")
+		EMOJI_REACTION
 	}
 
 	@Parcel

@@ -1,6 +1,6 @@
-Novedades para la versión 99:
-- Añadir acciones de notificación
-- Añadir la opción de activar las respuestas no listadas por defecto
-- Añadir temporizador de silencio
-- Añadir insignia de notificación si hay notificaciones no leídas
+Novedades de la versión 99:
+- Añadidas acciones de notificación
+- Añadida la opción de activar las respuestas no listadas por defecto
+- Añadido temporizador de silencio
+- Añadido punto de notificación si hay notificaciones no leídas
 - Corrección de errores menores y mejoras de usabilidad

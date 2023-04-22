@@ -53,7 +53,7 @@
     <string name="sk_translated_using">Przetłumaczono przy użyciu %s</string>
     <string name="sk_post_language">Język: %s</string>
     <string name="sk_available_languages">Dostępne języki</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_confirm_clear_recent_languages">Czy na pewno chcesz wyczyścić ostatnio użyte języki\?</string>
     <string name="sk_clear_recent_languages">Wyczyść ostatnio użyte języki</string>
     <string name="sk_example_domain">przykład.social</string>
@@ -271,4 +271,5 @@
     <string name="sk_reply_line_above_avatar">Tekst \"W odpowiedzi na\" nad avatarem</string>
     <string name="sk_show_thread">Pokaż wątek</string>
     <string name="sk_compact_reblog_reply_line">Zmniejsz linię reblogu/odpowiedzi</string>
+    <string name="sk_settings_confirm_before_reblog">Potwierdź przed reblogowaniem</string>
 </resources>

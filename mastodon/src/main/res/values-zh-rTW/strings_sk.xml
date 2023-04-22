@@ -7,7 +7,7 @@
     <string name="sk_translated_using">通過 %s 翻譯</string>
     <string name="sk_post_language">語言: %s</string>
     <string name="sk_available_languages">可用語言</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_welcome_title">歡迎!</string>
     <string name="sk_app_name">Megalodon</string>
     <string name="sk_pinned_posts">釘選</string>

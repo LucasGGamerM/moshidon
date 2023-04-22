@@ -39,7 +39,7 @@
     <string name="sk_settings_show_federated_timeline">Összevont idővonal megjelenítése</string>
     <string name="sk_confirm_clear_recent_languages">Biztos, hogy törölni szeretné a nemrég használt nyelveket\?</string>
     <string name="sk_available_languages">Elérhető nyelvek</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_settings_translate_only_opened">Csak a megnyitott hozzászólások lefordítása</string>
     <string name="sk_already_reblogged">Már reblogoltam</string>
     <string name="sk_reblogged_as">Átlogolva mint %s</string>

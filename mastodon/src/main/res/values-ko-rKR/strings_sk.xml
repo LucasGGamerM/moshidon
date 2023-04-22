@@ -51,7 +51,7 @@
     <string name="sk_translate_post">번역하기</string>
     <string name="sk_translate_show_original">원본 보기</string>
     <string name="sk_post_language">언어: %s</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_translated_using">%s를 통해 번역함</string>
     <string name="sk_available_languages">모든 언어</string>
     <string name="sk_clear_recent_languages">최근 사용한 언어 지우기</string>
@@ -100,7 +100,7 @@
     <string name="sk_open_with_account">다른 계정으로 열기</string>
     <string name="sk_resource_not_found">리소스를 찾을 수 없습니다</string>
     <string name="sk_loading_resource_on_instance_title">%s 인스턴스에서 찾아오는 중</string>
-    <string name="sk_quote_post">언급하여 게시</string>
+    <string name="sk_quote_post">인용하여 게시</string>
     <string name="sk_unsent_posts">게시하지 않은 게시물</string>
     <string name="sk_draft">초안 작성</string>
     <string name="sk_schedule">게시 예약</string>
@@ -240,7 +240,7 @@
     <string name="sk_settings_glitch_instance">Glitch 로컬에만 게시 모드</string>
     <string name="sk_settings_support_local_only">서버가 로컬에만 게시하는 것을 지원함</string>
     <string name="sk_inline_local_only">로컬에만 게시</string>
-    <string name="sk_inline_direct">멘션한 사람에게만 게시</string>
+    <string name="sk_inline_direct">멘션된 사람들만 보임</string>
     <string name="sk_instance_features">인스턴스 기능 목록</string>
     <string name="sk_settings_glitch_mode_explanation">사용하시는 인스턴스가 Glitch에서 실행 중인 경우 활성화하세요. Hometown이나 Akkoma의 경우 활성화할 필요가 없습니다.</string>
     <string name="sk_settings_see_new_posts_button">“새 게시물 보기” 버튼</string>
@@ -267,7 +267,7 @@
     <string name="sk_settings_reply_visibility_all">모든 답글</string>
     <string name="sk_settings_reply_visibility_following">팔로우한 계정에 대한 답글</string>
     <string name="sk_settings_reply_visibility_self">나에 대한 답글</string>
-    <string name="sk_quoting_user">%s 님 언급</string>
+    <string name="sk_quoting_user">%s 님 인용</string>
     <string name="sk_reply_line_above_avatar">아바타 위의 “…님에게 답글” 정보</string>
     <string name="sk_show_thread">스레드 보기</string>
     <string name="sk_notification_action_replied">%s 님에게 답글을 보냈습니다</string>

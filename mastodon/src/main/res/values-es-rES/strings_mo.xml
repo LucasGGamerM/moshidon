@@ -38,5 +38,6 @@
     <string name="mo_share_open_url">Abrir en la aplicación</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Desactivar el doble toque para cambiar de pestaña</string>
     <string name="mo_swap_bookmark_with_reblog">Usa la acción de rebloguear en vez de la de marcador en las notificaciones</string>
-    <string name="mo_download_latest_nightly_release">Descargar la última versión oscura</string>
+    <string name="mo_download_latest_nightly_release">Descargar la última versión beta</string>
+    <string name="mo_load_remote_followers">Cargar remotamente seguidores y seguidos del perfil</string>
 </resources>

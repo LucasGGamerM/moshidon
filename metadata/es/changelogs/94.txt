@@ -1,5 +1,5 @@
-Novedades para el 94:
-- Mejoras en el comportamiento del fab
+Novedades de la versión 94:
+- Mejoras en el comportamiento del botón flotante
 - Cambios menores en el icono del lanzador
 - Mejoras en el comportamiento de las notificaciones
 - Mejoras y correcciones menores

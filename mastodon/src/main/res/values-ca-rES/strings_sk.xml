@@ -69,7 +69,7 @@
     <string name="sk_translated_using">Traduït amb %s</string>
     <string name="sk_post_language">Llengua: %s</string>
     <string name="sk_available_languages">Llengües disponibles</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_confirm_clear_recent_languages">Segur que vols esborrar les llengües recents\?</string>
     <string name="sk_welcome_text">El tauró et saluda! Per a començar, introdueix el domini de la instància a continuació.</string>
     <string name="sk_tabs_disable_swipe">Desactiva el desplaçament entre pestanyes</string>

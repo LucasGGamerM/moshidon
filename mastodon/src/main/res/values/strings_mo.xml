@@ -54,4 +54,5 @@
     <string name="mo_swap_bookmark_with_reblog">Use reblog action instead of bookmark action on notifications</string>
     <string name="mo_download_latest_nightly_release">Download latest nightly release</string>
     <string name="mo_load_remote_followers">Load remote profile follows and followers</string>
+    <string name="mo_mention_reblogger_automatically">Automatically mention account who reblogged the post in replies</string>
 </resources>

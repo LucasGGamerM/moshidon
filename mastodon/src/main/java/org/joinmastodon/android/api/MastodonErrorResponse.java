@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.joinmastodon.android.R;
-
 import me.grishka.appkit.api.ErrorResponse;
 
 public class MastodonErrorResponse extends ErrorResponse{
@@ -22,7 +20,7 @@ public class MastodonErrorResponse extends ErrorResponse{
 
 	@Override
 	public void bindErrorView(View view){
-		TextView text=view.findViewById(R.id.error_text);
+		TextView text=view.findViewById(me.grishka.appkit.R.id.error_text);
 		text.setText(error);
 	}
 

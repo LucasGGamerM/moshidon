@@ -3,6 +3,8 @@ package org.joinmastodon.android.model;
 import static org.joinmastodon.android.api.MastodonAPIController.gson;
 import static org.joinmastodon.android.api.MastodonAPIController.gsonWithoutDeserializer;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -60,6 +62,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public Card card;
 	public String language;
 	public String text;
+	@Nullable
+	public Account rebloggedBy;
 	public boolean localOnly;
 
 	public boolean favourited;

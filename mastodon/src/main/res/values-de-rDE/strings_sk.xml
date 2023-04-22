@@ -50,7 +50,7 @@
     <string name="sk_poll_allow_multiple">Mehrfachantworten erlauben</string>
     <string name="sk_translated_using">Übersetzt mit %s</string>
     <string name="sk_post_language">Sprache: %s</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_confirm_clear_recent_languages">Sicher, dass du die Liste der zuletzt verwendeten Sprachen leeren willst\?</string>
     <string name="sk_translate_post">Übersetzen</string>
     <string name="sk_translate_show_original">Original anzeigen</string>
@@ -164,7 +164,7 @@
     <string name="sk_alt_text_missing_title">Fehlende Bildbeschreibung</string>
     <string name="sk_settings_disable_alt_text_reminder">Erinnerung zum Hinzufügen von Bildbeschreibungen ausschalten</string>
     <string name="sk_alt_button">ALT</string>
-    <string name="sk_notify_update">Bearbeitet einen geteilten Beitrag</string>
+    <string name="sk_notify_update">einen geteilten Beitrag bearbeitet</string>
     <string name="sk_timelines">Timelines</string>
     <string name="sk_timeline">Timeline</string>
     <string name="sk_hashtag">Hashtag</string>
@@ -271,4 +271,5 @@
     <string name="sk_show_thread">Thread öffnen</string>
     <string name="sk_compact_reblog_reply_line">Kompakte Geteilt/Geantwortet-Zeile</string>
     <string name="sk_reply_line_above_avatar">“Als Antwort auf”-Zeile über Profilbild</string>
+    <string name="sk_settings_confirm_before_reblog">Vor dem Teilen bestätigen</string>
 </resources>

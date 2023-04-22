@@ -44,7 +44,7 @@
     <string name="sk_disable_marquee">Desactivar desprazamento do texto na barra de título</string>
     <string name="sk_welcome_title">¡Benvida!</string>
     <string name="sk_settings_contribute">Contribúe a Megalodon</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_example_domain">exemplo.social</string>
     <string name="sk_available_languages">Idiomas dispoñíbeis</string>
     <string name="sk_settings_profile">Configurar perfil</string>

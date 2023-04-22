@@ -42,6 +42,13 @@
 
 -keepattributes LineNumberTable
 
+-keepattributes *
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+
+#-keep class javax.** { *; }
+-keep class org.joinmastodon.android.** { *; }
+
 # Parceler library
 -keep interface org.parceler.Parcel
 -keep @org.parceler.Parcel class * { *; }

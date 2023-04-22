@@ -53,7 +53,7 @@
     <string name="sk_translated_using">Traducido mediante %s</string>
     <string name="sk_post_language">Idioma: %s</string>
     <string name="sk_available_languages">Idiomas disponibles</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_confirm_clear_recent_languages">¿Seguro que quieres borrar los idiomas usados recientemente\?</string>
     <string name="sk_clear_recent_languages">Borrar idiomas usados recientemente</string>
     <string name="sk_welcome_text">¡El tiburón te saluda! Para empezar, introduce a continuación el nombre del dominio de tu instancia.</string>
@@ -272,4 +272,5 @@
     <string name="sk_reply_line_above_avatar">\"En respuesta a\" línea sobre el avatar</string>
     <string name="sk_show_thread">Mostrar hilo</string>
     <string name="sk_compact_reblog_reply_line">Línea compacta de reblog/respuesta</string>
+    <string name="sk_settings_confirm_before_reblog">Confirmar antes de volver a publicar</string>
 </resources>

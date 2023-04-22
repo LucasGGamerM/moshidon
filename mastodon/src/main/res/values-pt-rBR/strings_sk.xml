@@ -51,7 +51,7 @@
     <string name="sk_translated_using">Traduzido usando %s</string>
     <string name="sk_post_language">Idioma: %s</string>
     <string name="sk_available_languages">Idiomas disponíveis</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_confirm_clear_recent_languages">Você tem certeza que deseja limpar os idiomas usados recentemente\?</string>
     <string name="sk_clear_recent_languages">Limpar idiomas usados recentemente</string>
     <string name="sk_notify_posts">Notificações de publicações</string>

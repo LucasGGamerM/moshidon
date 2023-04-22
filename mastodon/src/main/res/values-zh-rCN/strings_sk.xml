@@ -57,7 +57,7 @@
     <string name="sk_translated_using">使用 %s 翻译</string>
     <string name="sk_post_language">语言：%s</string>
     <string name="sk_available_languages">可用语言</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_example_domain">example.social</string>
     <string name="sk_tabs_disable_swipe">禁用选项卡之间的滑动</string>
     <string name="sk_settings_profile">设置个人资料</string>

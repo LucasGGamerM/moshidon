@@ -60,7 +60,7 @@
     <string name="sk_translated_using">Translated using %s</string>
     <string name="sk_post_language">Language: %s</string>
     <string name="sk_available_languages">Available languages</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_clear_recent_languages">Clear recently used languages</string>
     <string name="sk_confirm_clear_recent_languages">Are you sure you want to clear your recently used languages?</string>
     <string name="sk_welcome_title">Welcome!</string>
@@ -89,8 +89,8 @@
     <string name="sk_settings_translation_availability_note_unavailable">%s does not appear to support translation.</string>
     <string name="sk_loading_fediverse_resource_title">Looking it up on the Fediverse</string>
     <string name="sk_loading_resource_on_instance_title">Looking it up on %s</string>
-    <string name="sk_undo_reblog">Undo reblog</string>
-    <string name="sk_reblog_with_visibility">Reblog with visibility</string>
+    <string name="sk_undo_reblog">Undo boost</string>
+    <string name="sk_reblog_with_visibility">Boost with visibility</string>
     <string name="sk_quote_post">Post about this</string>
     <string name="sk_hashtags_you_follow">Hashtags you follow</string>
     <string name="sk_copy_link_to_post">Copy link to post</string>
@@ -102,9 +102,9 @@
     <string name="sk_favorite_as">Favorite with other account</string>
     <string name="sk_favorited_as">Favorited as %s</string>
     <string name="sk_already_favorited">Already favorited</string>
-    <string name="sk_reblog_as">Reblog with other account</string>
-    <string name="sk_reblogged_as">Reblogged as %s</string>
-    <string name="sk_already_reblogged">Already reblogged</string>
+    <string name="sk_reblog_as">Boost with other account</string>
+    <string name="sk_reblogged_as">Boosted as %s</string>
+    <string name="sk_already_reblogged">Already boosted</string>
     <string name="sk_reply_as">Reply with other account</string>
     <string name="sk_settings_uniform_icon_for_notifications">Uniform icon for all notifications</string>
     <string name="sk_forward_report_to">Forward to %s</string>
@@ -230,7 +230,7 @@
     <string name="sk_alt_button">ALT</string>
     <string name="sk_post_edited">edited</string>
     <string name="sk_notification_type_update">Edited posts</string>
-    <string name="sk_notify_update">Edits a reblogged post</string>
+    <string name="sk_notify_update">Edits a boosted post</string>
     <string name="sk_attach_file">Attach file</string>
     <string name="sk_searching">Searching…</string>
     <string name="sk_no_results">No results</string>
@@ -252,6 +252,7 @@
     <string name="sk_settings_glitch_mode_explanation">Enable this if your home instance runs on Glitch. Not needed for Hometown or Akkoma.</string>
     <string name="sk_signed_up">signed up</string>
     <string name="sk_reported">reported</string>
+    <string name="sk_reacted">reacted with %s</string>
     <string name="sk_sign_ups">Users signing up</string>
     <string name="sk_new_reports">New reports</string>
     <string name="sk_settings_server_version">Server version: %s</string>
@@ -271,6 +272,6 @@
     <string name="sk_in_reply">In reply</string>
     <string name="sk_reply_line_above_avatar">“In reply to” line above avatar</string>
     <string name="sk_show_thread">Show thread</string>
-    <string name="sk_compact_reblog_reply_line">Compact reblog/reply line</string>
-    <string name="sk_settings_confirm_before_reblog">Confirm before reblogging</string>
+    <string name="sk_compact_reblog_reply_line">Compact boost/reply line</string>
+    <string name="sk_settings_confirm_before_reblog">Confirm before boosting</string>
 </resources>

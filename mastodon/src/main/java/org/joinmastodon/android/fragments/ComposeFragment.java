@@ -731,6 +731,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			String ownID=AccountSessionManager.getInstance().getAccount(accountID).self.id;
 			if(!status.account.id.equals(ownID))
 				mentions.add('@'+status.account.acct);
+			if(status.rebloggedBy != null && GlobalUserPreferences.mentionRebloggerAutomatically)
+				mentions.add('@'+status.rebloggedBy.acct);
 			for(Mention mention:status.mentions){
 				if(mention.id.equals(ownID))
 					continue;

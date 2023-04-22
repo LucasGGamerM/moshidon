@@ -53,7 +53,7 @@
     <string name="sk_confirm_clear_recent_languages">Apakah Anda yakin ingin menghapus bahasa terkini yang Anda gunakan\?</string>
     <string name="sk_color_palette_material3">Sistem</string>
     <string name="sk_available_languages">Bahasa yang tersedia</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_translate_post">Terjemahkan</string>
     <string name="sk_translate_show_original">Tampilkan yang asli</string>
     <string name="sk_post_language">Bahasa: %s</string>
@@ -273,4 +273,5 @@
     <string name="sk_reply_line_above_avatar">Baris “Membalas ke” di atas avatar</string>
     <string name="sk_show_thread">Tampilkan utasan</string>
     <string name="sk_compact_reblog_reply_line">Baris berbagi/balasan</string>
+    <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
 </resources>

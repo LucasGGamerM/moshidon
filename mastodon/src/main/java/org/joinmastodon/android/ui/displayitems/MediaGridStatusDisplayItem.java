@@ -1,5 +1,7 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import static org.joinmastodon.android.GlobalUserPreferences.*;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -181,10 +183,11 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			altTextIndex=index;
 			Attachment att=item.attachments.get(index);
 			boolean hasAltText = !TextUtils.isEmpty(att.description);
-			altTextButton.setVisibility(hasAltText && GlobalUserPreferences.showAltIndicator ? View.VISIBLE : View.GONE);
-			noAltTextButton.setVisibility(!hasAltText && GlobalUserPreferences.showNoAltIndicator ? View.VISIBLE : View.GONE);
-			altText.setVisibility(hasAltText && GlobalUserPreferences.showAltIndicator ? View.VISIBLE : View.GONE);
-			noAltText.setVisibility(!hasAltText && GlobalUserPreferences.showNoAltIndicator ? View.VISIBLE : View.GONE);
+			if ((hasAltText && !showAltIndicator) || (!hasAltText && !showNoAltIndicator)) return;
+			altTextButton.setVisibility(hasAltText && showAltIndicator ? View.VISIBLE : View.GONE);
+			noAltTextButton.setVisibility(!hasAltText && showNoAltIndicator ? View.VISIBLE : View.GONE);
+			altText.setVisibility(hasAltText && showAltIndicator ? View.VISIBLE : View.GONE);
+			noAltText.setVisibility(!hasAltText && showNoAltIndicator ? View.VISIBLE : View.GONE);
 			altText.setText(att.description);
 			altTextWrapper.setVisibility(View.VISIBLE);
 			altTextWrapper.setBackgroundResource(hasAltText ? R.drawable.bg_image_alt_overlay : R.drawable.bg_image_no_alt_overlay);
@@ -251,8 +254,7 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 				boolean hasAltText = !TextUtils.isEmpty(item.attachments.get(i).description);
 				if(c.btnsWrap!=null
 						&& c.btnsWrap!=btn
-						&& ((hasAltText && GlobalUserPreferences.showAltIndicator)
-						|| (!hasAltText && GlobalUserPreferences.showNoAltIndicator))
+						&& ((hasAltText && showAltIndicator) || (!hasAltText && showNoAltIndicator))
 				) c.btnsWrap.setVisibility(View.VISIBLE);
 				i++;
 			}

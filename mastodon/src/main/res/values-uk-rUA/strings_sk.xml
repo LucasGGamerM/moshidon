@@ -13,7 +13,7 @@
     <string name="sk_translated_using">Перекладено за допомогою %s</string>
     <string name="sk_post_language">Мова: %s</string>
     <string name="sk_available_languages">Доступні мови</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_clear_recent_languages">Очистити нещодавно використані мови</string>
     <string name="sk_settings_always_reveal_content_warnings">Завжди розкривати попередження про вміст</string>
     <string name="sk_notification_type_status">Дописи</string>
@@ -272,6 +272,5 @@
     <string name="sk_reply_line_above_avatar">Рядок «У відповідь» над аватаром</string>
     <string name="sk_show_thread">Показати потік</string>
     <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеного допису/відповіді</string>
-    <string name="sk_settings_confirm_before_reblog">Запросити підтвердження перед репостом</string>
-    <string name="sk_settings_show_new_posts_button">Кнопка \"Показати нові публікації\"</string>
+    <string name="sk_settings_confirm_before_reblog">Підтверджувати поширення</string>
 </resources>

@@ -43,4 +43,6 @@
     <string name="mo_share_open_url">In der App öffnen</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Deaktiviere doppeltes Tippen, um zwischen Tabs zu wechseln</string>
     <string name="mo_swap_bookmark_with_reblog">Verwenden der Reblog-Aktion anstelle der Lesezeichen-Aktion bei Benachrichtigungen</string>
+    <string name="mo_download_latest_nightly_release">Neueste Nightly Version herunterladen</string>
+    <string name="mo_load_remote_followers">Follower und Follower des Remote Profils laden</string>
 </resources>

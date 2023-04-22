@@ -39,4 +39,5 @@
     <string name="mo_share_open_url">Abrir no App</string>
     <string name="mo_swap_bookmark_with_reblog">Usar ação de reblogar ao invés da ação salvar nas notificações</string>
     <string name="mo_download_latest_nightly_release">Baixar mais novo lançamento noturno</string>
+    <string name="mo_load_remote_followers">Carregar seguidores e seguindo de perfil remoto</string>
 </resources>

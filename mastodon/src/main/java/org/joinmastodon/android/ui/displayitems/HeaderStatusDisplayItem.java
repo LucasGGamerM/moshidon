@@ -86,13 +86,13 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	public final Status status;
 	private boolean hasVisibilityToggle;
 	boolean needBottomPadding;
-	private String extraText;
+	private CharSequence extraText;
 	private Notification notification;
 	private ScheduledStatus scheduledStatus;
 	private Announcement announcement;
 	private Consumer<String> consumeReadAnnouncement;
 
-	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, String extraText, Notification notification, ScheduledStatus scheduledStatus){
+	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, CharSequence extraText, Notification notification, ScheduledStatus scheduledStatus){
 		super(parentID, parentFragment);
 		user=scheduledStatus != null ? AccountSessionManager.getInstance().getAccount(accountID).self : user;
 		this.user=user;
@@ -117,6 +117,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			}
 		}
 		this.extraText=extraText;
+		emojiHelper.addText(extraText);
 	}
 
 	public static HeaderStatusDisplayItem fromAnnouncement(Announcement a, Status fakeStatus, Account instanceUser, BaseStatusListFragment parentFragment, String accountID, Consumer<String> consumeReadID) {
