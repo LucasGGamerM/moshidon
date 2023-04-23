@@ -12,5 +12,6 @@ public class SettingsMainFragment extends SettingsBaseFragment{
         items.add(new SettingsCategoryItem(R.string.sk_timelines, TimeLineFragment.class, R.drawable.ic_fluent_timeline_24_regular));
         items.add(new SettingsCategoryItem(R.string.settings_notifications, NotificationsFragment.class, R.drawable.ic_fluent_alert_28_regular_badged));
         items.add(new SettingsCategoryItem(R.string.settings_account, AccountFragment.class, R.drawable.ic_fluent_person_28_regular));
+        items.add(new SettingsCategoryItem(R.string.sk_settings_about, AboutFragment.class, R.drawable.ic_fluent_info_24_regular));
     }
 }

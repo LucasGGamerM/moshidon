@@ -246,7 +246,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	protected class TextItem extends Item{
 		private String text;
-		private String secondaryText;
+		protected String secondaryText;
 		private Runnable onClick;
 		private boolean loading;
 		private int icon;
@@ -689,7 +689,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class TextViewHolder extends BindableViewHolder<TextItem> implements UsableRecyclerView.Clickable{
+	protected class TextViewHolder extends BindableViewHolder<TextItem> implements UsableRecyclerView.Clickable{
 		private final TextView text, secondaryText;
 		private final ProgressBar progress;
 		private final ImageView icon;
