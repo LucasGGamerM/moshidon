@@ -161,6 +161,23 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
+	protected class RedHeaderItem extends HeaderItem {
+
+		public RedHeaderItem(int text){
+			super(text);
+		}
+
+		public RedHeaderItem(String text){
+			super(text);
+		}
+
+		@Override
+		public int getViewType(){
+			return Type.RED_HEADER.ordinal();
+		}
+	}
+
+
 	protected class SwitchItem extends Item{
 		private String text;
 		private int icon;
@@ -329,6 +346,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	public enum Type{
 		HEADER,
+		RED_HEADER,
 		SWITCH,
 		THEME,
 		TEXT,
@@ -337,7 +355,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		BUTTON,
 		SMALL_TEXT,
 		UPDATER,
-		SETTINGS_CATEGORY
+		SETTINGS_CATEGORY;
 	}
 
 
@@ -349,6 +367,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			//noinspection unchecked
 			return (BindableViewHolder<Item>) switch(Type.values()[viewType]){
 				case HEADER -> new HeaderViewHolder();
+				case RED_HEADER -> new HeaderViewHolder(true);
 				case SWITCH -> new SwitchViewHolder();
 				case THEME -> new ThemeViewHolder();
 				case TEXT -> new TextViewHolder();
@@ -382,6 +401,13 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		public HeaderViewHolder(){
 			super(getActivity(), R.layout.item_settings_header, list);
 			text=(TextView) itemView;
+		}
+
+		public HeaderViewHolder(boolean red){
+			super(getActivity(), R.layout.item_settings_header, list);
+			text=(TextView) itemView;
+			if(red)
+				text.setTextColor(getResources().getColor(UiUtils.isDarkTheme() ? R.color.error_400 : R.color.error_700));
 		}
 
 		@Override
