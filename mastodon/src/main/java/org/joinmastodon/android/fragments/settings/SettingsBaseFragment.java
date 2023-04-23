@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments.settings;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -50,6 +51,7 @@ import org.joinmastodon.android.updater.GithubSelfUpdater;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
@@ -274,41 +276,20 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	protected class SettingsCategoryItem extends Item{
 		private String text;
-		private String secondaryText;
-		private Runnable onClick;
-		private boolean loading;
 		private int icon;
 
-		public SettingsCategoryItem(@StringRes int text, Runnable onClick) {
-			this(text, null, onClick, false, 0);
-		}
+		private Class<? extends Fragment> fragmentClass;
 
-		public SettingsCategoryItem(@StringRes int text, Runnable onClick, @DrawableRes int icon) {
-			this(text, null, onClick, false, icon);
-		}
+        public SettingsCategoryItem(@StringRes int text, Class<? extends Fragment> fragmentClass, @DrawableRes int icon) {
+            this.text = getString(text);
+            this.fragmentClass=fragmentClass;
+            this.icon=icon;
+        }
 
-		public SettingsCategoryItem(@StringRes int text, String secondaryText, Runnable onClick, @DrawableRes int icon) {
-			this(text, secondaryText, onClick, false, icon);
-		}
+        public SettingsCategoryItem(@StringRes int text, Class<? extends Fragment> fragmentClass) {
+            this(text, fragmentClass, 0);
+        }
 
-		public SettingsCategoryItem(@StringRes int text, String secondaryText, Runnable onClick, boolean loading, @DrawableRes int icon){
-			this.text=getString(text);
-			this.onClick=onClick;
-			this.loading=loading;
-			this.icon=icon;
-			this.secondaryText = secondaryText;
-		}
-
-		public SettingsCategoryItem(String text, Runnable onClick){
-			this.text=text;
-			this.onClick=onClick;
-		}
-
-		public SettingsCategoryItem(String text, Runnable onClick, @DrawableRes int icon){
-			this.text=text;
-			this.onClick=onClick;
-			this.icon=icon;
-		}
 
 		@Override
 		public int getViewType(){
@@ -650,7 +631,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class SettingsCategoryViewHolder extends BindableViewHolder<SettingsCategoryItem>{
+	private class SettingsCategoryViewHolder extends BindableViewHolder<SettingsCategoryItem> implements UsableRecyclerView.Clickable{
 		private final ImageView icon;
 		private final TextView text;
 
@@ -665,9 +646,13 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		public void onBind(SettingsCategoryItem item){
 			text.setText(item.text);
 			icon.setImageResource(item.icon);
-			item.onClick.run();
 		}
-	}
+
+        @Override
+        public void onClick() {
+            Nav.go(getActivity(), item.fragmentClass, getArguments());
+        }
+    }
 
 	protected class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
 		private final Button button;
