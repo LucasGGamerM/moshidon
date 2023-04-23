@@ -505,7 +505,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 				onNotificationsChanged(value, newState);
 			}
 			index++;
-			while(items.get(index) instanceof SwitchItem si){
+			while(items.size() > index && items.get(index) instanceof SwitchItem si){
 				si.enabled=si.checked=newState;
 				RecyclerView.ViewHolder holder=list.findViewHolderForAdapterPosition(index);
 				if(holder!=null)
