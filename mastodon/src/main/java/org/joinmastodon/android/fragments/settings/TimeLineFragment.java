@@ -100,6 +100,11 @@ public class TimeLineFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
+        items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
+            GlobalUserPreferences.disableDividers=i.checked;
+            GlobalUserPreferences.save();
+            needAppRestart=true;
+        }));
     }
 
     private boolean onReplyVisibilityChanged(MenuItem item, Button btn){
