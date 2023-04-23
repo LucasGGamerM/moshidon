@@ -74,6 +74,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected PushSubscription pushSubscription;
 	protected ArrayList<Item> items=new ArrayList<>();
 	protected String accountID;
+	protected AccountSession session;
 
 	protected boolean needUpdateNotificationSettings;
 
@@ -87,7 +88,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		setTitle(R.string.settings);
 
 		accountID=getArguments().getString("account");
-		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		session = AccountSessionManager.getInstance().getAccount(accountID);
 		instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 		instanceName = UiUtils.getInstanceName(accountID);
 		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
