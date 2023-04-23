@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -35,6 +36,7 @@ import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.PushSubscriptionManager;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.DomainDisplay;
@@ -54,17 +56,21 @@ import me.grishka.appkit.views.UsableRecyclerView;
 
 public abstract class SettingsBaseFragment extends MastodonToolbarFragment implements DomainDisplay {
 	protected View view;
-	private UsableRecyclerView list;
+	protected UsableRecyclerView list;
 
-	private ImageView themeTransitionWindowView;
+	protected ImageView themeTransitionWindowView;
 
-	private SettingsBaseFragment.NotificationPolicyItem notificationPolicyItem;
+	protected ThemeItem themeItem;
 
-	private PushSubscription pushSubscription;
-	private ArrayList<Item> items=new ArrayList<>();
-	private String accountID;
+	protected boolean needAppRestart;
 
-	private boolean needUpdateNotificationSettings;
+	protected SettingsBaseFragment.NotificationPolicyItem notificationPolicyItem;
+
+	protected PushSubscription pushSubscription;
+	protected ArrayList<Item> items=new ArrayList<>();
+	protected String accountID;
+
+	protected boolean needUpdateNotificationSettings;
 
 	public abstract void addItems(ArrayList<Item> items);
 
@@ -142,7 +148,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected class SwitchItem extends Item{
 		private String text;
 		private int icon;
-		private boolean checked;
+		boolean checked;
 		private Consumer<SwitchItem> onChanged;
 		private boolean enabled=true;
 
@@ -389,13 +395,35 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
+	protected boolean onColorPreferenceClick(MenuItem item){
+		GlobalUserPreferences.ColorPreference pref = null;
+		int id = item.getItemId();
+
+		if (id == R.id.m3_color) pref = GlobalUserPreferences.ColorPreference.MATERIAL3;
+		else if (id == R.id.pink_color) pref = GlobalUserPreferences.ColorPreference.PINK;
+		else if (id == R.id.purple_color) pref = GlobalUserPreferences.ColorPreference.PURPLE;
+		else if (id == R.id.green_color) pref = GlobalUserPreferences.ColorPreference.GREEN;
+		else if (id == R.id.blue_color) pref = GlobalUserPreferences.ColorPreference.BLUE;
+		else if (id == R.id.brown_color) pref = GlobalUserPreferences.ColorPreference.BROWN;
+		else if (id == R.id.red_color) pref = GlobalUserPreferences.ColorPreference.RED;
+		else if (id == R.id.yellow_color) pref = GlobalUserPreferences.ColorPreference.YELLOW;
+		else if (id == R.id.nord_color) pref = GlobalUserPreferences.ColorPreference.NORD;
+
+		if (pref == null) return false;
+
+		GlobalUserPreferences.color=pref;
+		GlobalUserPreferences.save();
+		restartActivityToApplyNewTheme();
+		return true;
+	}
+
+	protected void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
 		GlobalUserPreferences.theme=theme;
 		GlobalUserPreferences.save();
 		restartActivityToApplyNewTheme();
 	}
 
-	private void restartActivityToApplyNewTheme(){
+	protected void restartActivityToApplyNewTheme(){
 		// Calling activity.recreate() causes a black screen for like half a second.
 		// So, let's take a screenshot and overlay it on top to create the illusion of a smoother transition.
 		// As a bonus, we can fade it out to make it even smoother.
@@ -416,6 +444,32 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			MastodonApp.context.getSystemService(WindowManager.class).addView(themeTransitionWindowView, lp);
 		}
 		getActivity().recreate();
+	}
+
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		if(needUpdateNotificationSettings && PushSubscriptionManager.arePushNotificationsAvailable()){
+			AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().updatePushSettings(pushSubscription);
+		}
+		if(needAppRestart) UiUtils.restartApp();
+	}
+
+
+	protected void onTrueBlackThemeChanged(SettingsBaseFragment.SwitchItem item){
+		GlobalUserPreferences.trueBlackTheme=item.checked;
+		GlobalUserPreferences.save();
+
+		RecyclerView.ViewHolder themeHolder=list.findViewHolderForAdapterPosition(items.indexOf(themeItem));
+		if(themeHolder!=null){
+			((SettingsBaseFragment.ThemeViewHolder)themeHolder).bindSubitems();
+		}else{
+			list.getAdapter().notifyItemChanged(items.indexOf(themeItem));
+		}
+
+		if(UiUtils.isDarkTheme()){
+			restartActivityToApplyNewTheme();
+		}
 	}
 
 	private class NotificationPolicyViewHolder extends BindableViewHolder<NotificationPolicyItem>{
@@ -492,7 +546,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		needUpdateNotificationSettings=true;
 	}
 
-	private void onNotificationsChanged(PushNotification.Type type, boolean enabled){
+	protected void onNotificationsChanged(PushNotification.Type type, boolean enabled){
 		PushSubscription subscription=getPushSubscription();
 		switch(type){
 			case FAVORITE -> subscription.alerts.favourite=enabled;
@@ -506,7 +560,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		needUpdateNotificationSettings=true;
 	}
 
-	private PushSubscription getPushSubscription(){
+	protected PushSubscription getPushSubscription(){
 		if(pushSubscription!=null)
 			return pushSubscription;
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
@@ -557,7 +611,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class ThemeViewHolder extends BindableViewHolder<ThemeItem>{
+	class ThemeViewHolder extends BindableViewHolder<ThemeItem>{
 		private ThemeViewHolder.SubitemHolder autoHolder, lightHolder, darkHolder;
 
 		public ThemeViewHolder(){
@@ -637,7 +691,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
+	protected class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
 		private final Button button;
 		private final ImageView icon;
 		private final TextView text;
