@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments.settings;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -41,6 +42,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.MastodonToolbarFragment;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.OutlineProviders;
@@ -50,6 +52,7 @@ import org.joinmastodon.android.updater.GithubSelfUpdater;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
@@ -63,12 +66,15 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected ThemeItem themeItem;
 
 	protected boolean needAppRestart;
+	private Instance instance;
+	private String instanceName;
 
-	protected SettingsBaseFragment.NotificationPolicyItem notificationPolicyItem;
+	protected NotificationPolicyItem notificationPolicyItem;
 
 	protected PushSubscription pushSubscription;
 	protected ArrayList<Item> items=new ArrayList<>();
 	protected String accountID;
+	protected AccountSession session;
 
 	protected boolean needUpdateNotificationSettings;
 
@@ -82,7 +88,9 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		setTitle(R.string.settings);
 
 		accountID=getArguments().getString("account");
-		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		session = AccountSessionManager.getInstance().getAccount(accountID);
+		instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		instanceName = UiUtils.getInstanceName(accountID);
 		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
 
 		addItems(items);
@@ -123,6 +131,14 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		this.view = view;
 	}
 
+	protected Instance getInstance() {
+		return instance;
+	}
+
+	protected String getInstanceName() {
+		return instanceName;
+	}
+
 
 	static abstract class Item{
 		public abstract int getViewType();
@@ -145,12 +161,29 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
+	protected class RedHeaderItem extends HeaderItem {
+
+		public RedHeaderItem(int text){
+			super(text);
+		}
+
+		public RedHeaderItem(String text){
+			super(text);
+		}
+
+		@Override
+		public int getViewType(){
+			return Type.RED_HEADER.ordinal();
+		}
+	}
+
+
 	protected class SwitchItem extends Item{
 		private String text;
 		private int icon;
 		boolean checked;
 		private Consumer<SwitchItem> onChanged;
-		private boolean enabled=true;
+		protected boolean enabled=true;
 
 		public SwitchItem(@StringRes int text, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged){
 			this.text=getString(text);
@@ -173,7 +206,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected class UpdateItem extends SettingsBaseFragment.Item {
+	protected class UpdateItem extends Item {
 
 		@Override
 		public int getViewType(){
@@ -181,7 +214,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected static class ThemeItem extends SettingsBaseFragment.Item {
+	protected static class ThemeItem extends Item {
 
 		@Override
 		public int getViewType(){
@@ -189,7 +222,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected static class NotificationPolicyItem extends SettingsBaseFragment.Item {
+	protected static class NotificationPolicyItem extends Item {
 
 		@Override
 		public int getViewType(){
@@ -230,7 +263,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	protected class TextItem extends Item{
 		private String text;
-		private String secondaryText;
+		protected String secondaryText;
 		private Runnable onClick;
 		private boolean loading;
 		private int icon;
@@ -274,41 +307,20 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	protected class SettingsCategoryItem extends Item{
 		private String text;
-		private String secondaryText;
-		private Runnable onClick;
-		private boolean loading;
 		private int icon;
 
-		public SettingsCategoryItem(@StringRes int text, Runnable onClick) {
-			this(text, null, onClick, false, 0);
-		}
+		private Class<? extends Fragment> fragmentClass;
 
-		public SettingsCategoryItem(@StringRes int text, Runnable onClick, @DrawableRes int icon) {
-			this(text, null, onClick, false, icon);
-		}
+        public SettingsCategoryItem(@StringRes int text, Class<? extends Fragment> fragmentClass, @DrawableRes int icon) {
+            this.text = getString(text);
+            this.fragmentClass=fragmentClass;
+            this.icon=icon;
+        }
 
-		public SettingsCategoryItem(@StringRes int text, String secondaryText, Runnable onClick, @DrawableRes int icon) {
-			this(text, secondaryText, onClick, false, icon);
-		}
+        public SettingsCategoryItem(@StringRes int text, Class<? extends Fragment> fragmentClass) {
+            this(text, fragmentClass, 0);
+        }
 
-		public SettingsCategoryItem(@StringRes int text, String secondaryText, Runnable onClick, boolean loading, @DrawableRes int icon){
-			this.text=getString(text);
-			this.onClick=onClick;
-			this.loading=loading;
-			this.icon=icon;
-			this.secondaryText = secondaryText;
-		}
-
-		public SettingsCategoryItem(String text, Runnable onClick){
-			this.text=text;
-			this.onClick=onClick;
-		}
-
-		public SettingsCategoryItem(String text, Runnable onClick, @DrawableRes int icon){
-			this.text=text;
-			this.onClick=onClick;
-			this.icon=icon;
-		}
 
 		@Override
 		public int getViewType(){
@@ -334,6 +346,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	public enum Type{
 		HEADER,
+		RED_HEADER,
 		SWITCH,
 		THEME,
 		TEXT,
@@ -342,7 +355,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		BUTTON,
 		SMALL_TEXT,
 		UPDATER,
-		SETTINGS_CATEGORY
+		SETTINGS_CATEGORY;
 	}
 
 
@@ -354,6 +367,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			//noinspection unchecked
 			return (BindableViewHolder<Item>) switch(Type.values()[viewType]){
 				case HEADER -> new HeaderViewHolder();
+				case RED_HEADER -> new HeaderViewHolder(true);
 				case SWITCH -> new SwitchViewHolder();
 				case THEME -> new ThemeViewHolder();
 				case TEXT -> new TextViewHolder();
@@ -389,32 +403,17 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			text=(TextView) itemView;
 		}
 
+		public HeaderViewHolder(boolean red){
+			super(getActivity(), R.layout.item_settings_header, list);
+			text=(TextView) itemView;
+			if(red)
+				text.setTextColor(getResources().getColor(UiUtils.isDarkTheme() ? R.color.error_400 : R.color.error_700));
+		}
+
 		@Override
 		public void onBind(HeaderItem item){
 			text.setText(item.text);
 		}
-	}
-
-	protected boolean onColorPreferenceClick(MenuItem item){
-		GlobalUserPreferences.ColorPreference pref = null;
-		int id = item.getItemId();
-
-		if (id == R.id.m3_color) pref = GlobalUserPreferences.ColorPreference.MATERIAL3;
-		else if (id == R.id.pink_color) pref = GlobalUserPreferences.ColorPreference.PINK;
-		else if (id == R.id.purple_color) pref = GlobalUserPreferences.ColorPreference.PURPLE;
-		else if (id == R.id.green_color) pref = GlobalUserPreferences.ColorPreference.GREEN;
-		else if (id == R.id.blue_color) pref = GlobalUserPreferences.ColorPreference.BLUE;
-		else if (id == R.id.brown_color) pref = GlobalUserPreferences.ColorPreference.BROWN;
-		else if (id == R.id.red_color) pref = GlobalUserPreferences.ColorPreference.RED;
-		else if (id == R.id.yellow_color) pref = GlobalUserPreferences.ColorPreference.YELLOW;
-		else if (id == R.id.nord_color) pref = GlobalUserPreferences.ColorPreference.NORD;
-
-		if (pref == null) return false;
-
-		GlobalUserPreferences.color=pref;
-		GlobalUserPreferences.save();
-		restartActivityToApplyNewTheme();
-		return true;
 	}
 
 	protected void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
@@ -456,13 +455,13 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 
-	protected void onTrueBlackThemeChanged(SettingsBaseFragment.SwitchItem item){
+	protected void onTrueBlackThemeChanged(SwitchItem item){
 		GlobalUserPreferences.trueBlackTheme=item.checked;
 		GlobalUserPreferences.save();
 
 		RecyclerView.ViewHolder themeHolder=list.findViewHolderForAdapterPosition(items.indexOf(themeItem));
 		if(themeHolder!=null){
-			((SettingsBaseFragment.ThemeViewHolder)themeHolder).bindSubitems();
+			((ThemeViewHolder)themeHolder).bindSubitems();
 		}else{
 			list.getAdapter().notifyItemChanged(items.indexOf(themeItem));
 		}
@@ -504,7 +503,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 
 		@Override
-		public void onBind(SettingsBaseFragment.NotificationPolicyItem item){
+		public void onBind(NotificationPolicyItem item){
 			button.setText(switch(getPushSubscription().policy){
 				case ALL -> R.string.notify_anyone;
 				case FOLLOWED -> R.string.notify_followed;
@@ -523,7 +522,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		int index=items.indexOf(notificationPolicyItem);
 		RecyclerView.ViewHolder policyHolder=list.findViewHolderForAdapterPosition(index);
 		if(policyHolder!=null){
-			((SettingsBaseFragment.NotificationPolicyViewHolder)policyHolder).rebind();
+			((NotificationPolicyViewHolder)policyHolder).rebind();
 		}else{
 			list.getAdapter().notifyItemChanged(index);
 		}
@@ -533,7 +532,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 				onNotificationsChanged(value, newState);
 			}
 			index++;
-			while(items.get(index) instanceof SettingsBaseFragment.SwitchItem si){
+			while(items.size() > index && items.get(index) instanceof SwitchItem si){
 				si.enabled=si.checked=newState;
 				RecyclerView.ViewHolder holder=list.findViewHolderForAdapterPosition(index);
 				if(holder!=null)
@@ -573,7 +572,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		return pushSubscription;
 	}
 
-	private class SwitchViewHolder extends BindableViewHolder<SwitchItem> implements UsableRecyclerView.DisableableClickable{
+	protected class SwitchViewHolder extends BindableViewHolder<SwitchItem> implements UsableRecyclerView.DisableableClickable{
 		private final TextView text;
 		private final ImageView icon;
 		private final Switch checkbox;
@@ -622,7 +621,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 
 		@Override
-		public void onBind(SettingsBaseFragment.ThemeItem item){
+		public void onBind(ThemeItem item){
 			bindSubitems();
 		}
 
@@ -672,7 +671,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class SettingsCategoryViewHolder extends BindableViewHolder<SettingsCategoryItem>{
+	private class SettingsCategoryViewHolder extends BindableViewHolder<SettingsCategoryItem> implements UsableRecyclerView.Clickable{
 		private final ImageView icon;
 		private final TextView text;
 
@@ -687,9 +686,13 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		public void onBind(SettingsCategoryItem item){
 			text.setText(item.text);
 			icon.setImageResource(item.icon);
-			item.onClick.run();
 		}
-	}
+
+        @Override
+        public void onClick() {
+            Nav.go(getActivity(), item.fragmentClass, getArguments());
+        }
+    }
 
 	protected class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
 		private final Button button;
@@ -712,7 +715,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class TextViewHolder extends BindableViewHolder<TextItem> implements UsableRecyclerView.Clickable{
+	protected class TextViewHolder extends BindableViewHolder<TextItem> implements UsableRecyclerView.Clickable{
 		private final TextView text, secondaryText;
 		private final ProgressBar progress;
 		private final ImageView icon;
@@ -810,7 +813,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 
 		@Override
-		public void onBind(SettingsBaseFragment.UpdateItem item){
+		public void onBind(UpdateItem item){
 			GithubSelfUpdater updater=GithubSelfUpdater.getInstance();
 			GithubSelfUpdater.UpdateState state=updater.getState();
 			if (state == GithubSelfUpdater.UpdateState.CHECKING) return;
