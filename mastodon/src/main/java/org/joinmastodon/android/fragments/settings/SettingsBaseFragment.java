@@ -118,11 +118,11 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 
-	private static abstract class Item{
+	static abstract class Item{
 		public abstract int getViewType();
 	}
 
-	private class HeaderItem extends Item{
+	protected class HeaderItem extends Item{
 		private String text;
 
 		public HeaderItem(@StringRes int text){
@@ -139,7 +139,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class SwitchItem extends Item{
+	protected class SwitchItem extends Item{
 		private String text;
 		private int icon;
 		private boolean checked;
@@ -167,7 +167,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class UpdateItem extends SettingsBaseFragment.Item {
+	protected class UpdateItem extends SettingsBaseFragment.Item {
 
 		@Override
 		public int getViewType(){
@@ -175,7 +175,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private static class ThemeItem extends SettingsBaseFragment.Item {
+	protected static class ThemeItem extends SettingsBaseFragment.Item {
 
 		@Override
 		public int getViewType(){
@@ -183,7 +183,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private static class NotificationPolicyItem extends SettingsBaseFragment.Item {
+	protected static class NotificationPolicyItem extends SettingsBaseFragment.Item {
 
 		@Override
 		public int getViewType(){
@@ -192,7 +192,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 
-	public class ButtonItem extends Item{
+	protected class ButtonItem extends Item{
 		private int text;
 		private int icon;
 		private Consumer<Button> buttonConsumer;
@@ -209,7 +209,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class SmallTextItem extends Item {
+	protected class SmallTextItem extends Item {
 		private String text;
 
 		public SmallTextItem(String text) {
@@ -222,7 +222,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class TextItem extends Item{
+	protected class TextItem extends Item{
 		private String text;
 		private String secondaryText;
 		private Runnable onClick;
@@ -266,7 +266,52 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class FooterItem extends Item{
+	protected class SettingsCategoryItem extends Item{
+		private String text;
+		private String secondaryText;
+		private Runnable onClick;
+		private boolean loading;
+		private int icon;
+
+		public SettingsCategoryItem(@StringRes int text, Runnable onClick) {
+			this(text, null, onClick, false, 0);
+		}
+
+		public SettingsCategoryItem(@StringRes int text, Runnable onClick, @DrawableRes int icon) {
+			this(text, null, onClick, false, icon);
+		}
+
+		public SettingsCategoryItem(@StringRes int text, String secondaryText, Runnable onClick, @DrawableRes int icon) {
+			this(text, secondaryText, onClick, false, icon);
+		}
+
+		public SettingsCategoryItem(@StringRes int text, String secondaryText, Runnable onClick, boolean loading, @DrawableRes int icon){
+			this.text=getString(text);
+			this.onClick=onClick;
+			this.loading=loading;
+			this.icon=icon;
+			this.secondaryText = secondaryText;
+		}
+
+		public SettingsCategoryItem(String text, Runnable onClick){
+			this.text=text;
+			this.onClick=onClick;
+		}
+
+		public SettingsCategoryItem(String text, Runnable onClick, @DrawableRes int icon){
+			this.text=text;
+			this.onClick=onClick;
+			this.icon=icon;
+		}
+
+		@Override
+		public int getViewType(){
+			return Type.SETTINGS_CATEGORY.ordinal();
+		}
+	}
+
+
+	protected class FooterItem extends Item{
 		private String text;
 		private Runnable onClick;
 
@@ -290,7 +335,8 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		FOOTER,
 		BUTTON,
 		SMALL_TEXT,
-		UPDATER
+		UPDATER,
+		SETTINGS_CATEGORY
 	}
 
 
@@ -310,6 +356,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 				case BUTTON -> new ButtonViewHolder();
 				case SMALL_TEXT -> new SmallTextViewHolder();
 				case UPDATER -> new UpdateViewHolder();
+				case SETTINGS_CATEGORY -> new SettingsCategoryViewHolder();
 			};
 		}
 
@@ -568,6 +615,25 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			public void setChecked(boolean checked){
 				checkbox.setChecked(checked);
 			}
+		}
+	}
+
+	private class SettingsCategoryViewHolder extends BindableViewHolder<SettingsCategoryItem>{
+		private final ImageView icon;
+		private final TextView text;
+
+		@SuppressLint("ClickableViewAccessibility")
+		public SettingsCategoryViewHolder(){
+			super(getActivity(), R.layout.item_settings_category, list);
+			text=findViewById(R.id.text);
+			icon=findViewById(R.id.icon);
+		}
+
+		@Override
+		public void onBind(SettingsCategoryItem item){
+			text.setText(item.text);
+			icon.setImageResource(item.icon);
+			item.onClick.run();
 		}
 	}
 
