@@ -64,7 +64,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	protected boolean needAppRestart;
 
-	protected SettingsBaseFragment.NotificationPolicyItem notificationPolicyItem;
+	protected NotificationPolicyItem notificationPolicyItem;
 
 	protected PushSubscription pushSubscription;
 	protected ArrayList<Item> items=new ArrayList<>();
@@ -173,7 +173,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected class UpdateItem extends SettingsBaseFragment.Item {
+	protected class UpdateItem extends Item {
 
 		@Override
 		public int getViewType(){
@@ -181,7 +181,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected static class ThemeItem extends SettingsBaseFragment.Item {
+	protected static class ThemeItem extends Item {
 
 		@Override
 		public int getViewType(){
@@ -189,7 +189,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected static class NotificationPolicyItem extends SettingsBaseFragment.Item {
+	protected static class NotificationPolicyItem extends Item {
 
 		@Override
 		public int getViewType(){
@@ -395,28 +395,6 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	protected boolean onColorPreferenceClick(MenuItem item){
-		GlobalUserPreferences.ColorPreference pref = null;
-		int id = item.getItemId();
-
-		if (id == R.id.m3_color) pref = GlobalUserPreferences.ColorPreference.MATERIAL3;
-		else if (id == R.id.pink_color) pref = GlobalUserPreferences.ColorPreference.PINK;
-		else if (id == R.id.purple_color) pref = GlobalUserPreferences.ColorPreference.PURPLE;
-		else if (id == R.id.green_color) pref = GlobalUserPreferences.ColorPreference.GREEN;
-		else if (id == R.id.blue_color) pref = GlobalUserPreferences.ColorPreference.BLUE;
-		else if (id == R.id.brown_color) pref = GlobalUserPreferences.ColorPreference.BROWN;
-		else if (id == R.id.red_color) pref = GlobalUserPreferences.ColorPreference.RED;
-		else if (id == R.id.yellow_color) pref = GlobalUserPreferences.ColorPreference.YELLOW;
-		else if (id == R.id.nord_color) pref = GlobalUserPreferences.ColorPreference.NORD;
-
-		if (pref == null) return false;
-
-		GlobalUserPreferences.color=pref;
-		GlobalUserPreferences.save();
-		restartActivityToApplyNewTheme();
-		return true;
-	}
-
 	protected void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
 		GlobalUserPreferences.theme=theme;
 		GlobalUserPreferences.save();
@@ -456,13 +434,13 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 
-	protected void onTrueBlackThemeChanged(SettingsBaseFragment.SwitchItem item){
+	protected void onTrueBlackThemeChanged(SwitchItem item){
 		GlobalUserPreferences.trueBlackTheme=item.checked;
 		GlobalUserPreferences.save();
 
 		RecyclerView.ViewHolder themeHolder=list.findViewHolderForAdapterPosition(items.indexOf(themeItem));
 		if(themeHolder!=null){
-			((SettingsBaseFragment.ThemeViewHolder)themeHolder).bindSubitems();
+			((ThemeViewHolder)themeHolder).bindSubitems();
 		}else{
 			list.getAdapter().notifyItemChanged(items.indexOf(themeItem));
 		}
@@ -504,7 +482,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 
 		@Override
-		public void onBind(SettingsBaseFragment.NotificationPolicyItem item){
+		public void onBind(NotificationPolicyItem item){
 			button.setText(switch(getPushSubscription().policy){
 				case ALL -> R.string.notify_anyone;
 				case FOLLOWED -> R.string.notify_followed;
@@ -523,7 +501,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		int index=items.indexOf(notificationPolicyItem);
 		RecyclerView.ViewHolder policyHolder=list.findViewHolderForAdapterPosition(index);
 		if(policyHolder!=null){
-			((SettingsBaseFragment.NotificationPolicyViewHolder)policyHolder).rebind();
+			((NotificationPolicyViewHolder)policyHolder).rebind();
 		}else{
 			list.getAdapter().notifyItemChanged(index);
 		}
@@ -533,7 +511,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 				onNotificationsChanged(value, newState);
 			}
 			index++;
-			while(items.get(index) instanceof SettingsBaseFragment.SwitchItem si){
+			while(items.get(index) instanceof SwitchItem si){
 				si.enabled=si.checked=newState;
 				RecyclerView.ViewHolder holder=list.findViewHolderForAdapterPosition(index);
 				if(holder!=null)
@@ -622,7 +600,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 
 		@Override
-		public void onBind(SettingsBaseFragment.ThemeItem item){
+		public void onBind(ThemeItem item){
 			bindSubitems();
 		}
 
@@ -810,7 +788,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 
 		@Override
-		public void onBind(SettingsBaseFragment.UpdateItem item){
+		public void onBind(UpdateItem item){
 			GithubSelfUpdater updater=GithubSelfUpdater.getInstance();
 			GithubSelfUpdater.UpdateState state=updater.getState();
 			if (state == GithubSelfUpdater.UpdateState.CHECKING) return;
