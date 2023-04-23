@@ -42,6 +42,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.MastodonToolbarFragment;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.OutlineProviders;
@@ -65,6 +66,8 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected ThemeItem themeItem;
 
 	protected boolean needAppRestart;
+	private Instance instance;
+	private String instanceName;
 
 	protected NotificationPolicyItem notificationPolicyItem;
 
@@ -85,6 +88,8 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 		accountID=getArguments().getString("account");
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		instanceName = UiUtils.getInstanceName(accountID);
 		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
 
 		addItems(items);
@@ -125,6 +130,14 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		this.view = view;
 	}
 
+	protected Instance getInstance() {
+		return instance;
+	}
+
+	protected String getInstanceName() {
+		return instanceName;
+	}
+
 
 	static abstract class Item{
 		public abstract int getViewType();
@@ -152,7 +165,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		private int icon;
 		boolean checked;
 		private Consumer<SwitchItem> onChanged;
-		private boolean enabled=true;
+		protected boolean enabled=true;
 
 		public SwitchItem(@StringRes int text, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged){
 			this.text=getString(text);
@@ -532,7 +545,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		return pushSubscription;
 	}
 
-	private class SwitchViewHolder extends BindableViewHolder<SwitchItem> implements UsableRecyclerView.DisableableClickable{
+	protected class SwitchViewHolder extends BindableViewHolder<SwitchItem> implements UsableRecyclerView.DisableableClickable{
 		private final TextView text;
 		private final ImageView icon;
 		private final Switch checkbox;

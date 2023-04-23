@@ -9,5 +9,6 @@ public class SettingsMainFragment extends SettingsBaseFragment{
     public void addItems(ArrayList<SettingsBaseFragment.Item> items) {
         items.add(new SettingsCategoryItem(R.string.settings_theme, SettingsAppearanceFragment.class, R.drawable.ic_fluent_color_24_regular));
         items.add(new SettingsCategoryItem(R.string.settings_behavior, BehaviourFragment.class, R.drawable.ic_fluent_chat_settings_24_regular));
+        items.add(new SettingsCategoryItem(R.string.sk_timelines, TimeLineFragment.class, R.drawable.ic_fluent_timeline_24_regular));
     }
 }
