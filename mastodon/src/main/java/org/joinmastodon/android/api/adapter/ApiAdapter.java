@@ -5,6 +5,8 @@ import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.model.Status;
 
+import java.util.List;
+
 public class ApiAdapter {
     public final ServerType serverType;
 
@@ -12,7 +14,7 @@ public class ApiAdapter {
         this.serverType = serverType;
     }
 
-    public MastodonAPIRequest getPostById(String id){
+    public MastodonAPIRequest<?> getPostById(String id){
         switch (serverType){
             case MASTODON -> {
                 return new GetStatusByID(id);
@@ -24,7 +26,7 @@ public class ApiAdapter {
         return null;
     }
 
-    public MastodonAPIRequest getHomeTimeline(String maxID, String minID, int limit, String sinceID){
+    public MastodonAPIRequest<List<Status>> getHomeTimeline(String maxID, String minID, int limit, String sinceID){
         switch (serverType){
             case MASTODON -> {
                 return new GetHomeTimeline(maxID, minID, limit, sinceID);
