@@ -3,43 +3,23 @@ package org.joinmastodon.android.fragments;
 import static java.util.stream.Collectors.toList;
 
 import android.app.Activity;
-import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.ImageButton;
 
-import com.squareup.otto.Subscribe;
-
-import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.announcements.GetAnnouncements;
-import org.joinmastodon.android.api.requests.statuses.CreateStatus;
-import org.joinmastodon.android.api.requests.statuses.GetScheduledStatuses;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.events.ScheduledStatusCreatedEvent;
-import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
+import org.joinmastodon.android.api.mastodon.requests.announcements.GetAnnouncements;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Announcement;
-import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.Instance;
-import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
-import org.joinmastodon.android.ui.utils.UiUtils;
-import org.parceler.Parcels;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import me.grishka.appkit.Nav;
-import me.grishka.appkit.api.PaginatedList;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> {

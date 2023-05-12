@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.instance.GetInstance;
+import org.joinmastodon.android.api.mastodon.requests.instance.GetInstance;
 import org.joinmastodon.android.fragments.onboarding.InstanceCatalogSignupFragment;
 import org.joinmastodon.android.fragments.onboarding.InstanceChooserLoginFragment;
 import org.joinmastodon.android.fragments.onboarding.InstanceRulesFragment;

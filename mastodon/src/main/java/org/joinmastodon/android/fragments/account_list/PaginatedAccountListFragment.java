@@ -3,8 +3,8 @@ package org.joinmastodon.android.fragments.account_list;
 import android.net.Uri;
 
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.HeaderPaginationRequest;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.ui.utils.UiUtils;

@@ -8,15 +8,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.tags.GetHashtag;
-import org.joinmastodon.android.api.requests.tags.SetHashtagFollowed;
-import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
+import org.joinmastodon.android.api.mastodon.requests.tags.GetHashtag;
+import org.joinmastodon.android.api.mastodon.requests.tags.SetHashtagFollowed;
+import org.joinmastodon.android.api.mastodon.requests.timelines.GetHashtagTimeline;
 import org.joinmastodon.android.events.HashtagUpdatedEvent;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Hashtag;

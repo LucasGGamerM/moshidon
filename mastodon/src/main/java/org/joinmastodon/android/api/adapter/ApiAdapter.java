@@ -1,8 +1,8 @@
 package org.joinmastodon.android.api.adapter;
 
 import org.joinmastodon.android.api.MastodonAPIRequest;
-import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
-import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
+import org.joinmastodon.android.api.mastodon.requests.statuses.GetStatusByID;
+import org.joinmastodon.android.api.mastodon.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.model.Status;
 
 import java.util.List;

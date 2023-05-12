@@ -3,14 +3,13 @@ package org.joinmastodon.android.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.statuses.CreateStatus;
-import org.joinmastodon.android.api.requests.statuses.GetScheduledStatuses;
+import org.joinmastodon.android.api.mastodon.requests.statuses.CreateStatus;
+import org.joinmastodon.android.api.mastodon.requests.statuses.GetScheduledStatuses;
 import org.joinmastodon.android.events.ScheduledStatusCreatedEvent;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
 import org.joinmastodon.android.model.Filter;

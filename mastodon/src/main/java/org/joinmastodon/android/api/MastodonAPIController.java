@@ -15,7 +15,7 @@ import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.api.gson.IsoInstantTypeAdapter;
 import org.joinmastodon.android.api.gson.IsoLocalDateTypeAdapter;
-import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
 import org.joinmastodon.android.model.Status;
 
 import java.io.BufferedReader;

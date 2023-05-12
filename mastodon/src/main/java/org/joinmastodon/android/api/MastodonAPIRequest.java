@@ -9,8 +9,8 @@ import android.util.Pair;
 import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.BuildConfig;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.model.BaseModel;
 import org.joinmastodon.android.model.Token;
 

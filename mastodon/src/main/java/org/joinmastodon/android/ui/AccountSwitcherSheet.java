@@ -21,9 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.oauth.RevokeOauthToken;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.ui.utils.UiUtils;
 

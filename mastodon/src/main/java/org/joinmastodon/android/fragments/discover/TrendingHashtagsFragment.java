@@ -6,10 +6,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.trends.GetTrendingHashtags;
+import org.joinmastodon.android.api.mastodon.requests.trends.GetTrendingHashtags;
 import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
-import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.ui.DividerItemDecoration;

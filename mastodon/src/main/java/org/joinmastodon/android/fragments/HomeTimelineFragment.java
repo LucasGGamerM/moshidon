@@ -8,11 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.E;
-import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.markers.SaveMarkers;
-import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.timelines.GetHomeTimeline;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Filter;

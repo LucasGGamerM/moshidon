@@ -2,9 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 
-import org.joinmastodon.android.DomainManager;
-import org.joinmastodon.android.MainActivity;
-import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
+import org.joinmastodon.android.api.mastodon.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.utils.StatusFilterPredicate;

@@ -9,8 +9,8 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.markers.SaveMarkers;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.markers.SaveMarkers;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;

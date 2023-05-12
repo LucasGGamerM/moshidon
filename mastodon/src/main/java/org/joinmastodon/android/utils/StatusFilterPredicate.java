@@ -1,6 +1,6 @@
 package org.joinmastodon.android.utils;
 
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 

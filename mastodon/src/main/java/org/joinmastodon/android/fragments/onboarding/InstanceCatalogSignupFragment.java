@@ -22,8 +22,8 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
-import org.joinmastodon.android.api.requests.catalog.GetCatalogCategories;
-import org.joinmastodon.android.api.requests.catalog.GetCatalogInstances;
+import org.joinmastodon.android.api.mastodon.requests.catalog.GetCatalogCategories;
+import org.joinmastodon.android.api.mastodon.requests.catalog.GetCatalogInstances;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.catalog.CatalogCategory;
 import org.joinmastodon.android.model.catalog.CatalogInstance;

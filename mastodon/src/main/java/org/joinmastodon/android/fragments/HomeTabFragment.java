@@ -1,7 +1,6 @@
 package org.joinmastodon.android.fragments;
 
 import static org.joinmastodon.android.GlobalUserPreferences.reduceMotion;
-import static org.joinmastodon.android.GlobalUserPreferences.showNewPostsButton;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -41,9 +40,9 @@ import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.announcements.GetAnnouncements;
-import org.joinmastodon.android.api.requests.lists.GetLists;
-import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
+import org.joinmastodon.android.api.mastodon.requests.announcements.GetAnnouncements;
+import org.joinmastodon.android.api.mastodon.requests.lists.GetLists;
+import org.joinmastodon.android.api.mastodon.requests.tags.GetFollowedHashtags;
 import org.joinmastodon.android.events.HashtagUpdatedEvent;
 import org.joinmastodon.android.events.ListDeletedEvent;
 import org.joinmastodon.android.events.ListUpdatedCreatedEvent;

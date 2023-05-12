@@ -13,12 +13,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
-import org.joinmastodon.android.api.requests.accounts.GetFollowSuggestions;
+import org.joinmastodon.android.api.mastodon.requests.accounts.GetAccountRelationships;
+import org.joinmastodon.android.api.mastodon.requests.accounts.GetFollowSuggestions;
 import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
-import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.FollowSuggestion;

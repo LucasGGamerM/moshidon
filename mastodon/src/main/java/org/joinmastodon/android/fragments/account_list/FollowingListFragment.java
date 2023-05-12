@@ -3,8 +3,8 @@ package org.joinmastodon.android.fragments.account_list;
 import android.os.Bundle;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
-import org.joinmastodon.android.api.requests.accounts.GetAccountFollowing;
+import org.joinmastodon.android.api.mastodon.requests.HeaderPaginationRequest;
+import org.joinmastodon.android.api.mastodon.requests.accounts.GetAccountFollowing;
 import org.joinmastodon.android.model.Account;
 
 public class FollowingListFragment extends AccountRelatedAccountListFragment{

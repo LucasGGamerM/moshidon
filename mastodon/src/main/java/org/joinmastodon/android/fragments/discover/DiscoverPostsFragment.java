@@ -3,7 +3,7 @@ package org.joinmastodon.android.fragments.discover;
 import android.os.Bundle;
 import android.view.View;
 
-import org.joinmastodon.android.api.requests.trends.GetTrendingStatuses;
+import org.joinmastodon.android.api.mastodon.requests.trends.GetTrendingStatuses;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Filter;

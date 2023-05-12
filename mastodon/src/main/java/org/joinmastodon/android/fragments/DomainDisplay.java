@@ -1,7 +1,7 @@
 package org.joinmastodon.android.fragments;
 
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 
 public interface DomainDisplay {
 

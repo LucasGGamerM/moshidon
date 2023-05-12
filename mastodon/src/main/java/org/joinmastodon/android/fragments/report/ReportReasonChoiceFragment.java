@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
 import org.joinmastodon.android.events.FinishReportFragmentsEvent;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.ReportReason;

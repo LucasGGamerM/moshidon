@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
+import org.joinmastodon.android.api.mastodon.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.BetterItemAnimator;
