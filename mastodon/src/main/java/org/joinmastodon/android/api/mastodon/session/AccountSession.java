@@ -1,4 +1,4 @@
-package org.joinmastodon.android.api.mastodon.session.session;
+package org.joinmastodon.android.api.mastodon.session;
 
 import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIController;

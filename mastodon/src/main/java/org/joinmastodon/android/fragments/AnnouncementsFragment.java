@@ -7,8 +7,8 @@ import android.text.TextUtils;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.mastodon.requests.announcements.GetAnnouncements;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Instance;

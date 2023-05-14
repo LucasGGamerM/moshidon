@@ -1,7 +1,7 @@
 package org.joinmastodon.android.api.mastodon.requests.oauth;
 
 import org.joinmastodon.android.api.MastodonAPIRequest;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Application;
 
 public class CreateOAuthApp extends MastodonAPIRequest<Application>{

@@ -16,7 +16,7 @@ import android.widget.ScrollView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.mastodon.requests.accounts.UpdateAccountCredentials;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;

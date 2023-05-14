@@ -1,4 +1,4 @@
-package org.joinmastodon.android.api.mastodon.session.session;
+package org.joinmastodon.android.api.mastodon.session;
 
 public class AccountActivationInfo{
 	public String email;

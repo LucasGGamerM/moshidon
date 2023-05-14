@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.mastodon.requests.catalog.GetCatalogInstances;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.catalog.CatalogInstance;
 import org.joinmastodon.android.ui.utils.UiUtils;

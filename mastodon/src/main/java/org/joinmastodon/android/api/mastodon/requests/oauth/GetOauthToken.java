@@ -3,7 +3,7 @@ package org.joinmastodon.android.api.mastodon.requests.oauth;
 import com.google.gson.annotations.SerializedName;
 
 import org.joinmastodon.android.api.MastodonAPIRequest;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Token;
 
 public class GetOauthToken extends MastodonAPIRequest<Token>{

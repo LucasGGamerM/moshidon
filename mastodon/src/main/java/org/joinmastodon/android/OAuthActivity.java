@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import org.joinmastodon.android.api.mastodon.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.mastodon.requests.oauth.GetOauthToken;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.Instance;

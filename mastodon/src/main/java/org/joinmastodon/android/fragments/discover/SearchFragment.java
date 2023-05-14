@@ -9,7 +9,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.mastodon.requests.search.GetSearchResults;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;

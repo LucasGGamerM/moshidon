@@ -58,7 +58,7 @@ import org.joinmastodon.android.api.mastodon.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.mastodon.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.mastodon.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.api.mastodon.requests.accounts.UpdateAccountCredentials;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowingListFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;

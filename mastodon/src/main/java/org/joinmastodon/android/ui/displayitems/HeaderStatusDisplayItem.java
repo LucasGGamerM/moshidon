@@ -28,8 +28,8 @@ import org.joinmastodon.android.api.mastodon.requests.accounts.GetAccountRelatio
 import org.joinmastodon.android.api.mastodon.requests.announcements.DismissAnnouncement;
 import org.joinmastodon.android.api.mastodon.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.mastodon.requests.statuses.GetStatusSourceText;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSession;
-import org.joinmastodon.android.api.mastodon.session.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.ListTimelinesFragment;
