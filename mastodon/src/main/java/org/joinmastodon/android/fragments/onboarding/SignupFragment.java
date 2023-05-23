@@ -1,18 +1,14 @@
 package org.joinmastodon.android.fragments.onboarding;
 
 import android.app.ProgressDialog;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.Html;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.TypefaceSpan;
-import android.text.style.URLSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +20,11 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonDetailedErrorResponse;
-import org.joinmastodon.android.api.requests.accounts.RegisterAccount;
-import org.joinmastodon.android.api.requests.oauth.CreateOAuthApp;
-import org.joinmastodon.android.api.requests.oauth.GetOauthToken;
-import org.joinmastodon.android.api.session.AccountActivationInfo;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.accounts.RegisterAccount;
+import org.joinmastodon.android.api.mastodon.requests.oauth.CreateOAuthApp;
+import org.joinmastodon.android.api.mastodon.requests.oauth.GetOauthToken;
+import org.joinmastodon.android.api.mastodon.session.AccountActivationInfo;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.Instance;
@@ -49,7 +45,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.Nav;

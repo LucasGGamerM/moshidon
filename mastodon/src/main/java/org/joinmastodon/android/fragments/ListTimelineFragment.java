@@ -7,15 +7,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.lists.GetList;
-import org.joinmastodon.android.api.requests.lists.UpdateList;
-import org.joinmastodon.android.api.requests.timelines.GetListTimeline;
+import org.joinmastodon.android.api.mastodon.requests.lists.GetList;
+import org.joinmastodon.android.api.mastodon.requests.lists.UpdateList;
+import org.joinmastodon.android.api.mastodon.requests.timelines.GetListTimeline;
 import org.joinmastodon.android.events.ListDeletedEvent;
 import org.joinmastodon.android.events.ListUpdatedCreatedEvent;
 import org.joinmastodon.android.model.Filter;

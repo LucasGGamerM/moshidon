@@ -17,9 +17,9 @@ import com.github.bottomSoftwareFoundation.bottom.TranslationError;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.statuses.TranslateStatus;
+import org.joinmastodon.android.api.mastodon.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;

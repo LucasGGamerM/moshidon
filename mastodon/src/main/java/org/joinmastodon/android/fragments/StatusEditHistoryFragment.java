@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.statuses.GetStatusEditHistory;
+import org.joinmastodon.android.api.mastodon.requests.statuses.GetStatusEditHistory;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;

@@ -11,15 +11,14 @@ import android.util.Log;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.MastodonApp;
-import org.joinmastodon.android.api.requests.notifications.GetNotifications;
-import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.adapter.ApiAdapter;
+import org.joinmastodon.android.api.mastodon.requests.notifications.GetNotifications;
+import org.joinmastodon.android.api.mastodon.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
-import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
@@ -88,7 +87,8 @@ public class CacheController{
 						Log.w(TAG, "getHomeTimeline: corrupted status object in database", x);
 					}
 				}
-				new GetHomeTimeline(maxID, null, count, null)
+				ApiAdapter apiAdapter = new ApiAdapter(ApiAdapter.ServerType.MASTODON);
+				apiAdapter.getHomeTimeline(maxID, null, count, null)
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Status> result){

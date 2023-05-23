@@ -1,10 +1,7 @@
 package org.joinmastodon.android.fragments.onboarding;
 
-import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,11 +11,10 @@ import android.view.ViewOutlineProvider;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.catalog.GetCatalogInstances;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.catalog.GetCatalogInstances;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.catalog.CatalogInstance;
 import org.joinmastodon.android.ui.utils.UiUtils;

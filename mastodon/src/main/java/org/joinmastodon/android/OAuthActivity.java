@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.Toast;
 
-import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
-import org.joinmastodon.android.api.requests.oauth.GetOauthToken;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.accounts.GetOwnAccount;
+import org.joinmastodon.android.api.mastodon.requests.oauth.GetOauthToken;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.Instance;

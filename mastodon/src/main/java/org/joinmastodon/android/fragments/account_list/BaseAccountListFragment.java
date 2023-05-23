@@ -20,9 +20,9 @@ import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
-import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.accounts.GetAccountRelationships;
+import org.joinmastodon.android.api.mastodon.requests.accounts.SetAccountFollowed;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.RecyclerFragment;

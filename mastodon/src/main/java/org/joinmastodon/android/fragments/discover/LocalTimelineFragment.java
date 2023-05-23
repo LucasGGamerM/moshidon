@@ -3,7 +3,7 @@ package org.joinmastodon.android.fragments.discover;
 import android.os.Bundle;
 import android.view.View;
 
-import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
+import org.joinmastodon.android.api.mastodon.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;

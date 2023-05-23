@@ -3,7 +3,7 @@ package org.joinmastodon.android.fragments;
 import android.app.Activity;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.statuses.GetFavoritedStatuses;
+import org.joinmastodon.android.api.mastodon.requests.statuses.GetFavoritedStatuses;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.Status;
 

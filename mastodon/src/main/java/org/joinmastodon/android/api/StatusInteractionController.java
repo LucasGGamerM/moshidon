@@ -4,9 +4,9 @@ import android.os.Looper;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.MastodonApp;
-import org.joinmastodon.android.api.requests.statuses.SetStatusBookmarked;
-import org.joinmastodon.android.api.requests.statuses.SetStatusFavorited;
-import org.joinmastodon.android.api.requests.statuses.SetStatusReblogged;
+import org.joinmastodon.android.api.mastodon.requests.statuses.SetStatusBookmarked;
+import org.joinmastodon.android.api.mastodon.requests.statuses.SetStatusFavorited;
+import org.joinmastodon.android.api.mastodon.requests.statuses.SetStatusReblogged;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;

@@ -3,8 +3,8 @@ package org.joinmastodon.android.fragments.account_list;
 import android.os.Bundle;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
-import org.joinmastodon.android.api.requests.statuses.GetStatusReblogs;
+import org.joinmastodon.android.api.mastodon.requests.HeaderPaginationRequest;
+import org.joinmastodon.android.api.mastodon.requests.statuses.GetStatusReblogs;
 import org.joinmastodon.android.model.Account;
 
 public class StatusReblogsListFragment extends StatusRelatedAccountListFragment{

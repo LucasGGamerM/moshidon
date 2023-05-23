@@ -5,9 +5,9 @@ import android.view.View;
 
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.statuses.GetStatusContext;
+import org.joinmastodon.android.api.mastodon.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;

@@ -21,17 +21,14 @@ import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 
 import org.joinmastodon.android.DomainManager;
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.E;
-import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.notifications.GetNotifications;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.mastodon.requests.notifications.GetNotifications;
+import org.joinmastodon.android.api.mastodon.session.AccountSession;
+import org.joinmastodon.android.api.mastodon.session.AccountSessionManager;
 import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.NotificationReceivedEvent;
-import org.joinmastodon.android.fragments.discover.DiscoverAccountsFragment;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
 import org.joinmastodon.android.fragments.onboarding.OnboardingFollowSuggestionsFragment;
 import org.joinmastodon.android.model.Account;
@@ -45,9 +42,6 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
 
 import com.squareup.otto.Subscribe;
 
