@@ -344,7 +344,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
                         mainHashtag = name;
                         name = null;
                     }
-                    if (TextUtils.isEmpty(mainHashtag) && (item != null && item.getType() == TimelineDefinition.TimelineType.HASHTAG)) {
+                    if (TextUtils.isEmpty(mainHashtag)) {
                         Toast.makeText(ctx, R.string.sk_add_timeline_tag_error_empty, Toast.LENGTH_SHORT).show();
                         onSave.accept(null);
                         return;
