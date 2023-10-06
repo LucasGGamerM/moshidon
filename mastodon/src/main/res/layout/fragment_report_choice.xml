@@ -13,7 +13,7 @@
 		android:max="100"
 		android:progressDrawable="@drawable/m3_progress"/>
 
-	<me.grishka.appkit.views.UsableRecyclerView
+	<org.joinmastodon.android.ui.views.MoshidonUsableRecyclerView
 		android:id="@+id/list"
 		android:layout_width="match_parent"
 		android:layout_height="0dp"

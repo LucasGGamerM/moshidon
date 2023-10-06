@@ -44,7 +44,7 @@
 
     </FrameLayout>
 
-    <me.grishka.appkit.views.UsableRecyclerView
+    <org.joinmastodon.android.ui.views.MoshidonUsableRecyclerView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
