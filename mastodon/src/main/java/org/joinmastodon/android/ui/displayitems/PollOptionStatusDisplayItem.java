@@ -45,7 +45,7 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 		text=HtmlParser.parseCustomEmoji(option.title, poll.emojis);
 		emojiHelper.setText(text);
 		showResults=poll.isExpired() || poll.voted;
-		int total=poll.votersCount>0 ? poll.votersCount : poll.votesCount;
+		int total=poll.votesCount;
 		if(showResults && option.votesCount!=null && total>0){
 			votesFraction=(float)option.votesCount/(float)total;
 			int mostVotedCount=0;
