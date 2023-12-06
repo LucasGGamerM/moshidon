@@ -60,6 +60,7 @@ public class AccountLocalPreferences{
 //	public Map<String, Integer> recentEmojis;
 	private final static Type notificationFiltersType = new TypeToken<PushSubscription.Alerts>() {}.getType();
 	public PushSubscription.Alerts notificationFilters;
+	public boolean disableRightToLeftCharacter;
 
 	public AccountLocalPreferences(SharedPreferences prefs, AccountSession session){
 		this.prefs=prefs;
@@ -90,6 +91,7 @@ public class AccountLocalPreferences{
 		// MOSHIDON
 //		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
 		notificationFilters=fromJson(prefs.getString("notificationFilters", gson.toJson(PushSubscription.Alerts.ofAll())), notificationFiltersType, PushSubscription.Alerts.ofAll());
+		disableRightToLeftCharacter=prefs.getBoolean("disableRightToLeftCharacter", false);
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -133,6 +135,7 @@ public class AccountLocalPreferences{
 				// MOSHIDON
 //				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.putString("notificationFilters", gson.toJson(notificationFilters))
+				.putBoolean("disableRightToLeftCharacter", disableRightToLeftCharacter)
 				.apply();
 	}
 
