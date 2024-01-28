@@ -658,4 +658,6 @@
 	<string name="list_find_users">Find users to add</string>
 	<string name="sk_poll_results">View results</string>
 	<string name="sk_poll_view">Hide results</string>
+	<string name="mo_setting_disable_right_to_left_character_summary">Removes right-to-left override character from user display names. This prevents backwards text from appearing in notifications and other fields.</string>
+	<string name="mo_settings_disable_right_to_left_character">Disable right-to-left override character</string>
 </resources>

@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.parceler.Parcel;
 
@@ -208,7 +209,14 @@ public class Account extends BaseModel implements Searchable{
 	}
 
 	public String getDisplayName(){
-		return '\u2068'+displayName+'\u2069';
+		if(GlobalUserPreferences.disableRightToLeftCharacter == true){
+
+			String buf = '\u2068'+displayName+'\u2069';
+			buf = buf.replace("\u202E", "");
+			return buf;
+		} else{
+			return '\u2068'+displayName+'\u2069';
+		}
 	}
 
 	@Override
