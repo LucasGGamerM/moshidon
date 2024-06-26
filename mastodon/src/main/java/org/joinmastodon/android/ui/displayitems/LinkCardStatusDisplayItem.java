@@ -18,7 +18,11 @@ import org.joinmastodon.android.model.Card;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
+import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.ui.text.LinkSpan;
 import org.joinmastodon.android.ui.utils.UiUtils;
+
+import java.util.regex.Matcher;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -142,7 +146,22 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onClick(View v){
-			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.status.card.url);
+			String url=item.status.card.url;
+			// Mastodon.social sometimes adds an additional redirect page
+			// e.g. https://mastodon.social/@GenuineHuman/112683634483993833 (needs to be opened on another server)
+			// this is really disruptive on mobile, especially since it breaks the loopUp/openURL functionality
+			if(url.startsWith("https://mastodon.social/redirect/statuses/")){
+				Uri parsedURL=Uri.parse(url);
+				Matcher matcher=HtmlParser.URL_PATTERN.matcher(item.status.content);
+				while(matcher.find() && parsedURL.getLastPathSegment()!=null){
+					url=matcher.group(3);
+					if(TextUtils.isEmpty(matcher.group(4)))
+						url="http://"+url;
+					if(url.endsWith(parsedURL.getLastPathSegment()))
+						break;
+				}
+			}
+			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), url);
 		}
 	}
 }
