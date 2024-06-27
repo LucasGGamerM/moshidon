@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +18,6 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.text.HtmlParser;
-import org.joinmastodon.android.ui.text.LinkSpan;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.regex.Matcher;
@@ -27,7 +25,6 @@ import java.util.regex.Matcher;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
-import me.grishka.appkit.utils.V;
 
 public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 	private final UrlImageLoaderRequest imgRequest;
@@ -148,17 +145,24 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 		private void onClick(View v){
 			String url=item.status.card.url;
 			// Mastodon.social sometimes adds an additional redirect page
-			// e.g. https://mastodon.social/@GenuineHuman/112683634483993833 (needs to be opened on another server)
 			// this is really disruptive on mobile, especially since it breaks the loopUp/openURL functionality
 			if(url.startsWith("https://mastodon.social/redirect/statuses/")){
 				Uri parsedURL=Uri.parse(url);
+				// find actually linked url in status content
 				Matcher matcher=HtmlParser.URL_PATTERN.matcher(item.status.content);
+				String foundURL;
 				while(matcher.find() && parsedURL.getLastPathSegment()!=null){
-					url=matcher.group(3);
+					foundURL=matcher.group(3);
 					if(TextUtils.isEmpty(matcher.group(4)))
-						url="http://"+url;
-					if(url.endsWith(parsedURL.getLastPathSegment()))
+						foundURL="http://"+foundURL;
+					// SAFETY: Cannot be null, as otherwise the matcher wouldn't find it
+					// also, group is marked as non-null
+					assert foundURL!=null;
+					if(foundURL.endsWith(parsedURL.getLastPathSegment())) {
+						// found correct URL
+						url=foundURL;
 						break;
+					}
 				}
 			}
 			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), url);
