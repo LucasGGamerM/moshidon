@@ -21,6 +21,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.requests.accounts.RemoveFromFollowers;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.notifications.GetNotificationByID;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
@@ -133,22 +134,27 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 			if(intent.hasExtra("notification")){
 				org.joinmastodon.android.model.Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
+				if(notification==null){
+					Log.e(TAG, "onReceive: Failed to notification");
+					return;
+				}
 
 				String statusID = null;
-				if(notification != null && notification.status != null)
+				if(notification.status != null)
 					statusID=notification.status.id;
 
-				if (statusID != null) {
+				if (statusID!=null || notification.account!=null) {
 					AccountSessionManager accountSessionManager = AccountSessionManager.getInstance();
 					Preferences preferences = accountSessionManager.getAccount(accountID).preferences;
 
 					switch (NotificationAction.values()[intent.getIntExtra("notificationAction", 0)]) {
 						case FAVORITE -> new SetStatusFavorited(statusID, true).exec(accountID);
 						case BOOKMARK -> new SetStatusBookmarked(statusID, true).exec(accountID);
-						case BOOST -> new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
-						case UNBOOST -> new SetStatusReblogged(notification.status.id, false, preferences.postingDefaultVisibility).exec(accountID);
+						case BOOST -> new SetStatusReblogged(statusID, true, preferences.postingDefaultVisibility).exec(accountID);
+						case UNBOOST -> new SetStatusReblogged(statusID, false, preferences.postingDefaultVisibility).exec(accountID);
 						case REPLY -> handleReplyAction(context, accountID, intent, notification, notificationId, preferences);
 						case FOLLOW_BACK -> new SetAccountFollowed(notification.account.id, true, true, false).exec(accountID);
+						case REMOVE_FOLLOWER -> new RemoveFromFollowers(notification.account.id).exec(accountID);
 						default -> Log.w(TAG, "onReceive: Failed to get NotificationAction");
 					}
 				}
@@ -279,6 +285,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				}
 				case FOLLOW -> {
 					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.follow_back), NotificationAction.FOLLOW_BACK));
+					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.mo_notification_action_remove_follower), NotificationAction.REMOVE_FOLLOWER));
 				}
 			}
 		}
