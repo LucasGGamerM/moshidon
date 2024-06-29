@@ -20,6 +20,7 @@ import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.Optional;
 import java.util.regex.Matcher;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
@@ -147,25 +148,31 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 			// Mastodon.social sometimes adds an additional redirect page
 			// this is really disruptive on mobile, especially since it breaks the loopUp/openURL functionality
 			Uri parsedURL=Uri.parse(url);
-			if(parsedURL.getPath()!=null && parsedURL.getPath().startsWith("/redirect/statuses/")){
-				// find actually linked url in status content
-				Matcher matcher=HtmlParser.URL_PATTERN.matcher(item.status.content);
-				String foundURL;
-				while(matcher.find()){
-					foundURL=matcher.group(3);
-					if(TextUtils.isEmpty(matcher.group(4)))
-						foundURL="http://"+foundURL;
-					// SAFETY: Cannot be null, as otherwise the matcher wouldn't find it
-					// also, group is marked as non-null
-					assert foundURL!=null && parsedURL.getLastPathSegment()!=null;
-					if(foundURL.endsWith(parsedURL.getLastPathSegment())) {
-						// found correct URL
-						url=foundURL;
-						break;
-					}
-				}
+			if(parsedURL.getPath()!=null && parsedURL.getPath().startsWith("/redirect/")){
+				url=findRedirectedURL(parsedURL).orElse(url);
 			}
 			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), url);
+		}
+
+		private Optional<String> findRedirectedURL(Uri url){
+			// find actually linked url in status content
+			Matcher matcher=HtmlParser.URL_PATTERN.matcher(item.status.content);
+			boolean isAccountRedirect=url.getPath().startsWith("/redirect/accounts");
+			String foundURL;
+			while(matcher.find()){
+				foundURL=matcher.group(3);
+				if(TextUtils.isEmpty(matcher.group(4)))
+					foundURL="http://"+foundURL;
+				// SAFETY: Cannot be null, as otherwise the matcher wouldn't find it
+				// also, group is marked as non-null
+				assert foundURL!=null && url.getLastPathSegment()!=null;
+				if(foundURL.endsWith(url.getLastPathSegment()) ||
+						(isAccountRedirect && foundURL.matches("https://"+url.getHost()+"/@[a-zA-Z0-9_]+@[a-zA-Z0-9._]+$"))){
+					// found correct URL
+					return Optional.of(foundURL);
+				}
+			}
+			return Optional.empty();
 		}
 	}
 }
