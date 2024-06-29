@@ -146,18 +146,18 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 			String url=item.status.card.url;
 			// Mastodon.social sometimes adds an additional redirect page
 			// this is really disruptive on mobile, especially since it breaks the loopUp/openURL functionality
-			if(url.startsWith("https://mastodon.social/redirect/statuses/")){
-				Uri parsedURL=Uri.parse(url);
+			Uri parsedURL=Uri.parse(url);
+			if(parsedURL.getPath()!=null && parsedURL.getPath().startsWith("/redirect/statuses/")){
 				// find actually linked url in status content
 				Matcher matcher=HtmlParser.URL_PATTERN.matcher(item.status.content);
 				String foundURL;
-				while(matcher.find() && parsedURL.getLastPathSegment()!=null){
+				while(matcher.find()){
 					foundURL=matcher.group(3);
 					if(TextUtils.isEmpty(matcher.group(4)))
 						foundURL="http://"+foundURL;
 					// SAFETY: Cannot be null, as otherwise the matcher wouldn't find it
 					// also, group is marked as non-null
-					assert foundURL!=null;
+					assert foundURL!=null && parsedURL.getLastPathSegment()!=null;
 					if(foundURL.endsWith(parsedURL.getLastPathSegment())) {
 						// found correct URL
 						url=foundURL;
