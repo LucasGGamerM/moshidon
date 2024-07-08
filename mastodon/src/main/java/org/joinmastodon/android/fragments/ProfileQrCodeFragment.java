@@ -206,6 +206,7 @@ public class ProfileQrCodeFragment extends AppKitFragment{
 		username.setText(account.username);
 		String accDomain=account.getDomain();
 		domain.setText(accountDomain=TextUtils.isEmpty(accDomain) ? AccountSessionManager.get(accountID).domain : accDomain);
+		//TODO: replace the app logo with the instance avatar
 		Drawable logo=getResources().getDrawable(R.drawable.ic_ntf_logo, themeWrapper.getTheme()).mutate();
 		logo.setTint(UiUtils.getThemeColor(themeWrapper, R.attr.colorM3OnPrimary));
 		codeView.setBackground(new FancyQrCodeDrawable(code, UiUtils.getThemeColor(themeWrapper, R.attr.colorM3OnPrimary), logo));
@@ -260,7 +261,7 @@ public class ProfileQrCodeFragment extends AppKitFragment{
 		if(GmsClient.isGooglePlayServicesAvailable(getActivity())){
 			MenuItem item=menu.add(0, 0, 0, R.string.scan_qr_code);
 			item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-			item.setIcon(R.drawable.ic_qr_code_scanner_24px);
+			item.setIcon(R.drawable.ic_fluent_barcode_scanner_24_filled);
 		}
 	}
 
@@ -361,7 +362,7 @@ public class ProfileQrCodeFragment extends AppKitFragment{
 
 	@Override
 	protected int getNavigationIconDrawableResource(){
-		return R.drawable.ic_baseline_close_24;
+		return R.drawable.ic_fluent_dismiss_24_filled;
 	}
 
 	@Override
