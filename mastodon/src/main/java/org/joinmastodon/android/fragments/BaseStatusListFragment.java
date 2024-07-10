@@ -18,6 +18,7 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
@@ -718,6 +719,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 
 		if (startIndex!=-1 && endIndex!=-1) {
+			int scrollPosition = ((LinearLayoutManager) list.getLayoutManager()).findFirstVisibleItemPosition();
 			// Only StatusListFragments/NotificationsListFragments can display status with quotes
 			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
 			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
@@ -727,6 +729,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			displayItems.addAll(startIndex, items);
 			if(!isEmpty)
 				adapter.notifyItemRangeInserted(startIndex, items.size());
+			list.scrollToPosition(scrollPosition);
 		}
 	}
 
