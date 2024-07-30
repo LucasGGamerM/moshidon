@@ -141,4 +141,6 @@
 	<string name="mo_error_display_text">Something went wrong while loading this post. If the problem persists, please report it on our Issues page along with the error details.</string>
 	<string name="mo_error_display_copy_error_details">Copy details</string>
 	<string name="mo_trending_link_read">Read</string>
+
+	<string name="mo_notification_action_remove_follower">Remove from Followers</string>
 </resources>
