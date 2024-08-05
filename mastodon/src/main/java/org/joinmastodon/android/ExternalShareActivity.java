@@ -86,6 +86,8 @@ public class ExternalShareActivity extends FragmentStackActivity{
 	}
 
 	private void openComposeFragment(String accountID){
+		AccountSession session=AccountSessionManager.get(accountID);
+		UiUtils.setUserPreferredTheme(this, session);
 		getWindow().setBackgroundDrawable(null);
 
 		Intent intent=getIntent();
