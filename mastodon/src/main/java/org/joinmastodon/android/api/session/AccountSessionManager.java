@@ -399,7 +399,7 @@ public class AccountSessionManager{
 	}
 
 	private void updateInstanceEmojis(Instance instance, String domain){
-		new GetCustomEmojis()
+		GetCustomEmojis req=(GetCustomEmojis) new GetCustomEmojis()
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(List<Emoji> result){
@@ -419,8 +419,14 @@ public class AccountSessionManager{
 						wrapper.instance = instance;
 						MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, domain));
 					}
-				})
-				.execNoAuth(domain);
+				});
+		if(instance.isGoToSocial()) {
+			// GTS requires auth for emojis
+			// https://github.com/superseriousbusiness/gotosocial/issues/2794
+			req.exec(lastActiveAccountID);
+			return;
+		}
+		req.execNoAuth(domain);
 	}
 
 	private File getInstanceInfoFile(String domain){
