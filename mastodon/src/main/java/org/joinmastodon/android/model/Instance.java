@@ -1,6 +1,7 @@
 package org.joinmastodon.android.model;
 
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.joinmastodon.android.api.ObjectValidationException;
@@ -91,6 +92,13 @@ public class Instance extends BaseModel{
 
 	public PleromaPollLimits pollLimits;
 
+	/**
+	 * Url to the source code of the instance.
+	 *
+	 * Only found on GoToSocial instances
+	 */
+	public String sourceUrl;
+
 	/** like uri, but always without scheme and trailing slash */
 	public transient String normalizedUri;
 
@@ -152,6 +160,13 @@ public class Instance extends BaseModel{
 
 	public boolean isPixelfed() {
 		return version.contains("compatible; Pixelfed");
+	}
+
+	/**
+	 * @return `true` if the instance is a GoToSocial instance
+	 */
+	public boolean isGoToSocial() {
+		return TextUtils.equals(sourceUrl, "https://github.com/superseriousbusiness/gotosocial");
 	}
 
 	public boolean hasFeature(Feature feature) {
