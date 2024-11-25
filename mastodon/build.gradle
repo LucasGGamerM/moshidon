@@ -10,11 +10,11 @@ android {
 
 	compileSdk 35
 	defaultConfig {
-		applicationId "org.joinmastodon.android"
+		applicationId "org.joinmastodon.android.moshinda"
 		minSdk 23
 		targetSdk 35
-		versionCode 140
-		versionName "2.9.7"
+		versionCode 109
+		versionName "2.9.7+fork.109.moshinda"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 	}
 
