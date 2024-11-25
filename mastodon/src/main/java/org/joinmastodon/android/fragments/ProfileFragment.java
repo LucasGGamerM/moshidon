@@ -20,6 +20,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -57,6 +58,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountFamiliarFollower
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
+import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FamiliarFollowerListFragment;
@@ -178,6 +180,10 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 	private Runnable editModeBackCallback=this::onEditModeBackCallback;
 	private HashSet<APIRequest<?>> relationshipRequests=new HashSet<>();
 
+	// MOSHIDON: profile note
+	private FrameLayout noteWrap;
+	private EditText noteEdit;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -259,6 +265,19 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 
 		avatar.setOutlineProvider(OutlineProviders.roundedRect(24));
 		avatar.setClipToOutline(true);
+
+		noteEdit=content.findViewById(R.id.note_edit);
+		noteWrap=content.findViewById(R.id.note_edit_wrap);
+
+		noteEdit.setOnFocusChangeListener((v, hasFocus)->{
+			if(hasFocus){
+//				hideFab();
+				noteEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+			}else{
+//				showFab();
+				savePrivateNote(noteEdit.getText().toString());
+			}
+		});
 
 		FrameLayout sizeWrapper=new FrameLayout(getActivity()){
 			@Override
@@ -434,6 +453,36 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 			return;
 		refreshing=true;
 		doLoadData();
+	}
+
+	private void showPrivateNote(){
+		noteWrap.setVisibility(View.VISIBLE);
+		noteEdit.setText(relationship.note);
+	}
+
+	private void hidePrivateNote(){
+		noteWrap.setVisibility(View.GONE);
+		noteEdit.setText(null);
+	}
+
+	private void savePrivateNote(String note){
+		if(note!=null && note.equals(relationship.note)){
+			updateRelationship();
+			invalidateOptionsMenu();
+			return;
+		}
+		new SetPrivateNote(profileAccountID, note).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Relationship result) {
+				updateRelationship(result);
+				invalidateOptionsMenu();
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getContext());
+			}
+		}).exec(accountID);
 	}
 
 	@Override
@@ -869,6 +918,10 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 		UiUtils.setRelationshipToActionButtonM3(relationship, actionButton);
 		actionProgress.setIndeterminateTintList(actionButton.getTextColors());
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
+
+		// MOSHIDON: private note stuff!
+		showPrivateNote();
+		UiUtils.beginLayoutTransition(scrollableContent);
 	}
 
 	private void updateFamiliarFollowers(){
