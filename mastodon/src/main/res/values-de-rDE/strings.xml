@@ -606,6 +606,7 @@
 	<string name="manage_list_members">Listenmitglieder verwalten</string>
 	<string name="list_no_members">Noch keine Mitglieder</string>
 	<string name="dont_remind_again">Nicht erneut erinnern</string>
+	<string name="reply_to_user">Antwort an %s</string>
 	<!-- %s is a time interval ("5 months") -->
 	<string name="old_post_sheet_title">Dieser Beitrag ist %s alt</string>
 </resources>
