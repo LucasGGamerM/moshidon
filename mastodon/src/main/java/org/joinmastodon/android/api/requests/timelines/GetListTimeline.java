@@ -8,6 +8,22 @@ import org.joinmastodon.android.model.Status;
 import java.util.List;
 
 public class GetListTimeline extends MastodonAPIRequest<List<Status>>{
+	public GetListTimeline(String listID, String maxID, String minID, int limit, String sinceID, /* MOSHIDON: */ String replyVisibility){
+		super(HttpMethod.GET, "/timelines/list/"+listID, new TypeToken<>(){});
+		if(maxID!=null)
+			addQueryParameter("max_id", maxID);
+		if(minID!=null)
+			addQueryParameter("min_id", minID);
+		if(limit>0)
+			addQueryParameter("limit", ""+limit);
+		if(sinceID!=null)
+			addQueryParameter("since_id", sinceID);
+		// MOSHIDON:
+		if(replyVisibility != null)
+			addQueryParameter("reply_visibility", replyVisibility);
+	}
+
+	// MOSHIDON: I absolutely don't want to touch the upstream implementations of this. Thank you java for overloading :D
 	public GetListTimeline(String listID, String maxID, String minID, int limit, String sinceID){
 		super(HttpMethod.GET, "/timelines/list/"+listID, new TypeToken<>(){});
 		if(maxID!=null)
