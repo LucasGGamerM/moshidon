@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="NachoTextView">
+        <attr name="chipHorizontalSpacing" format="reference|dimension" />
+        <attr name="chipBackground" format="reference|color"/>
+        <attr name="chipCornerRadius" format="reference|dimension"/>
+        <attr name="chipTextColor" format="reference|color"/>
+        <attr name="chipTextSize" format="reference|dimension"/>
+        <attr name="chipHeight" format="reference|dimension"/>
+        <attr name="chipVerticalSpacing" format="reference|dimension"/>
+    </declare-styleable>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <style name="DefaultChipSuggestionTextView">
+        <item name="chipHorizontalSpacing">6dp</item>
+        <item name="chipBackground">@color/chip_material_background</item>
+        <item name="chipTextSize">14sp</item>
+        <item name="chipHeight">32dp</item>
+        <item name="chipVerticalSpacing">4dp</item>
+    </style>
+</resources>

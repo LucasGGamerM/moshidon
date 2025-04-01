@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="chip_default_padding_edge">12dp</dimen>
+    <dimen name="chip_default_padding_between_image">8dp</dimen>
+    <dimen name="chip_default_left_margin">0dp</dimen>
+    <dimen name="chip_default_right_margin">0dp</dimen>
+</resources>
