@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="chip_default_text_color">#DE000000</color>
+    <color name="chip_default_icon_background_color">#517FA4</color>
+</resources>
