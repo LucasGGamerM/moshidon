@@ -52,7 +52,7 @@ public class AccountLocalPreferences{
 	public PushSubscription.Alerts notificationFilters;
 
 
-	public AccountLocalPreferences(SharedPreferences prefs){
+	public AccountLocalPreferences(SharedPreferences prefs, AccountSession session){
 		this.prefs=prefs;
 		serverSideFiltersSupported=prefs.getBoolean("serverSideFilters", false);
 

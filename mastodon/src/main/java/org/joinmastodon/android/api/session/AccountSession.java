@@ -303,7 +303,7 @@ public class AccountSession{
 
 	public AccountLocalPreferences getLocalPreferences(){
 		if(localPreferences==null)
-			localPreferences=new AccountLocalPreferences(getRawLocalPreferences());
+			localPreferences=new AccountLocalPreferences(getRawLocalPreferences(), this);
 		return localPreferences;
 	}
 
