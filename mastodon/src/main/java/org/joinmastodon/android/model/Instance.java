@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 public abstract class Instance extends BaseModel{
 	/**
@@ -39,6 +40,14 @@ public abstract class Instance extends BaseModel{
 
 	// non-standard field in some Mastodon forks
 	public int maxTootChars;
+
+	// MOSHIDON: we got pleroma babyyyyyy
+	public Pleroma pleroma;
+	public PleromaPollLimits pollLimits;
+
+	// MOSHIDON:
+	/** like uri, but always without scheme and trailing slash */
+	public transient String normalizedUri;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -77,6 +86,35 @@ public abstract class Instance extends BaseModel{
 
 	public long getApiVersion(){
 		return getApiVersion("mastodon");
+	}
+
+	// MOSHIDON:
+	public boolean isAkkoma() {
+		return pleroma != null;
+	}
+
+	public boolean isPixelfed() {
+		return version.contains("compatible; Pixelfed");
+	}
+
+	public enum Feature {
+		BUBBLE_TIMELINE,
+		MACHINE_TRANSLATION
+	}
+
+	public boolean hasFeature(Feature feature) {
+		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
+				.map(p -> p.metadata)
+				.map(m -> m.features);
+
+		return switch (feature) {
+			case BUBBLE_TIMELINE -> pleromaFeatures
+					.map(f -> f.contains("bubble_timeline"))
+					.orElse(false);
+			case MACHINE_TRANSLATION -> pleromaFeatures
+					.map(f -> f.contains("akkoma:machine_translation"))
+					.orElse(false);
+		};
 	}
 
 	@Parcel
@@ -157,5 +195,33 @@ public abstract class Instance extends BaseModel{
 		public String about;
 		public String privacyPolicy;
 		public String termsOfService;
+	}
+
+	// MOSHIDON: more pleroma :D
+	@Parcel
+	public static class Pleroma extends BaseModel {
+		public Pleroma.Metadata metadata;
+
+		@Parcel
+		public static class Metadata {
+			public List<String> features;
+			public Pleroma.Metadata.FieldsLimits fieldsLimits;
+
+			@Parcel
+			public static class FieldsLimits {
+				public long maxFields;
+				public long maxRemoteFields;
+				public long nameLength;
+				public long valueLength;
+			}
+		}
+	}
+
+	@Parcel
+	public static class PleromaPollLimits {
+		public long maxExpiration;
+		public long maxOptionChars;
+		public long maxOptions;
+		public long minExpiration;
 	}
 }
