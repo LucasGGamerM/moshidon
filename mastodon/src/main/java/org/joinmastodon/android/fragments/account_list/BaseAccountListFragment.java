@@ -16,6 +16,7 @@ import org.joinmastodon.android.model.viewmodel.AccountViewModel;
 import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.viewholders.AccountViewHolder;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<AccountViewModel>{
+public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<AccountViewModel> implements ProvidesAssistContent.ProvidesWebUri{
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected String accountID;
 	protected ArrayList<APIRequest<?>> relationshipsRequests=new ArrayList<>();
