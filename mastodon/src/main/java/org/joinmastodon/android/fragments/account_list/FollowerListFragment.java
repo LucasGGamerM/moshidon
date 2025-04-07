@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.R;
@@ -18,5 +19,11 @@ public class FollowerListFragment extends AccountRelatedAccountListFragment{
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
 		return new GetAccountFollowers(account.id, maxID, count);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return null;
 	}
 }
