@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.model.Status;
@@ -14,4 +15,13 @@ public abstract class StatusRelatedAccountListFragment extends PaginatedAccountL
 		status=Parcels.unwrap(getArguments().getParcelable("status"));
 	}
 
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base
+				.encodedPath(isInstanceAkkoma()
+						? "/notice/" + status.id
+						: '@' + status.account.acct + '/' + status.id)
+				.build();
+	}
 }
