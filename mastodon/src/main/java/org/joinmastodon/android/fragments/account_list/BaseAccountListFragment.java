@@ -180,4 +180,10 @@ public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<A
 			return image==0 ? item.avaRequest : item.emojiHelper.getImageRequest(image-1);
 		}
 	}
+
+	// MOSHIDON:
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
 }
