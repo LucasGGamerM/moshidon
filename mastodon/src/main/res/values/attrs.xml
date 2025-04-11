@@ -85,4 +85,82 @@
 	<declare-styleable name="TopBarsScrollAwayLinearLayout">
 		<attr name="topBarsCount" format="integer"/>
 	</declare-styleable>
+
+
+<!--	MOSHIDON: everything below is Moshidon stuff. We have a lot of extra attributes-->
+	<declare-styleable name="HeaderSubtitleLinearLayout">
+		<attr name="firstFraction" format="fraction"/>
+	</declare-styleable>
+
+	<attr name="colorLike" format="color" />
+	<attr name="colorPoll" format="color" />
+	<attr name="colorProfileHeaderBackground" format="color"/>
+	<attr name="colorM3DarkOnSurface" format="color" />
+	<attr name="colorTabBarAlpha" format="color" />
+	<attr name="colorFilledCardAlpha" format="color" />
+	<attr name="colorM3Success" format="color" />
+	<attr name="toolbarActionButtonStyle" format="reference" />
+
+
+	<attr name="colorPrimary25" format="color" />
+	<attr name="colorPrimary50" format="color" />
+	<attr name="colorPrimary100" format="color" />
+	<attr name="colorPrimary200" format="color" />
+	<attr name="colorPrimary300" format="color" />
+	<attr name="colorPrimary400" format="color" />
+	<attr name="colorPrimary500" format="color" />
+	<attr name="colorPrimary600" format="color" />
+	<attr name="colorPrimary700" format="color" />
+	<attr name="colorPrimary800" format="color" />
+	<attr name="colorPrimary900" format="color" />
+
+	<attr name="colorGray25" format="color" />
+	<attr name="colorGray50" format="color" />
+	<attr name="colorGray50t" format="color" />
+	<attr name="colorGray100" format="color" />
+	<attr name="colorGray200" format="color" />
+	<attr name="colorGray300" format="color" />
+	<attr name="colorGray400" format="color" />
+	<attr name="colorGray500" format="color" />
+	<attr name="colorGray600" format="color" />
+	<attr name="colorGray700" format="color" />
+	<attr name="colorGray800" format="color" />
+	<attr name="colorGray900" format="color" />
+
+	<attr name="colorSecondary25" format="color" />
+	<attr name="colorSecondary50" format="color" />
+	<attr name="colorSecondary100" format="color" />
+	<attr name="colorSecondary200" format="color" />
+	<attr name="colorSecondary300" format="color" />
+	<attr name="colorSecondary400" format="color" />
+	<attr name="colorSecondary500" format="color" />
+	<attr name="colorSecondary600" format="color" />
+	<attr name="colorSecondary700" format="color" />
+	<attr name="colorSecondary800" format="color" />
+	<attr name="colorSecondary900" format="color" />
+
+	<attr name="colorTertiary25" format="color" />
+	<attr name="colorTertiary50" format="color" />
+	<attr name="colorTertiary100" format="color" />
+	<attr name="colorTertiary200" format="color" />
+	<attr name="colorTertiary300" format="color" />
+	<attr name="colorTertiary400" format="color" />
+	<attr name="colorTertiary500" format="color" />
+	<attr name="colorTertiary600" format="color" />
+	<attr name="colorTertiary700" format="color" />
+	<attr name="colorTertiary800" format="color" />
+	<attr name="colorTertiary900" format="color" />
+
+	<attr name="colorNeutral25" format="color" />
+	<attr name="colorNeutral50" format="color" />
+	<attr name="colorNeutral50t" format="color" />
+	<attr name="colorNeutral100" format="color" />
+	<attr name="colorNeutral200" format="color" />
+	<attr name="colorNeutral300" format="color" />
+	<attr name="colorNeutral400" format="color" />
+	<attr name="colorNeutral500" format="color" />
+	<attr name="colorNeutral600" format="color" />
+	<attr name="colorNeutral700" format="color" />
+	<attr name="colorNeutral800" format="color" />
+	<attr name="colorNeutral900" format="color" />
 </resources>
