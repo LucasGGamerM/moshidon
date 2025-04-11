@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pin"
+        android:title="@string/sk_pin_timeline"
+        android:icon="@drawable/ic_fluent_pin_24_regular"
+        android:showAsAction="always" />
+</menu>
