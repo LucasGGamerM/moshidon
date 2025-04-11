@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content">
+	<LinearLayout
+		android:id="@+id/line"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<FrameLayout
+			android:id="@+id/add_btn_wrap"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_marginStart="2dp">
+			<ProgressBar
+				android:id="@+id/progress"
+				style="?android:progressBarStyleSmall"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:elevation="10dp"
+				android:indeterminate="true"
+				android:outlineProvider="none"
+				android:visibility="gone"/>
+			<ImageButton
+				android:id="@+id/add_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minHeight="48dp"
+				android:minWidth="48dp"
+				android:background="@drawable/bg_button_m3_tonal_circle_selector"
+				android:tooltipText="@string/sk_button_react"
+				android:contentDescription="@string/sk_button_react"
+				android:src="@drawable/ic_fluent_add_24_filled" />
+		</FrameLayout>
+
+		<org.joinmastodon.android.ui.views.EmojiReactionsRecyclerView
+			android:id="@+id/list"
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="-4dp"
+			android:paddingStart="8dp"
+			android:paddingEnd="3dp"
+			android:clipToPadding="false"
+			android:requiresFadingEdge="horizontal"
+			android:fadingEdgeLength="24dp" />
+
+	</LinearLayout>
+
+	<Space
+		android:id="@+id/space"
+		android:visibility="gone"
+		android:layout_width="match_parent"
+		android:layout_height="8dp" />
+
+</LinearLayout>
