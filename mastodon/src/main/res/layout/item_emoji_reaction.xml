@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_height="wrap_content"
+	android:layout_width="wrap_content"
+	tools:ignore="RtlSymmetry">
+	<ProgressBar
+		android:id="@+id/progress"
+		style="?android:progressBarStyleSmall"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="8dp"
+		android:layout_gravity="center"
+		android:elevation="10dp"
+		android:indeterminate="true"
+		android:outlineProvider="none"
+		android:visibility="gone"/>
+	<org.joinmastodon.android.ui.views.ProgressBarButton
+		android:id="@+id/btn"
+		style="@style/Widget.Mastodon.M3.Button.Outlined.Icon"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="8dp"
+		android:drawableTint="@null"
+		android:drawableStart="@drawable/image_placeholder"
+		android:background="@drawable/bg_button_m3_tonal_selector"/>
+</FrameLayout>
