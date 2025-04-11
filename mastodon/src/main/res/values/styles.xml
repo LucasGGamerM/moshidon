@@ -730,4 +730,64 @@
 	<style name="popup_menu_item_text" parent="m3_body_large">
 		<item name="android:textColor">?colorM3OnSurface</item>
 	</style>
+
+<!--	MOSHIDON:-->
+	<style name="Widget.Mastodon.M3.Button.Icon">
+		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.Filled.Icon">
+		<item name="android:paddingStart">16dp</item>
+	</style>
+	<style name="Widget.Mastodon.M3.Button.Filled.Elevated">
+		<item name="android:stateListAnimator">@animator/m3_button_elevation</item>
+	</style>
+
+	<style name="sheet_title" parent="android:TextAppearance.DeviceDefault">
+		<item name="android:textSize">20sp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<style name="Widget.Mastodon.ActionButton.Overflow" parent="android:Widget.Material.ActionButton.Overflow">
+		<item name="android:src">@drawable/ic_fluent_more_vertical_24_regular</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.Text.Icon">
+		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.Tonal.Icon">
+		<item name="android:paddingStart">16dp</item>
+	</style>
+	<style name="Widget.Mastodon.M3.Button.Tonal.Outlined">
+		<item name="android:background">@drawable/bg_button_m3_tonal_outlined</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.Tonal.Error.Icon">
+		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.Outlined.Icon">
+		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.ToolbarAction">
+		<item name="android:paddingStart">14dp</item>
+		<item name="android:paddingEnd">20dp</item>
+		<item name="android:textAppearance">@style/m3_title_medium</item>
+		<item name="android:ellipsize">end</item>
+		<item name="android:maxLines">1</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:stateListAnimator">@animator/m3_button_elevation</item>
+
+		<item name="android:background">@drawable/bg_button_new_posts</item>
+		<item name="android:textColor">@color/button_text_m3_filled</item>
+		<item name="android:drawableTint">@color/button_text_m3_filled</item>
+	</style>
+	<style name="Widget.Mastodon.M3.Button.ToolbarAction.Black">
+		<item name="android:background">@drawable/bg_button_new_posts_outlined</item>
+		<item name="android:textColor">@color/button_text_m3_tonal</item>
+		<item name="android:drawableTint">@color/button_text_m3_tonal</item>
+	</style>
+
 </resources>
