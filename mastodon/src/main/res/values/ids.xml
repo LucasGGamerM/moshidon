@@ -35,4 +35,9 @@
 	<item name="server_rules" type="id"/>
 
 	<item name="button_progress_orig_color" type="id"/>
+
+<!--	MOSHIDON: our edit timelines stuff-->
+	<item name="menu_add_timeline" type="id" />
+	<item name="menu_back" type="id" />
+	<item name="menu_add_local_timelines" type="id" />
 </resources>
