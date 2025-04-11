@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	tools:ignore="AlwaysShowAction">
+	<item
+		android:id="@+id/announcements_action"
+		android:icon="@drawable/ic_announcements_24_badged"
+		android:title="@string/sk_announcements"
+		android:visible="false"
+		android:showAsAction="always" />
+	<item
+		android:id="@+id/settings_action"
+		android:icon="@drawable/ic_settings_24_badged"
+		android:title="@string/settings"
+		android:visible="false"
+		android:showAsAction="always" />
+	<item
+		android:id="@+id/overflow"
+		android:title="@string/more_options"
+		android:icon="@drawable/ic_fluent_more_vertical_24_regular"
+		android:showAsAction="always" />
+</menu>
