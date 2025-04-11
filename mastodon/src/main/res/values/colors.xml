@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<color name="primary_700">#431cbb</color>
+    <!--	MOSHIDON: we will comment things out here. We have our colors_custom entries already-->
+
+<!--	<color name="primary_700">#431cbb</color>-->
 
 	<color name="navigation_bar_bg_light">#282C37</color>
 	<color name="highlight_over_dark">#30FFFFFF</color>
 
-	<color name="shortcut_icon_background">#FFF</color>
-	<color name="shortcut_icon_foreground">@color/m3_sys_light_primary</color>
+<!--	<color name="shortcut_icon_background">#FFF</color>-->
+<!--	<color name="shortcut_icon_foreground">@color/m3_sys_light_primary</color>-->
 
 	<!-- M3 dynamic colors -->
 
