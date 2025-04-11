@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <org.joinmastodon.android.ui.views.TextInputFrameLayout
+        android:id="@+id/input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+	<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="16dp"
+		android:layout_marginBottom="8dp"
+		android:layout_marginHorizontal="24dp">
+		<TextView
+			android:id="@+id/text"
+			android:text="@string/sk_list_replies_policy"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:paddingVertical="8dp"
+			android:singleLine="true"
+			android:ellipsize="none"
+			android:gravity="center_vertical"
+			android:textColor="?android:textColorPrimary"
+			android:textSize="16sp" />
+
+		<Button
+			android:id="@+id/button"
+			style="@style/Widget.Mastodon.M3.Button.Outlined"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/bg_button_m3_tonal"
+			android:ellipsize="none"
+			android:singleLine="true"
+			android:stateListAnimator="@null"
+			android:textColor="?android:textColorPrimary"
+			android:textSize="16sp" />
+	</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+
+
+	<LinearLayout
+        android:id="@+id/exclusive"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:minHeight="48dp"
+		android:paddingBottom="12dp"
+        android:gravity="center_vertical"
+        android:layoutDirection="locale">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"
+            android:textColor="?android:textColorPrimary"
+            android:drawableStart="@drawable/ic_fluent_rss_24_regular"
+            android:drawableTint="?android:textColorPrimary"
+            android:drawablePadding="16dp"
+            android:text="@string/sk_list_exclusive_switch" />
+
+        <org.joinmastodon.android.ui.views.M3Switch
+            android:id="@+id/exclusive_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:focusable="false"
+            android:clickable="false"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:textColor="?android:textColorSecondary"
+        android:textSize="14sp"
+        android:text="@string/sk_list_exclusive_switch_explanation" />
+</LinearLayout>
