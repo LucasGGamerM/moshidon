@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<group android:id="@+id/top">
+		<item
+			android:id="@+id/settings"
+			android:icon="@drawable/ic_fluent_settings_24_regular"
+			android:title="@string/settings" />
+		<item
+			android:id="@+id/announcements"
+			android:icon="@drawable/ic_fluent_megaphone_24_regular"
+			android:title="@string/sk_announcements" />
+		<item
+			android:id="@+id/edit_timelines"
+			android:icon="@drawable/ic_fluent_edit_24_regular"
+			android:title="@string/sk_edit_timelines" />
+	</group>
+	<group android:id="@+id/bottom">
+		<item
+			android:id="@+id/lists"
+			android:icon="@drawable/ic_fluent_people_24_regular"
+			android:title="@string/sk_your_lists"
+			android:visible="false">
+			<menu />
+		</item>
+		<item
+			android:id="@+id/hashtags"
+			android:icon="@drawable/ic_fluent_number_symbol_24_regular"
+			android:title="@string/sk_hashtags_you_follow"
+			android:visible="false">
+			<menu />
+		</item>
+	</group>
+</menu>
