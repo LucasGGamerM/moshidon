@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="horizontal"
+    android:gravity="center">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
+        android:drawableTint="?android:textColorSecondary"
+        android:drawablePadding="16dp"
+        android:textAppearance="@style/m3_title_medium"
+        android:fontFamily="sans-serif"
+        android:singleLine="true"
+        android:ellipsize="end"
+        tools:text="List"/>
+
+    <CheckBox
+        android:id="@+id/list_toggle"
+        android:clickable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:paddingHorizontal="8dp"
+        tools:ignore="RtlSymmetry" />
+
+    <ImageView
+        android:id="@+id/dragger_thingy"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="center"
+        android:tint="?colorM3OnSurfaceVariant"
+        android:importantForAccessibility="no"
+        android:src="@drawable/ic_fluent_re_order_dots_vertical_24_regular"
+        android:visibility="gone" />
+
+<!--    <ImageView-->
+<!--        android:id="@+id/edit"-->
+<!--        android:layout_width="36dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:layout_marginEnd="6dp"-->
+<!--        android:layout_toStartOf="@id/list_toggle"-->
+<!--        android:background="?android:selectableItemBackgroundBorderless"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/ic_fluent_edit_24_regular"-->
+<!--        android:tint="?android:textColorSecondary" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/delete"-->
+<!--        android:layout_width="36dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:layout_marginEnd="6dp"-->
+<!--        android:layout_toStartOf="@id/edit"-->
+<!--        android:background="?android:selectableItemBackgroundBorderless"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/ic_fluent_delete_24_regular"-->
+<!--        android:tint="?android:textColorSecondary" />-->
+
+</LinearLayout>
+
