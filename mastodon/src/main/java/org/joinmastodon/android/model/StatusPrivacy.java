@@ -24,6 +24,13 @@ public enum StatusPrivacy{
 		return privacy > other.getPrivacy();
 	}
 
+	public boolean isReblogPermitted(boolean isOwnStatus){
+		return (this == StatusPrivacy.PUBLIC ||
+				this == StatusPrivacy.UNLISTED ||
+				this == StatusPrivacy.LOCAL ||
+				(this == StatusPrivacy.PRIVATE && isOwnStatus));
+	}
+
 	public int getPrivacy() {
 		return privacy;
 	}
