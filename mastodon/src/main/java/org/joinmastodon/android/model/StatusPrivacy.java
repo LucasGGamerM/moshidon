@@ -10,9 +10,11 @@ public enum StatusPrivacy{
 	@SerializedName("private")
 	PRIVATE(2),
 	@SerializedName("direct")
-	DIRECT(3);
+	DIRECT(3),
+	@SerializedName("local")
+	LOCAL(4); // akkoma
 
-	private int privacy;
+	private final int privacy;
 
 	StatusPrivacy(int privacy) {
 		this.privacy = privacy;
