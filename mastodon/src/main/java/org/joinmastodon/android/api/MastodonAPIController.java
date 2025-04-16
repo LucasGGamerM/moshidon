@@ -19,6 +19,7 @@ import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.api.gson.IsoInstantTypeAdapter;
 import org.joinmastodon.android.api.gson.IsoLocalDateTypeAdapter;
 import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.model.Status;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,12 +49,18 @@ import okhttp3.ResponseBody;
 
 public class MastodonAPIController{
 	private static final String TAG="MastodonAPIController";
-	public static final Gson gson=new GsonBuilder()
+
+	// MOSHIDON:
+	public static final Gson gsonWithoutDeserializer = new GsonBuilder()
 			.disableHtmlEscaping()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.registerTypeAdapter(Instant.class, new IsoInstantTypeAdapter())
 			.registerTypeAdapter(LocalDate.class, new IsoLocalDateTypeAdapter())
 			.create();
+	public static final Gson gson = gsonWithoutDeserializer.newBuilder()
+			.registerTypeAdapter(Status.class, new Status.StatusDeserializer())
+			.create();
+
 	private static WorkerThread thread=new WorkerThread("MastodonAPIController");
 	private static OkHttpClient httpClient=new OkHttpClient.Builder()
 			.connectTimeout(60, TimeUnit.SECONDS)
