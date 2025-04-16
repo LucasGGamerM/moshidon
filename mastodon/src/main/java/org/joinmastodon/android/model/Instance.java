@@ -39,6 +39,9 @@ public abstract class Instance extends BaseModel{
 	// non-standard field in some Mastodon forks
 	public int maxTootChars;
 
+	// MOSHIDON: this is for translation support detection.
+	public V2 v2;
+
 	// MOSHIDON: we got pleroma babyyyyyy
 	public Pleroma pleroma;
 	public PleromaPollLimits pollLimits;
@@ -153,6 +156,22 @@ public abstract class Instance extends BaseModel{
 		public int maxCharactersPerOption;
 		public int minExpiration;
 		public int maxExpiration;
+	}
+
+	// MOSHIDON: we check for translation support, so this needs to be here
+	@Parcel
+	public static class V2 extends BaseModel {
+		public V2.Configuration configuration;
+
+		@Parcel
+		public static class Configuration {
+			public TranslationConfiguration translation;
+		}
+
+		@Parcel
+		public static class TranslationConfiguration{
+			public boolean enabled;
+		}
 	}
 
 	// MOSHIDON: more pleroma :D
