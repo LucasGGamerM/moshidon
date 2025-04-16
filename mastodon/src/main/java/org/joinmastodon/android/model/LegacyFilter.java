@@ -22,6 +22,9 @@ public class LegacyFilter extends BaseModel{
 	public boolean irreversible;
 	public boolean wholeWord;
 
+	// MOSHIDON:
+	public String title;
+
 	@SerializedName("context")
 	private List<FilterContext> _context;
 
