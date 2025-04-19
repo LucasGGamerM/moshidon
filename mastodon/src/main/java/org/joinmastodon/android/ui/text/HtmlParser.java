@@ -371,4 +371,9 @@ public class HtmlParser{
 			domain=domain.substring(4);
 		return domain;
 	}
+
+	// MOSHIDON: thou shalt have *text*
+	public static String text(String html) {
+		return Jsoup.parse(html).body().wholeText();
+	}
 }
