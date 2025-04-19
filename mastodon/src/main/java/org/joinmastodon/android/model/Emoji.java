@@ -33,6 +33,20 @@ public class Emoji extends BaseModel{
 	 */
 	public String category;
 
+	public Emoji() {}
+
+	public Emoji(String shortcode, String url, String staticUrl) {
+		this.shortcode = shortcode.replaceAll(":", "");
+		this.url = url;
+		this.staticUrl = staticUrl;
+	}
+
+	public String getUrl(boolean playGifs){
+		String idealUrl=playGifs ? url : staticUrl;
+		if(idealUrl==null) return url==null ? staticUrl : url;
+		return idealUrl;
+	}
+
 	@Override
 	public String toString(){
 		return "Emoji{"+
