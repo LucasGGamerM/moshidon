@@ -52,6 +52,12 @@ public abstract class Instance extends BaseModel{
 	/** like uri, but always without scheme and trailing slash */
 	public transient String normalizedUri;
 
+	// MOSHIDON: Thumbnails
+	/**
+	 * Banner image for the website.
+	 */
+	public String thumbnail;
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
