@@ -9,6 +9,7 @@ import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +70,16 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public transient TranslationState translationState=TranslationState.HIDDEN;
 	public transient Translation translation;
 
+	// MOSHIDON:
+	public Status quote; // can be boolean in calckey
+	public boolean localOnly;
+	public boolean isRemote;
+	public transient boolean sensitiveRevealed;
+
+	public List<EmojiReaction> reactions;
+	protected List<EmojiReaction> emojiReactions; // akkoma
+
+
 	public Status(){}
 
 	@Override
@@ -99,6 +110,11 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		if(!sensitive && (reblog==null || !reblog.sensitive)){
 			revealedSpoilers.add(SpoilerType.CONTENT_WARNING);
 		}
+
+		// MOSHIDON:
+		if(visibility.equals(StatusPrivacy.LOCAL)) localOnly=true;
+		if(emojiReactions!=null) reactions=emojiReactions;
+		if(reactions==null) reactions=new ArrayList<>();
 	}
 
 	@Override
@@ -196,4 +212,22 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		CONTENT_WARNING,
 		FILTER
 	}
+
+	// MOSHIDON:
+	public static Status ofFake(String id, String text, Instant createdAt) {
+		Status s=new Status();
+		s.id=id;
+		s.mediaAttachments=List.of();
+		s.createdAt=createdAt;
+		s.content=s.text=text;
+		s.spoilerText="";
+		s.visibility=StatusPrivacy.PUBLIC;
+		s.reactions=List.of();
+		s.mentions=List.of();
+		s.tags=List.of();
+		s.emojis=List.of();
+		s.filtered=List.of();
+		return s;
+	}
+
 }
