@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	app:firstFraction="30%"
+	android:orientation="horizontal"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:paddingHorizontal="16dp"
+	android:layout_marginBottom="-4dp">
+
+	<TextView
+		android:id="@+id/extra_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingTop="16dp"
+		android:textAppearance="@style/m3_title_small"
+		android:textColor="?colorM3OnSurface"
+		android:drawableStart="@drawable/ic_fluent_arrow_reply_20sp_filled"
+		android:drawableTint="?colorM3OnSurface"
+		android:drawablePadding="6dp"
+		android:singleLine="true"
+		android:ellipsize="end"/>
+
+	<TextView
+		android:id="@+id/separator"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="6dp"
+		android:paddingTop="16dp"
+		android:paddingHorizontal="1dp"
+		android:textAppearance="@style/m3_title_small"
+		android:textColor="?colorM3OnSurface"
+		android:gravity="center_horizontal"
+		android:importantForAccessibility="no"
+		android:includeFontPadding="false"
+		android:text="@string/sk_separator" />
+
+	<TextView
+		android:id="@+id/text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:paddingTop="16dp"
+		android:textAppearance="@style/m3_title_small"
+		android:textColor="?colorM3OnSurface"
+		android:drawableStart="@drawable/ic_fluent_arrow_repeat_all_20_filled"
+		android:drawableTint="?colorM3OnSurface"
+		android:drawablePadding="6dp"
+		android:singleLine="true"
+		android:ellipsize="middle"/>
+
+</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
