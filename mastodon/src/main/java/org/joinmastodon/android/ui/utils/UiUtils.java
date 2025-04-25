@@ -1,8 +1,11 @@
 package org.joinmastodon.android.ui.utils;
 
+import static android.view.Menu.NONE;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.UiModeManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -40,15 +43,19 @@ import android.transition.ChangeScroll;
 import android.transition.Fade;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,12 +71,15 @@ import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
 import org.joinmastodon.android.api.requests.accounts.SetDomainBlocked;
+import org.joinmastodon.android.api.requests.lists.DeleteList;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusDeletedEvent;
+import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
@@ -82,6 +92,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.ColorContrastMode;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.Snackbar;
+import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.sheets.BlockAccountConfirmationSheet;
 import org.joinmastodon.android.ui.sheets.BlockDomainConfirmationSheet;
 import org.joinmastodon.android.ui.sheets.MuteAccountConfirmationSheet;
@@ -91,6 +102,7 @@ import org.parceler.Parcels;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -107,10 +119,13 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import androidx.annotation.AttrRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.StringRes;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -1150,5 +1165,205 @@ public class UiUtils{
 			return true;
 		}
 		return false;
+	}
+
+	// MOSHIDON: may this be refactored later
+	public static MenuItem makeBackItem(Menu m) {
+		MenuItem back = m.add(0, R.id.menu_back, NONE, R.string.back);
+		back.setIcon(R.drawable.ic_fluent_arrow_left_24_regular);
+		return back;
+	}
+
+	// MOSHIDON: use this to restart the app
+	public static void restartApp() {
+		Intent intent = Intent.makeRestartActivityTask(MastodonApp.context.getPackageManager().getLaunchIntentForPackage(MastodonApp.context.getPackageName()).getComponent());
+		MastodonApp.context.startActivity(intent);
+		Runtime.getRuntime().exit(0);
+	}
+
+	// MOSHIDON:
+	public static void enableOptionsMenuIcons(Context context, Menu menu, @IdRes int... asAction) {
+		if (menu.getClass().getSimpleName().equals("MenuBuilder")) {
+			try {
+				Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
+				m.setAccessible(true);
+				m.invoke(menu, true);
+				enableMenuIcons(context, menu, asAction);
+			} catch (Exception ignored) {
+			}
+		}
+	}
+
+	// MOSHIDON:
+	public static void enableMenuIcons(Context context, Menu m, @IdRes int... exclude) {
+		ColorStateList iconTint = ColorStateList.valueOf(UiUtils.getThemeColor(context, android.R.attr.textColorSecondary));
+		for (int i = 0; i < m.size(); i++) {
+			MenuItem item = m.getItem(i);
+			SubMenu subMenu = item.getSubMenu();
+			if (subMenu != null) enableMenuIcons(context, subMenu, exclude);
+			if (item.getIcon() == null || Arrays.stream(exclude).anyMatch(id -> id == item.getItemId()))
+				continue;
+			insetPopupMenuIcon(item, iconTint, 0);
+		}
+	}
+
+	// MOSHIDON:
+	public static void insetPopupMenuIcon(Context context, MenuItem item) {
+		insetPopupMenuIcon(context, item, 0);
+	}
+
+	// MOSHIDON:
+	public static void insetPopupMenuIcon(Context context, MenuItem item, int addWidth) {
+		ColorStateList iconTint = ColorStateList.valueOf(UiUtils.getThemeColor(context, android.R.attr.textColorSecondary));
+		insetPopupMenuIcon(item, iconTint, addWidth);
+	}
+
+	// MOSHIDON:
+	/**
+	 * @param addWidth set if icon is too wide/narrow. if icon is 25dp in width, set to -1dp
+	 */
+	public static void insetPopupMenuIcon(MenuItem item, ColorStateList iconTint, int addWidth) {
+		Drawable icon=item.getIcon().mutate();
+		if(Build.VERSION.SDK_INT>=26) item.setIconTintList(iconTint);
+		else icon.setTintList(iconTint);
+		int pad=V.dp(8);
+		boolean rtl=icon.getLayoutDirection()==View.LAYOUT_DIRECTION_RTL;
+		icon=new InsetDrawable(icon, rtl ? pad+addWidth : pad, 0, rtl ? pad : addWidth+pad, 0);
+		item.setIcon(icon);
+		SpannableStringBuilder ssb = new SpannableStringBuilder(item.getTitle());
+		item.setTitle(ssb);
+	}
+
+	// MOSHIDON:
+	public static void confirmDeleteList(Activity activity, String accountID, String listID, String listTitle, Runnable callback) {
+		showConfirmationAlert(activity,
+				activity.getString(R.string.sk_delete_list),
+				activity.getString(R.string.sk_delete_list_confirm, listTitle),
+				activity.getString(R.string.delete),
+				R.drawable.ic_fluent_delete_28_regular,
+				() -> new DeleteList(listID).setCallback(new Callback<>() {
+
+							@Override
+							public void onSuccess(Void result){
+								callback.run();
+							}
+
+							@Override
+							public void onError(ErrorResponse error) {
+								error.showToast(activity);
+							}
+						})
+						.wrapProgress(activity, R.string.deleting, false)
+						.exec(accountID));
+	}
+
+	// MOSHIDON:
+	public static void showConfirmationAlert(Context context, @StringRes int title, @StringRes int message, @StringRes int confirmButton, @DrawableRes int icon, Runnable onConfirmed) {
+		showConfirmationAlert(context, context.getString(title), message==0 ? null : context.getString(message), context.getString(confirmButton), icon, onConfirmed);
+	}
+
+	// MOSHIDON:
+	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed) {
+		showConfirmationAlert(context, title, message, confirmButton, icon, onConfirmed, null);
+	}
+
+	// MOSHIDON:
+	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed, Runnable onDenied){
+		new M3AlertDialogBuilder(context)
+				.setTitle(title)
+				.setMessage(message)
+				.setPositiveButton(confirmButton, (dlg, i)->onConfirmed.run())
+				.setNegativeButton(R.string.cancel, (dialog, which) -> {
+					if (onDenied != null)
+						onDenied.run();
+				})
+				.setIcon(icon)
+				.show();
+	}
+
+	// MOSHIDON:
+	public static boolean pickAccountForCompose(Activity activity, String accountID, String prefilledText) {
+		Bundle args = new Bundle();
+		if (prefilledText != null) args.putString("prefilledText", prefilledText);
+		return pickAccountForCompose(activity, accountID, args);
+	}
+
+	// MOSHIDON:
+	public static boolean pickAccountForCompose(Activity activity, String accountID) {
+		return pickAccountForCompose(activity, accountID, (String) null);
+	}
+
+	// MOSHIDON:
+	public static boolean pickAccountForCompose(Activity activity, String accountID, Bundle args) {
+		if (AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1) {
+			UiUtils.pickAccount(activity, accountID, 0, R.drawable.ic_fluent_compose_28_regular, session -> {
+				args.putString("account", session.getID());
+				Nav.go(activity, ComposeFragment.class, args);
+			}, null);
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	// MOSHIDON:
+	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {
+		AccountSwitcherSheet sheet = new AccountSwitcherSheet((Activity) context, null, iconRes, titleRes == 0 ? R.string.choose_account : titleRes, exceptFor, false);
+		sheet.setOnClick((accountId, open) ->sessionConsumer.accept(AccountSessionManager.get(accountId)));
+		sheet.show();
+	}
+
+	// MOSHIDON:
+	public static View makeOverflowActionView(Context ctx) {
+		// container needs tooltip, content description
+		LinearLayout container = new LinearLayout(ctx, null, 0, R.style.Widget_Mastodon_ActionButton_Overflow) {
+			@Override
+			public CharSequence getAccessibilityClassName() {
+				return Button.class.getName();
+			}
+		};
+		// image needs, well, the image, and the paddings
+		ImageView image = new ImageView(ctx, null, 0, R.style.Widget_Mastodon_ActionButton_Overflow);
+
+		image.setDuplicateParentStateEnabled(true);
+		image.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+		image.setClickable(false);
+		image.setFocusable(false);
+		image.setEnabled(false);
+
+		// problem: as per overflow action button defaults, the padding on left and right is unequal
+		// so (however the native overflow button manages this), the ripple background is off-center
+
+		// workaround: set both paddings to the smaller, left one…
+		int end = image.getPaddingEnd();
+		int start = image.getPaddingStart();
+		int paddingDiff = end - start; // what's missing to the long padding
+		image.setPaddingRelative(start, image.getPaddingTop(), start, image.getPaddingBottom());
+
+		// …and add the missing padding to the right on the container
+		container.setPaddingRelative(0, 0, paddingDiff, 0);
+		container.setBackground(null);
+		container.setClickable(true);
+		container.setFocusable(true);
+
+		container.addView(image);
+
+		// fucking finally
+		return container;
+	}
+
+	// https://github.com/tuskyapp/Tusky/pull/3148
+	public static void reduceSwipeSensitivity(ViewPager2 pager) {
+		try {
+			Field recyclerViewField = ViewPager2.class.getDeclaredField("mRecyclerView");
+			recyclerViewField.setAccessible(true);
+			RecyclerView recyclerView = (RecyclerView) recyclerViewField.get(pager);
+			Field touchSlopField = RecyclerView.class.getDeclaredField("mTouchSlop");
+			touchSlopField.setAccessible(true);
+			int touchSlop = touchSlopField.getInt(recyclerView);
+			touchSlopField.set(recyclerView, touchSlop * 3);
+		} catch (Exception ex) {
+			Log.e("reduceSwipeSensitivity", Log.getStackTraceString(ex));
+		}
 	}
 }
