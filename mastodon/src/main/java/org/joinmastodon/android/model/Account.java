@@ -1,41 +1,44 @@
 package org.joinmastodon.android.model;
 
+import android.net.Uri;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import org.joinmastodon.android.api.ObjectValidationException;
-import org.joinmastodon.android.api.RequiredField;
 import org.parceler.Parcel;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 /**
  * Represents a user of Mastodon and their associated profile.
  */
 @Parcel
-public class Account extends BaseModel{
+public class Account extends BaseModel implements Searchable{
 	// Base attributes
 
 	/**
 	 * The account id
 	 */
-	@RequiredField
+//	@RequiredField
 	public String id;
 	/**
 	 * The username of the account, not including domain.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String username;
 	/**
 	 * The Webfinger account URI. Equal to username for local users, or username@domain for remote users.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String acct;
 	/**
 	 * The location of the user's profile page.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String url;
 
 	// Display attributes
@@ -43,17 +46,17 @@ public class Account extends BaseModel{
 	/**
 	 * The profile's display name.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String displayName;
 	/**
 	 * The profile's bio / description.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String note;
 	/**
 	 * An image icon that is shown next to statuses and in the profile.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String avatar;
 	/**
 	 * A static version of the avatar. Equal to avatar if its value is a static image; different if avatar is an animated GIF.
@@ -62,7 +65,7 @@ public class Account extends BaseModel{
 	/**
 	 * An image banner that is shown above the profile and in profile cards.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String header;
 	/**
 	 * A static version of the header. Equal to header if its value is a static image; different if header is an animated GIF.
@@ -86,7 +89,7 @@ public class Account extends BaseModel{
 	/**
 	 * When the account was created.
 	 */
-	@RequiredField
+//	@RequiredField
 	public Instant createdAt;
 	/**
 	 * When the most recent status was posted.
@@ -134,6 +137,21 @@ public class Account extends BaseModel{
 	public Instant muteExpiresAt;
 	public boolean noindex;
 
+	public List<Role> roles;
+
+	public @Nullable String fqn; // akkoma has this, mastodon't
+
+	@Override
+	public String getQuery() {
+		return url;
+	}
+
+	@Parcel
+	public static class Role {
+		public String name;
+		/** #rrggbb */
+		public String color;
+	}
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -141,15 +159,34 @@ public class Account extends BaseModel{
 		if(fields!=null){
 			for(AccountField f:fields)
 				f.postprocess();
+		}else{
+			// MOSHIDON:
+			fields=Collections.emptyList();
 		}
 		if(emojis!=null){
 			for(Emoji e:emojis)
 				e.postprocess();
+		}else{
+			// MOSHIDON:
+			emojis=Collections.emptyList();
 		}
 		if(moved!=null)
 			moved.postprocess();
+
+		// MOSHIDON: fqn block
+		if(fqn==null) fqn=getFullyQualifiedName();
+		if(id==null) id="";
+		if(username==null) username="";
+
+		// MOSHIDON: Akkoma stuff I believe
 		if(TextUtils.isEmpty(displayName))
-			displayName=username;
+			displayName=!TextUtils.isEmpty(username) ? username : "";
+
+		// MOSHIDON: I actually don't know why this is the way we are doing things here
+		if(acct==null) acct="";
+		if(url==null) url="";
+		if(note==null) note="";
+		if(avatar==null) avatar="";
 	}
 
 	public boolean isLocal(){
@@ -163,6 +200,28 @@ public class Account extends BaseModel{
 
 	public String getDisplayUsername(){
 		return '@'+acct;
+	}
+
+	// MOSHIDON:
+	public String getShortUsername() {
+		return '@'+acct.split("@")[0];
+	}
+
+	// MOSHIDON:
+	public String getFullyQualifiedName() {
+		if (TextUtils.isEmpty(acct))
+			return "";
+		return fqn != null ? fqn : acct.split("@")[0] + "@" + getDomainFromURL();
+	}
+
+	// MOSHIDON:
+	public String getDisplayName(){
+		return '\u2068'+displayName+'\u2069';
+	}
+
+	// MOSHIDON:
+	public String getDomainFromURL() {
+		return Uri.parse(url).getHost();
 	}
 
 	@Override
