@@ -17,7 +17,7 @@ import org.joinmastodon.android.fragments.BookmarkedStatusListFragment;
 import org.joinmastodon.android.fragments.FavoritedStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTimelineFragment;
-import org.joinmastodon.android.fragments.ListTimelineFragmentCustom;
+import org.joinmastodon.android.fragments.ListTimelineCustomFragment;
 import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.discover.BubbleTimelineFragment;
 import org.joinmastodon.android.fragments.discover.FederatedTimelineFragment;
@@ -174,7 +174,7 @@ public class TimelineDefinition {
 			case HOME -> new HomeTimelineFragment();
 			case LOCAL -> new LocalTimelineFragment();
 			case FEDERATED -> new FederatedTimelineFragment();
-			case LIST -> new ListTimelineFragmentCustom();
+			case LIST -> new ListTimelineCustomFragment();
 			case HASHTAG -> new HashtagTimelineFragment();
 			case POST_NOTIFICATIONS -> new NotificationsListFragment();
 			case BUBBLE -> new BubbleTimelineFragment();
