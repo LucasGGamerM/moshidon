@@ -16,7 +16,8 @@ import me.grishka.appkit.utils.V;
 
 public class CustomEmojiSpan extends ReplacementSpan{
 	public final Emoji emoji;
-	private Drawable drawable;
+	// MOSHIDON: we changed this to protected cuz AvatarSpan uses it :D
+	protected Drawable drawable;
 
 	public CustomEmojiSpan(Emoji emoji){
 		this.emoji=emoji;
