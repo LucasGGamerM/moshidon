@@ -10,6 +10,7 @@ import android.widget.TextView;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.util.EnumSet;
 
@@ -48,17 +49,23 @@ public class DiscoverInfoBannerHelper{
 			banner=((Activity)list.getContext()).getLayoutInflater().inflate(R.layout.discover_info_banner, list, false);
 			TextView text=banner.findViewById(R.id.banner_text);
 			text.setText(switch(type){
-				case TRENDING_POSTS -> list.getResources().getString(R.string.trending_posts_info_banner);
-				case TRENDING_LINKS -> list.getResources().getString(R.string.trending_links_info_banner);
+				case TRENDING_POSTS -> list.getResources().getString(R.string.sk_trending_posts_info_banner);
+				case TRENDING_LINKS -> list.getResources().getString(R.string.sk_trending_links_info_banner);
+				case FEDERATED_TIMELINE -> list.getResources().getString(R.string.sk_federated_timeline_info_banner);
+				case POST_NOTIFICATIONS -> list.getResources().getString(R.string.sk_notify_posts_info_banner);
+				case BUBBLE_TIMELINE -> list.getResources().getString(R.string.sk_bubble_timeline_info_banner);
 				case LOCAL_TIMELINE -> list.getResources().getString(R.string.local_timeline_info_banner, AccountSessionManager.get(accountID).domain);
 				case ACCOUNTS -> list.getResources().getString(R.string.recommended_accounts_info_banner);
 			});
 			ImageView icon=banner.findViewById(R.id.icon);
 			icon.setImageResource(switch(type){
-				case TRENDING_POSTS -> R.drawable.ic_whatshot_24px;
-				case TRENDING_LINKS -> R.drawable.ic_feed_24px;
-				case LOCAL_TIMELINE -> R.drawable.ic_stream_24px;
-				case ACCOUNTS -> R.drawable.ic_group_add_24px;
+				case TRENDING_POSTS -> R.drawable.ic_fluent_arrow_trending_24_regular;
+				case TRENDING_LINKS -> R.drawable.ic_fluent_news_24_regular;
+				case ACCOUNTS -> R.drawable.ic_fluent_people_add_24_regular;
+				case LOCAL_TIMELINE -> TimelineDefinition.LOCAL_TIMELINE.getDefaultIcon().iconRes;
+				case FEDERATED_TIMELINE -> TimelineDefinition.FEDERATED_TIMELINE.getDefaultIcon().iconRes;
+				case BUBBLE_TIMELINE -> TimelineDefinition.BUBBLE_TIMELINE.getDefaultIcon().iconRes;
+				case POST_NOTIFICATIONS -> TimelineDefinition.POSTS_TIMELINE.getDefaultIcon().iconRes;
 			});
 			adapter.addAdapter(0, bannerAdapter=new SingleViewRecyclerAdapter(banner));
 			added=true;
@@ -93,6 +100,9 @@ public class DiscoverInfoBannerHelper{
 		TRENDING_POSTS,
 		TRENDING_LINKS,
 		LOCAL_TIMELINE,
-		ACCOUNTS
+		FEDERATED_TIMELINE,
+		POST_NOTIFICATIONS,
+		ACCOUNTS,
+		BUBBLE_TIMELINE
 	}
 }
