@@ -32,6 +32,7 @@ import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 import androidx.annotation.DrawableRes;
@@ -62,10 +63,33 @@ public class AccountSwitcherSheet extends BottomSheet{
 	private ListImageLoaderWrapper imgLoader;
 	private Runnable onLoggedOutCallback;
 
+	// MOSHIDON:
+	private BiConsumer<String, Boolean> onClick;
+	private final boolean accountChooser, openInApp;
+	private AccountsAdapter accountsAdapter;
+
+	// MOSHIDON:
 	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment){
+		this(activity, fragment, 0, 0, null, false);
+	}
+
+
+	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, /* We added bunch of extra parameters */ @DrawableRes int headerIcon,  @StringRes int headerTitle, String exceptFor, boolean openInApp){
 		super(activity);
 		this.activity=activity;
 		this.fragment=fragment;
+
+		// MOSHIDON:
+		// currently there is only one use case for a end row button (openInApp)
+		// if more are needed it should be generified
+		this.openInApp=openInApp;
+
+		this.accountChooser=headerTitle!=0;
+
+		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream()
+				.filter(accountSession -> !accountSession.getID().equals(exceptFor))
+				.map(WrappedAccount::new).collect(Collectors.toList());
+		// /MOSHIDON
 
 		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
 
@@ -80,13 +104,31 @@ public class AccountSwitcherSheet extends BottomSheet{
 		handle.setBackgroundResource(R.drawable.bg_bottom_sheet_handle);
 		handle.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(36)));
 		adapter.addAdapter(new SingleViewRecyclerAdapter(handle));
-		adapter.addAdapter(new AccountsAdapter());
-		adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_add_24px), ()->{
-			// We use CustomWelcomeFragment instead of SplashFragment
-			Nav.go(activity, CustomWelcomeFragment.class, null);
-			dismiss();
-		}));
-		adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.log_out_all_accounts, R.drawable.ic_logout_24px), this::confirmLogOutAll));
+
+		// MOSHIDON:
+		if (accountChooser) {
+			FrameLayout shareHeading = new FrameLayout(activity);
+			activity.getLayoutInflater().inflate(R.layout.item_external_share_heading, shareHeading);
+			((ImageView) shareHeading.findViewById(R.id.icon)).setImageDrawable(getContext().getDrawable(headerIcon));
+			((TextView) shareHeading.findViewById(R.id.title)).setText(getContext().getString(headerTitle));
+
+			adapter.addAdapter(new SingleViewRecyclerAdapter(shareHeading));
+
+			// we're using the sheet for interactAs picking, so the activity should not be closed
+			setOnDismissListener(exceptFor!=null ? null : (d) ->  activity.finish());
+		}
+
+		adapter.addAdapter(accountsAdapter = new AccountsAdapter());
+
+		if (!accountChooser) {
+			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_fluent_add_24_regular), () -> {
+				Nav.go(activity, CustomWelcomeFragment.class, null);
+				dismiss();
+			}));
+			// disabled in moshidon
+//			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.log_out_all_accounts, R.drawable.ic_fluent_person_arrow_right_24_filled), this::confirmLogOutAll));
+		}
+		// /MOSHIDON
 
 		list.setAdapter(adapter);
 
@@ -263,7 +305,16 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 		@Override
 		public void onClick(){
-			dismiss();
+			// MOSHIDON:
+			setOnDismissListener(null);
+			if (onClick != null) {
+				dismiss();
+				onClick.accept(item.getID(), false);
+				return;
+			}
+//			dismiss();
+			// /MOSHIDON
+
 			if(AccountSessionManager.getInstance().getLastActiveAccountID().equals(item.getID())){
 				if(fragment!=null){
 					fragment.setCurrentTab(R.id.tab_profile);
@@ -294,5 +345,10 @@ public class AccountSwitcherSheet extends BottomSheet{
 			else
 				req=null;
 		}
+	}
+
+	// MOSHIDON:
+	public void setOnClick(BiConsumer<String, Boolean> onClick) {
+		this.onClick = onClick;
 	}
 }
