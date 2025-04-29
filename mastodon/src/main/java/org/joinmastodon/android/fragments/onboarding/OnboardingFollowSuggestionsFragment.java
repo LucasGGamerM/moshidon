@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.onboarding;
 
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsets;
@@ -170,5 +171,11 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 		super.onConfigureViewHolder(holder);
 		holder.setStyle(AccountViewHolder.AccessoryType.BUTTON, true);
 		holder.avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }
