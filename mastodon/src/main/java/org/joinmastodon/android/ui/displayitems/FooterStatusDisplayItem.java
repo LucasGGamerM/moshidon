@@ -135,7 +135,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			boostBtn.setEnabled(item.status.visibility==StatusPrivacy.PUBLIC || item.status.visibility==StatusPrivacy.UNLISTED
 					|| (item.status.visibility==StatusPrivacy.PRIVATE && isOwn));
 			Drawable d=itemView.getResources().getDrawable(switch(item.status.visibility){
-				case PUBLIC, UNLISTED -> R.drawable.ic_boost;
+				case PUBLIC, UNLISTED, LOCAL -> R.drawable.ic_boost;
 				case PRIVATE -> isOwn ? R.drawable.ic_boost_private : R.drawable.ic_boost_disabled_24px;
 				case DIRECT -> R.drawable.ic_boost_disabled_24px;
 			}, itemView.getContext().getTheme());
