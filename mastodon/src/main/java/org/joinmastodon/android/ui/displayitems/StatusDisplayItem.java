@@ -46,6 +46,13 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_NO_HEADER=1 << 4;
 	public static final int FLAG_NO_IN_REPLY_TO=1 << 5;
 
+	// MOSHIDON:
+	public static final int FLAG_NO_TRANSLATE=1 << 6;
+	public static final int FLAG_NO_EMOJI_REACTIONS=1 << 7;
+	public static final int FLAG_IS_FOR_QUOTE=1 << 8;
+	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 9;
+	public static final int FLAG_INSET=10;
+
 	public StatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment){
 		this.parentID=parentID;
 		this.parentFragment=parentFragment;
