@@ -84,6 +84,9 @@ public abstract class StatusDisplayItem{
 			case INLINE_STATUS -> new InlineStatusStatusDisplayItem.Holder(activity, parent);
 			case NOTIFICATION_WITH_BUTTON -> new NotificationWithButtonStatusDisplayItem.Holder(activity, parent);
 			case FOLLOW_REQUEST_ACTIONS -> new FollowRequestActionsDisplayItem.Holder(activity, parent);
+			// MOSHIDON:
+			case DUMMY -> new DummyStatusDisplayItem.Holder(activity);
+			case EMOJI_REACTIONS -> new EmojiReactionsStatusDisplayItem.Holder(activity, parent);
 		};
 	}
 
@@ -236,7 +239,10 @@ public abstract class StatusDisplayItem{
 		FILTER_SPOILER,
 		INLINE_STATUS,
 		NOTIFICATION_WITH_BUTTON,
-		FOLLOW_REQUEST_ACTIONS
+		FOLLOW_REQUEST_ACTIONS,
+		// MOSHIDON:
+		DUMMY,
+		EMOJI_REACTIONS
 	}
 
 	public static abstract class Holder<T> extends BindableViewHolder<T> implements UsableRecyclerView.DisableableClickable{
