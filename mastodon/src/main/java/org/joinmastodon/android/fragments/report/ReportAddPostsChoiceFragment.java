@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsets;
@@ -19,6 +20,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.events.FinishReportFragmentsEvent;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.displayitems.AudioStatusDisplayItem;
@@ -217,5 +219,16 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	private boolean isChecked(CheckableHeaderStatusDisplayItem.Holder holder){
 		return selectedIDs.contains(holder.getItem().parentID);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
+	}
+
+	@Override
+	protected FilterContext getFilterContext(){
+		return null;
 	}
 }
