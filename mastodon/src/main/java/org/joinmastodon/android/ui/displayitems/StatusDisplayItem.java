@@ -53,6 +53,10 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 9;
 	public static final int FLAG_INSET=10;
 
+	// MOSHIDON:
+	public boolean inset; // aka "a quote toot" or notifications
+	public Status status; // for quote toots and other things. May this not break
+
 	public StatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment){
 		this.parentID=parentID;
 		this.parentFragment=parentFragment;
