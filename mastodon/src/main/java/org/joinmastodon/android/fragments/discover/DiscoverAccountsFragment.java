@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.api.requests.accounts.GetFollowSuggestions;
@@ -50,5 +51,11 @@ public class DiscoverAccountsFragment extends BaseAccountListFragment implements
 	@Override
 	public void scrollToTop(){
 		smoothScrollRecyclerViewToTop(list);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/suggestions").build();
 	}
 }
