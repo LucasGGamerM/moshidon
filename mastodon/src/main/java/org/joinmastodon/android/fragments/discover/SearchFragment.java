@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.inputmethod.InputMethodManager;
@@ -229,5 +230,12 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	@FunctionalInterface
 	public interface ProgressVisibilityListener{
 		void onProgressVisibilityChanged(boolean visible);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		// TODO this
+		return null;
 	}
 }
