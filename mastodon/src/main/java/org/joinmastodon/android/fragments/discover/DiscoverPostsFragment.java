@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.api.requests.trends.GetTrendingStatuses;
@@ -45,5 +46,15 @@ public class DiscoverPostsFragment extends StatusListFragment{
 		bannerHelper.maybeAddBanner(list, adapter);
 		adapter.addAdapter(super.getAdapter());
 		return adapter;
+	}
+
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return isInstanceAkkoma() ? null : base.path("/explore/posts").build();
 	}
 }
