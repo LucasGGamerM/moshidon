@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
@@ -414,5 +415,13 @@ public class NotificationsListFragment extends BaseNotificationsListFragment{
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		Nav.go(getActivity(), NotificationRequestsFragment.class, args);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma()
+				? "/users/" + getSession().self.username + "/interactions"
+				: "/notifications").build();
 	}
 }
