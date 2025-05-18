@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
@@ -43,5 +44,16 @@ public class HashtagFeaturedTimelineFragment extends StatusListFragment{
 					}
 				})
 				.exec(accountID);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null; // TODO
+	}
+
+	@Override
+	protected FilterContext getFilterContext() {
+		return null;
 	}
 }
