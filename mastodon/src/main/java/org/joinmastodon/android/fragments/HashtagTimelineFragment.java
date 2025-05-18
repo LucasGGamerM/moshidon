@@ -1,7 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
-import android.content.res.TypedArray;
+import android.content.res.TypedArray;import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.view.Menu;
@@ -278,5 +278,17 @@ public class HashtagTimelineFragment extends StatusListFragment{
 
 	public String getHashtagName(){
 		return hashtagName;
+	}
+
+
+	// MOSHIDON:
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path((isInstanceAkkoma() ? "/tag/" : "/tags/") + hashtagName).build();
 	}
 }
