@@ -11,6 +11,7 @@ import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
@@ -31,6 +32,9 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
 		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true);
 	}
+
+	protected abstract FilterContext getFilterContext();
+
 
 	@Override
 	protected void addAccountToKnown(Status s){
