@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -311,5 +312,12 @@ public class CreateListAddMembersFragment extends BaseAccountListFragment implem
 	@Override
 	protected void loadRelationships(List<AccountViewModel> accounts){
 		// no-op
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		// TODO this
+		return null;
 	}
 }
