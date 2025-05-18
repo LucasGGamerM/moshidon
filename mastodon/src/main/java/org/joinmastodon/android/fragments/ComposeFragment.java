@@ -1066,12 +1066,16 @@ public class ComposeFragment extends MastodonToolbarFragment implements ComposeE
 			case UNLISTED -> R.string.visibility_unlisted;
 			case PRIVATE -> R.string.visibility_followers_only;
 			case DIRECT -> R.string.visibility_private;
+			// MOSHIDON:
+			case LOCAL -> R.string.sk_local_only;
 		});
 		Drawable icon=getResources().getDrawable(switch(statusVisibility){
 			case PUBLIC -> R.drawable.ic_public_20px;
 			case UNLISTED -> R.drawable.ic_clear_night_20px;
 			case PRIVATE -> R.drawable.ic_group_20px;
 			case DIRECT -> R.drawable.ic_alternate_email_20px;
+			// MOSHIDON:
+			case LOCAL -> R.drawable.ic_fluent_eye_16_regular;
 		}, getActivity().getTheme()).mutate();
 		icon.setBounds(0, 0, V.dp(18), V.dp(18));
 		icon.setTint(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Primary));
