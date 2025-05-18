@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -7,6 +8,7 @@ import android.view.MenuItem;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.timelines.GetListTimeline;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FollowList;
 import org.joinmastodon.android.model.Status;
 import org.parceler.Parcels;
@@ -57,5 +59,17 @@ public class ListTimelineFragment extends StatusListFragment{
 			Nav.go(getActivity(), EditListFragment.class, args);
 		}
 		return true;
+	}
+
+
+	// MOSHIDON:
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.HOME;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/lists/" + followList.id).build();
 	}
 }
