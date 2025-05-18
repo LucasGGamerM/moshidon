@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -58,5 +59,10 @@ public class FeaturedHashtagsListFragment extends BaseStatusListFragment<Hashtag
 	@Override
 	protected void drawDivider(View child, View bottomSibling, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder siblingHolder, RecyclerView parent, Canvas c, Paint paint){
 		// no-op
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null; // TODO
 	}
 }
