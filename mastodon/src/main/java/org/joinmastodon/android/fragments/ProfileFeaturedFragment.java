@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -206,5 +207,11 @@ public class ProfileFeaturedFragment extends BaseStatusListFragment<SearchResult
 
 	private void showAllEndorsedAccounts(){
 
+	}
+
+	// MOSHIDON: FIXME: this should be doing something
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }
