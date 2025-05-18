@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.ActionMode;
@@ -400,5 +401,11 @@ public class ListMembersFragment extends PaginatedAccountListFragment implements
 	@Override
 	protected void setNavigationBarColor(int color){
 		rootView.setNavigationBarColor(color);
+	}
+
+	// MOSHIDON:
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }
