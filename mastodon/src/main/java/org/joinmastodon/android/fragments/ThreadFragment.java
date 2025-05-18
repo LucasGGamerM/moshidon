@@ -317,4 +317,15 @@ public class ThreadFragment extends StatusListFragment implements AssistContentP
 			}
 		}
 	}
+
+	// MOSHIDON:
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.THREAD;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(mainStatus.url);
+	}
 }
