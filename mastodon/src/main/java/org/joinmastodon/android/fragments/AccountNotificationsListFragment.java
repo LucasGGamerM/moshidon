@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -174,5 +175,11 @@ public class AccountNotificationsListFragment extends BaseNotificationsListFragm
 		}else{
 			item.setIconTintList(ColorStateList.valueOf(tintColor));
 		}
+	}
+
+	// MOSHIDON: what is this file even supposed to be????
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null; // TODO
 	}
 }
