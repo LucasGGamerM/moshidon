@@ -1,10 +1,12 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.parceler.Parcels;
 
@@ -32,5 +34,16 @@ public class PinnedPostsListFragment extends StatusListFragment{
 						onDataLoaded(result, false);
 					}
 				}).exec(accountID);
+	}
+
+	// MOSHIDON:
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.ACCOUNT;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(account.url);
 	}
 }
