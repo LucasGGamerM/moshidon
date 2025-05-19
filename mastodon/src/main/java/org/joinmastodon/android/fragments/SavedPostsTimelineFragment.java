@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,6 +16,7 @@ import org.joinmastodon.android.api.requests.statuses.GetFavoritedStatuses;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.EmptyDrawable;
@@ -165,5 +167,31 @@ public class SavedPostsTimelineFragment extends StatusListFragment{
 	private enum Mode{
 		FAVORITES,
 		BOOKMARKS
+	}
+
+	// MOSHIDON:
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.ACCOUNT;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		// May someone forgive me for writing this if statement
+		if(mode==null)
+			return base.path("/bookmarks").build();
+
+		switch(mode) {
+			case FAVORITES -> {
+				return base.encodedPath(isInstanceAkkoma()
+						? '/' + getSession().self.username + "#favorites"
+						: "/favourites").build();
+			}
+			case BOOKMARKS -> {
+				return base.path("/bookmarks").build();
+			}
+		}
+
+		return null;
 	}
 }
