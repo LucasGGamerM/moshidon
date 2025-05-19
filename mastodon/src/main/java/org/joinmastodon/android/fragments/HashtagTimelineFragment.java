@@ -118,7 +118,9 @@ public class HashtagTimelineFragment extends StatusListFragment{
 		});
 	}
 
-	private void onFabClick(View v){
+	// MOSHIDON:
+	@Override
+	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putString("prefilledText", '#'+hashtagName+' ');
