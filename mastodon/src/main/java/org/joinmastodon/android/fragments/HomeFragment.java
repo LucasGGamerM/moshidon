@@ -392,8 +392,10 @@ public class HomeFragment extends AppKitFragment implements AssistContentProvide
 	public void onStatusDisplaySettingsChanged(StatusDisplaySettingsChangedEvent ev){
 		if(!ev.accountID.equals(accountID))
 			return;
-		if(homeTabFragment.loaded)
-			homeTabFragment.rebuildAllDisplayItems();
+
+		// FIXME: figure this out
+//		if(homeTabFragment.loaded)
+//			homeTabFragment.rebuildAllDisplayItems();
 		if(notificationsFragment.loaded)
 			notificationsFragment.rebuildAllDisplayItems();
 	}
