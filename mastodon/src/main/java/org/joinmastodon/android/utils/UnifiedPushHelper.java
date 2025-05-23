@@ -5,9 +5,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import org.joinmastodon.android.api.requests.oauth.GetOauthToken;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.PushSubscription;
 import org.unifiedpush.android.connector.UnifiedPush;
 
 public class UnifiedPushHelper {
@@ -31,17 +31,26 @@ public class UnifiedPushHelper {
 
 	public static void registerAllAccounts(@NonNull Context context) {
 		for (AccountSession accountSession : AccountSessionManager.getInstance().getLoggedInAccounts()){
+			String vapidKey = accountSession.app.vapidKey;
 			// Sometimes this is null when the account's server has died (don't ask me how I know this)
-			if (accountSession.app.vapidKey == null) {
+			if (vapidKey == null) {
 				// TODO: throw this on a translatable string and tell the user to log out and back in
 				Toast.makeText(context, "Error on unified push subscription: no valid vapid key for account " + accountSession.getFullUsername(), Toast.LENGTH_LONG).show();
 				break;
 			}
+			PushSubscription sub = accountSession.pushSubscription;
+			if (sub == null || sub.standard) {
+				vapidKey = vapidKey.replaceAll("=","");
+			} else {
+				// If we know the server doesn't support the _standard_ VAPID,
+				// we register without vapid
+				vapidKey = null;
+			}
 			UnifiedPush.register(
 					context,
 					accountSession.getID(),
-					null,
-					accountSession.app.vapidKey.replaceAll("=","")
+					accountSession.self.fqn,
+					vapidKey
 			);
 		}
 	}
