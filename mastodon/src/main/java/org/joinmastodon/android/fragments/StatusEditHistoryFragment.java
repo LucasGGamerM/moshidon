@@ -1,14 +1,19 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusEditHistory;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.ui.displayitems.InlineStatusStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
+import org.joinmastodon.android.ui.text.HtmlParser;
+//import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.time.ZoneId;
@@ -16,20 +21,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
+import name.fraser.neil.plaintext.diff_match_patch;
 
 public class StatusEditHistoryFragment extends StatusListFragment{
-	private String id;
-
+	private String id, url;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		id=getArguments().getString("id");
+		url=getArguments().getString("url");
 		loadData();
 	}
 
@@ -45,6 +52,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if(getActivity()==null) return;
 						Collections.sort(result, Comparator.comparing((Status s)->s.createdAt).reversed());
 						onDataLoaded(result, false);
 					}
@@ -82,8 +90,11 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				EnumSet<StatusEditChangeType> changes=EnumSet.noneOf(StatusEditChangeType.class);
 				Status prev=data.get(idx+1);
 
-				if(!Objects.equals(s.content, prev.content)){
+				// if only formatting was changed, don't even try to create a diff text
+				if(!Objects.equals(HtmlParser.text(s.content), HtmlParser.text(prev.content))){
 					changes.add(StatusEditChangeType.TEXT_CHANGED);
+					//update status content to display a diffs
+					s.content=createDiffText(prev.content, s.content);
 				}
 				if(!Objects.equals(s.spoilerText, prev.spoilerText)){
 					if(s.spoilerText==null){
@@ -142,13 +153,50 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 					action=getString(R.string.edit_multiple_changed);
 				}
 			}
-			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" · "+date, null, 0));
+			String sep = getString(R.string.sk_separator);
+			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0));
+			items.add(1, new DummyStatusDisplayItem(s.id, this));
 		}
+		items.addAll(StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, null, StatusDisplayItem.FLAG_NO_FOOTER|StatusDisplayItem.FLAG_INSET|StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS));
 		return items;
 	}
 
 	@Override
 	public boolean isItemEnabled(String id){
 		return false;
+	}
+
+	@Override
+	protected FilterContext getFilterContext() {
+		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(url);
+	}
+
+	private String createDiffText(String original, String modified) {
+		diff_match_patch dmp=new diff_match_patch();
+		LinkedList<diff_match_patch.Diff> diffs=dmp.diff_main(original, modified);
+		dmp.diff_cleanupSemantic(diffs);
+
+		StringBuilder stringBuilder=new StringBuilder();
+		for(diff_match_patch.Diff diff : diffs){
+			switch(diff.operation){
+				case DELETE->{
+					stringBuilder.append("<edit-diff-delete>");
+					stringBuilder.append(diff.text);
+					stringBuilder.append("</edit-diff-delete>");
+				}
+				case INSERT->{
+					stringBuilder.append("<edit-diff-insert>");
+					stringBuilder.append(diff.text);
+					stringBuilder.append("</edit-diff-insert>");
+				}
+				default->stringBuilder.append(diff.text);
+			}
+		}
+		return stringBuilder.toString();
 	}
 }
