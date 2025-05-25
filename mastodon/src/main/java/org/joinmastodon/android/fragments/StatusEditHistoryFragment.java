@@ -156,7 +156,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				}
 			}
 			String sep = getString(R.string.sk_separator);
-			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0));
+			items.add(0, new ReblogOrReplyLineCustomStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0));
 			items.add(1, new DummyStatusDisplayItem(s.id, this));
 		}
 		items.addAll(StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, null, StatusDisplayItem.FLAG_NO_FOOTER|StatusDisplayItem.FLAG_INSET|StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS));
