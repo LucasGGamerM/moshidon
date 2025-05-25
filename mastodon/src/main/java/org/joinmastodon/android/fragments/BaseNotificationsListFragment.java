@@ -36,9 +36,9 @@ public abstract class BaseNotificationsListFragment extends BaseStatusListFragme
 				boolean replyToSelf=AccountSessionManager.get(accountID).self.id.equals(n.status.inReplyToAccountId);
 				int icon=replyToSelf ? R.drawable.ic_reply_wght700_20px : R.drawable.ic_alternate_email_wght700fill1_20px;
 				if(n.status.visibility==StatusPrivacy.DIRECT){
-					titleItem=new ReblogOrReplyLineStatusDisplayItem(n.getID(), this, getString(replyToSelf ? R.string.private_reply : R.string.private_mention), null, icon);
+					titleItem=new ReblogOrReplyLineCustomStatusDisplayItem(n.getID(), this, getString(replyToSelf ? R.string.private_reply : R.string.private_mention), null, icon);
 				}else{
-					titleItem=new ReblogOrReplyLineStatusDisplayItem(n.getID(), this, getString(replyToSelf ? R.string.post_header_reply : R.string.post_header_mention), null, icon);
+					titleItem=new ReblogOrReplyLineCustomStatusDisplayItem(n.getID(), this, getString(replyToSelf ? R.string.post_header_reply : R.string.post_header_mention), null, icon);
 				}
 			}else{
 				titleItem=null;
