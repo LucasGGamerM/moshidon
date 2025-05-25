@@ -51,7 +51,7 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 		instanceUser.id = instanceUser.acct = instanceUser.username = session.domain;
 		instanceUser.displayName = instance.title;
 		instanceUser.url = "https://"+session.domain+"/about";
-		instanceUser.avatar = instanceUser.avatarStatic = instance.thumbnail;
+		instanceUser.avatar = instanceUser.avatarStatic = instance.getThumbnailURL();
 		instanceUser.emojis = List.of();
 		Status fakeStatus = a.toStatus();
 		// TODO: readd this later
