@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
@@ -1017,5 +1018,16 @@ public class HomeTimelineFragment extends StatusListFragment implements ToolbarD
 		FOLLOWING,
 		LOCAL,
 		LIST
+	}
+
+	// MOSHIDON: stuff we use and need to have here:
+	@Override
+	protected FilterContext getFilterContext(){
+		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }
