@@ -60,7 +60,7 @@ public class ReblogOrReplyLineCustomStatusDisplayItem extends StatusDisplayItem{
 	public ReblogOrReplyLineCustomStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText, Account account) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
-		if(GlobalUserPreferences.customEmojiInNames)
+		if(GlobalUserPreferences.customEmojiInNames && emojis != null)
 			HtmlParser.parseCustomEmoji(ssb, emojis);
 		//this is fine, since the display name is surround by '\u2068' and '\u2069'
 		int nameLoc=account!=null ? text.toString().indexOf(account.getDisplayName()) : -1;
