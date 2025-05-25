@@ -10,6 +10,8 @@ import org.joinmastodon.android.api.requests.statuses.GetStatusEditHistory;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.InlineStatusStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineCustomStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
