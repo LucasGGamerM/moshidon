@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.E;
@@ -46,6 +49,7 @@ import org.joinmastodon.android.ui.sheets.OldPostPreReplySheet;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.MediaGridLayout;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.time.Instant;
@@ -64,6 +68,7 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.recyclerview.widget.RecyclerView;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
@@ -74,7 +79,7 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends MastodonRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends MastodonRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, IsOnTop, HasFab, ProvidesAssistContent.ProvidesWebUri{
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
@@ -85,9 +90,101 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
 	private SpringAnimation listShakeAnimation;
 
+	// MOSHIDON: truly fabulous
+	protected ImageButton fab;
+	protected int scrollDiff = 0;
+	protected boolean currentlyScrolling;
+
+	// MOSHIDON: maxID stuff, I don't know why we have it :D
+	protected String maxID;
+
 	public BaseStatusListFragment(){
 		super(20);
+
+		// MOSHIDON: fabulous
+		if (wantsComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
 	}
+
+	// MOSHIDON: fabulous part 2
+	protected boolean wantsComposeButton() {
+		return false;
+	}
+
+	// MOSHIDON: fabulous part 3
+	@Override
+	public @Nullable View getFab() {
+		if (getParentFragment() instanceof HasFab l) return l.getFab();
+		else return fab;
+	}
+
+	// MOSHIDON: I thought it'd be less fabulous
+	public boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID);
+	}
+
+	// MOSHIDON:
+	@Override
+	public void showFab() {
+		View fab = getFab();
+		if (fab == null || fab.getVisibility() == View.VISIBLE) return;
+		fab.setVisibility(View.VISIBLE);
+		TranslateAnimation animate = new TranslateAnimation(
+				0,
+				0,
+				fab.getHeight() * 2,
+				0);
+		animate.setDuration(300);
+		fab.startAnimation(animate);
+	}
+
+	// MOSHIDON:
+	public boolean isScrolling() {
+		return currentlyScrolling;
+	}
+
+	// MOSHIDON:
+	@Override
+	public void hideFab() {
+		View fab = getFab();
+		if (fab == null || fab.getVisibility() != View.VISIBLE) return;
+		TranslateAnimation animate = new TranslateAnimation(
+				0,
+				0,
+				0,
+				fab.getHeight() * 2);
+		animate.setDuration(300);
+		fab.startAnimation(animate);
+		fab.setVisibility(View.INVISIBLE);
+		scrollDiff = 0;
+	}
+
+	// MOSHIDON:
+	public void onFabClick(View v){
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		Nav.go(getActivity(), ComposeFragment.class, args);
+	}
+
+
+	// MOSHIDON:
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
+	}
+
+	// MOSHIDON: is it on top?
+	@Override
+	public boolean isOnTop() {
+		return isRecyclerViewOnTop(list);
+	}
+
+	// MOSHIDON: maxID shenanigans
+	protected boolean applyMaxID(List<Status> result){
+		boolean empty=result.isEmpty();
+		if(!empty) maxID=result.get(result.size()-1).id;
+		return !empty;
+	}
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
