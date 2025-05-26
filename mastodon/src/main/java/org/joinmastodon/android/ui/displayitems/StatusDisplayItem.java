@@ -121,10 +121,12 @@ public abstract class StatusDisplayItem{
 		boolean hideCounts=!GlobalUserPreferences.showInteractionCounts;
 		if((flags & FLAG_NO_HEADER)==0){
 			if(status.reblog!=null){
-				items.add(new ReblogOrReplyLineCustomStatusDisplayItem(parentID, fragment, fragment.getString(R.string.user_boosted, status.account.displayName), status.account.emojis, R.drawable.ic_repeat_wght700_20px));
+				// MOSHIDON: this is for the avatar icons in the reblog line
+				items.add(new ReblogOrReplyLineCustomStatusDisplayItem(parentID, fragment, fragment.getString(R.string.user_boosted, status.account.getDisplayName()), status.account.emojis, R.drawable.ic_repeat_wght700_20px, null, null, fragment.getString(R.string.user_boosted, status.account.displayName), status.account));
 			}else if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId) && (flags & FLAG_NO_IN_REPLY_TO)==0){
 				Account account=Objects.requireNonNull(knownAccounts.get(status.inReplyToAccountId));
-				items.add(new ReblogOrReplyLineCustomStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to, account.displayName), account.emojis, R.drawable.ic_reply_wght700_20px));
+				// MOSHIDON: this is for the avatar icons in the reply line
+				items.add(new ReblogOrReplyLineCustomStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to, account.getDisplayName()), account.emojis, R.drawable.ic_reply_wght700_20px, null, null, fragment.getString(R.string.in_reply_to, account.displayName), account));
 			}
 			if((flags & FLAG_CHECKABLE)!=0)
 				items.add(header=new CheckableHeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null));
