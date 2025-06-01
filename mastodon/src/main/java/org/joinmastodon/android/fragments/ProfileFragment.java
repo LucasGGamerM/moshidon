@@ -121,7 +121,7 @@ import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class ProfileFragment extends LoaderFragment implements ScrollableToTop, AssistContentProviderFragment{
+public class ProfileFragment extends LoaderFragment implements ScrollableToTop, AssistContentProviderFragment, HasFab{
 	private static final int AVATAR_RESULT=722;
 	private static final int COVER_RESULT=343;
 
@@ -167,7 +167,7 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 	private Uri editNewAvatar, editNewCover;
 	private String profileAccountID;
 	private boolean refreshing;
-	private View fab;
+	private ImageButton fab;
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
@@ -271,12 +271,11 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 
 		noteEdit.setOnFocusChangeListener((v, hasFocus)->{
 			if(hasFocus){
-//				hideFab();
-				noteEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-			}else{
-//				showFab();
-				savePrivateNote(noteEdit.getText().toString());
+				hideFab();
+				return;
 			}
+			showFab();
+			savePrivateNote(noteEdit.getText().toString());
 		});
 
 		FrameLayout sizeWrapper=new FrameLayout(getActivity()){
@@ -578,6 +577,26 @@ public class ProfileFragment extends LoaderFragment implements ScrollableToTop, 
 		});
 		if(!loaded)
 			bindHeaderViewForPreviewMaybe();
+	}
+
+	public ImageButton getFab() {
+		return fab;
+	}
+
+	@Override
+	public void showFab() {
+		if (getFragmentForPage(pager.getCurrentItem()) instanceof HasFab fabulous) fabulous.showFab();
+	}
+
+	@Override
+	public void hideFab() {
+		if (getFragmentForPage(pager.getCurrentItem()) instanceof HasFab fabulous) fabulous.hideFab();
+	}
+
+	@Override
+	public boolean isScrolling() {
+		return getFragmentForPage(pager.getCurrentItem()) instanceof HasFab fabulous
+				&& fabulous.isScrolling();
 	}
 
 	@Override
