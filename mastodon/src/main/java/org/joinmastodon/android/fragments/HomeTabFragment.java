@@ -416,10 +416,10 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		hashtagsMenu = m.findItem(R.id.hashtags).getSubMenu();
 		listsMenu = m.findItem(R.id.lists).getSubMenu();
 
-//		announcements.setVisible(!announcementsBadged);
-//		announcementsAction.setVisible(announcementsBadged);
-//		settings.setVisible(!settingsBadged);
-//		settingsAction.setVisible(settingsBadged);
+		announcements.setVisible(!announcementsBadged);
+		announcementsAction.setVisible(announcementsBadged);
+		settings.setVisible(!settingsBadged);
+		settingsAction.setVisible(settingsBadged);
 
 		UiUtils.enablePopupMenuIcons(getContext(), overflowPopup);
 
@@ -432,9 +432,9 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		inflater.inflate(R.menu.home, menu);
+		inflater.inflate(R.menu.home_custom, menu);
 
-//		menu.findItem(R.id.overflow).setActionView(overflowActionView);
+		menu.findItem(R.id.overflow).setActionView(overflowActionView);
 		announcementsAction = menu.findItem(R.id.announcements_action);
 		settingsAction = menu.findItem(R.id.settings_action);
 
