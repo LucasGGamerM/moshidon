@@ -95,7 +95,8 @@ import me.grishka.appkit.views.BottomSheet;
 public class HomeTimelineFragment extends StatusListFragment implements ToolbarDropdownMenuController.HostFragment{
 	private static final int DONATION_RESULT=211;
 
-	private ImageButton fab;
+	// MOSHIDON: we don't use the fab from this fragment, we use the one from BaseStatusListFragment
+	//	private ImageButton fab;
 	private LinearLayout listsDropdown;
 	private FixedAspectRatioImageView listsDropdownArrow;
 	private TextView listsDropdownText;
@@ -270,8 +271,8 @@ public class HomeTimelineFragment extends StatusListFragment implements ToolbarD
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
-		fab=view.findViewById(R.id.fab);
-		fab.setOnClickListener(this::onFabClick);
+//		fab=view.findViewById(R.id.fab);
+//		fab.setOnClickListener(this::onFabClick);
 		newPostsBtn=view.findViewById(R.id.new_posts_btn);
 		newPostsBtn.setOnClickListener(this::onNewPostsBtnClick);
 		newPostsBtnWrap=view.findViewById(R.id.new_posts_btn_wrap);
@@ -978,8 +979,9 @@ public class HomeTimelineFragment extends StatusListFragment implements ToolbarD
 
 				AnimatorSet set=new AnimatorSet();
 				set.playTogether(
-						ObjectAnimator.ofFloat(donationBanner, View.TRANSLATION_Y, donationBanner.getHeight(), 0),
-						ObjectAnimator.ofFloat(fab, View.TRANSLATION_Y, -donationBanner.getHeight())
+						ObjectAnimator.ofFloat(donationBanner, View.TRANSLATION_Y, donationBanner.getHeight(), 0)
+						// MOSHIDON:
+//						ObjectAnimator.ofFloat(fab, View.TRANSLATION_Y, -donationBanner.getHeight())
 				);
 				set.setDuration(250);
 				set.setInterpolator(CubicBezierInterpolator.DEFAULT);
@@ -995,8 +997,9 @@ public class HomeTimelineFragment extends StatusListFragment implements ToolbarD
 			return;
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(
-				ObjectAnimator.ofFloat(donationBanner, View.TRANSLATION_Y, donationBanner.getHeight()),
-				ObjectAnimator.ofFloat(fab, View.TRANSLATION_Y, 0)
+				ObjectAnimator.ofFloat(donationBanner, View.TRANSLATION_Y, donationBanner.getHeight())
+				// MOSHIDON:
+//				ObjectAnimator.ofFloat(fab, View.TRANSLATION_Y, 0)
 		);
 		set.setDuration(250);
 		set.setInterpolator(CubicBezierInterpolator.DEFAULT);
