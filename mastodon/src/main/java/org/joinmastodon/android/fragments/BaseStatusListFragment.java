@@ -381,6 +381,21 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
+
+				// MOSHIDON:
+				View fab = getFab();
+				if (fab!=null && GlobalUserPreferences.autoHideFab && dy != UiUtils.SCROLL_TO_TOP_DELTA) {
+					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+						hideFab();
+					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+						if (list.getChildAt(0).getTop() == 0 || scrollDiff > 400) {
+							showFab();
+							scrollDiff = 0;
+						} else {
+							scrollDiff += Math.abs(dy);
+						}
+					}
+				}
 			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
