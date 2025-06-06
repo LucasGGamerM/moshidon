@@ -549,7 +549,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 			args.putString("listTitle", list.title);
 			args.putBoolean("listIsExclusive", list.exclusive);
 			if (list.repliesPolicy != null) args.putInt("repliesPolicy", list.repliesPolicy.ordinal());
-			Nav.go(getActivity(), ListTimelineFragment.class, args);
+			Nav.go(getActivity(), ListTimelineCustomFragment.class, args);
 		} else if ((hashtag = hashtagsItems.get(id)) != null) {
 			UiUtils.openHashtagTimeline(getContext(), accountID, hashtag);
 		}
