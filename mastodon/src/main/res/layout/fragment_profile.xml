@@ -457,19 +457,8 @@
 			</org.joinmastodon.android.ui.views.CustomDrawingOrderLinearLayout>
 		</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
 
-		<ImageButton
-			android:id="@+id/fab"
-			android:layout_width="56dp"
-			android:layout_height="56dp"
-			android:layout_gravity="end|bottom"
-			android:layout_marginEnd="16dp"
-			android:layout_marginBottom="16dp"
-			android:background="@drawable/bg_fab"
-			android:contentDescription="@string/new_post"
-			android:scaleType="center"
-			android:src="@drawable/ic_edit_24px"
-			android:stateListAnimator="@animator/fab_shadow"
-			android:tint="?colorM3Primary" />
+<!--		MOSHIDON: we use this layout for the fab-->
+		<include layout="@layout/compose_fab" />
 
 	</FrameLayout>
 
