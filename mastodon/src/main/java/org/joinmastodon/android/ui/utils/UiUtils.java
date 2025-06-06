@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -141,6 +142,9 @@ public class UiUtils{
 	private static final DateTimeFormatter DATE_FORMATTER_SHORT_WITH_YEAR=DateTimeFormatter.ofPattern("d MMM uuuu"), DATE_FORMATTER_SHORT=DateTimeFormatter.ofPattern("d MMM");
 	private static final DateTimeFormatter TIME_FORMATTER=DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
 	public static final DateTimeFormatter DATE_TIME_FORMATTER=DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
+
+	// MOSHIDON:
+	public static int SCROLL_TO_TOP_DELTA;
 
 	private UiUtils(){}
 
@@ -749,6 +753,10 @@ public class UiUtils{
 
 	public static void setUserPreferredTheme(Context context){
 		context.setTheme(getThemeForUserPreference(context, GlobalUserPreferences.theme));
+
+		// MOSHIDON: fab business
+		Resources res = context.getResources();
+		SCROLL_TO_TOP_DELTA = (int) res.getDimension(R.dimen.scroll_to_top_delta);
 	}
 
 	public static int getThemeForUserPreference(Context context, GlobalUserPreferences.ThemePreference pref){
