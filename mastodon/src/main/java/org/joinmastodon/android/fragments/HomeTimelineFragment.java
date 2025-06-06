@@ -1026,12 +1026,12 @@ public class HomeTimelineFragment extends StatusListFragment implements ToolbarD
 
 	// MOSHIDON: stuff we use and need to have here:
 	@Override
-	protected FilterContext getFilterContext(){
-		return null;
+	protected FilterContext getFilterContext() {
+		return FilterContext.HOME;
 	}
 
 	@Override
-	public Uri getWebUri(Uri.Builder base){
-		return null;
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/").build();
 	}
 }
