@@ -16,6 +16,6 @@ public class StatusCountersUpdatedEvent{
 		reblogged=s.reblogged;
 		bookmarked=s.bookmarked;
 		// MOSHIDON:
-		pinned=s.pinned;
+		pinned=s.pinned!=null;
 	}
 }
