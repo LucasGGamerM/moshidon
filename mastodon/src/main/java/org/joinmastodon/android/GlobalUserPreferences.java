@@ -1,6 +1,7 @@
 package org.joinmastodon.android;
 
 import static org.joinmastodon.android.api.MastodonAPIController.gson;
+import static org.joinmastodon.android.api.session.AccountLocalPreferences.ColorPreference.MATERIAL3;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -88,6 +89,53 @@ public class GlobalUserPreferences{
 		customEmojiInNames=prefs.getBoolean("emojiInNames", true);
 		showCWs=prefs.getBoolean("showCWs", true);
 		hideSensitiveMedia=prefs.getBoolean("hideSensitive", true);
+
+		// MOSHIDON
+		trueBlackTheme=prefs.getBoolean("trueBlackTheme", false);
+		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
+		showNewPostsButton=prefs.getBoolean("showNewPostsButton", true);
+		toolbarMarquee=prefs.getBoolean("toolbarMarquee", true);
+		disableSwipe=prefs.getBoolean("disableSwipe", false);
+		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", false);
+		translateButtonOpenedOnly=prefs.getBoolean("translateButtonOpenedOnly", false);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
+		reduceMotion=prefs.getBoolean("reduceMotion", false);
+		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
+		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
+		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
+		prefixReplies=PrefixRepliesMode.valueOf(prefs.getString("prefixReplies", PrefixRepliesMode.NEVER.name()));
+		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
+		spectatorMode=prefs.getBoolean("spectatorMode", false);
+		autoHideFab=prefs.getBoolean("autoHideFab", true);
+		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
+		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
+		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
+		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
+		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
+		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
+		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
+		overlayMedia=prefs.getBoolean("overlayMedia", false);
+		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
+		underlinedLinks=prefs.getBoolean("underlinedLinks", true);
+		color=AccountLocalPreferences.ColorPreference.valueOf(prefs.getString("color", MATERIAL3.name()));
+		likeIcon=prefs.getBoolean("likeIcon", false);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
+		showDividers =prefs.getBoolean("showDividers", false);
+		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
+		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
+		doubleTapToSearch =prefs.getBoolean("doubleTapToSearch", true);
+		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
+		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
+		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
+		hapticFeedback=prefs.getBoolean("hapticFeedback", true);
+		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
+		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
+		showPostsWithoutAlt=prefs.getBoolean("showPostsWithoutAlt", true);
+		showMediaPreview=prefs.getBoolean("showMediaPreview", true);
+		removeTrackingParams=prefs.getBoolean("removeTrackingParams", true);
+//		enhanceTextSize=prefs.getBoolean("enhanceTextSize", false);
+
+
 		if(!prefs.getBoolean("perAccountMigrationDone", false)){
 			AccountSession account=AccountSessionManager.getInstance().getLastActiveAccount();
 			if(account!=null){
@@ -117,6 +165,52 @@ public class GlobalUserPreferences{
 				.putBoolean("emojiInNames", customEmojiInNames)
 				.putBoolean("showCWs", showCWs)
 				.putBoolean("hideSensitive", hideSensitiveMedia)
+
+				// MOSHIDON
+				.putBoolean("loadNewPosts", loadNewPosts)
+				.putBoolean("showNewPostsButton", showNewPostsButton)
+				.putBoolean("trueBlackTheme", trueBlackTheme)
+				.putBoolean("toolbarMarquee", toolbarMarquee)
+				.putBoolean("disableSwipe", disableSwipe)
+				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("translateButtonOpenedOnly", translateButtonOpenedOnly)
+				.putBoolean("uniformNotificationIcon", uniformNotificationIcon)
+				.putBoolean("reduceMotion", reduceMotion)
+				.putBoolean("showAltIndicator", showAltIndicator)
+				.putBoolean("showNoAltIndicator", showNoAltIndicator)
+				.putBoolean("enablePreReleases", enablePreReleases)
+				.putString("prefixReplies", prefixReplies.name())
+				.putBoolean("collapseLongPosts", collapseLongPosts)
+				.putBoolean("spectatorMode", spectatorMode)
+				.putBoolean("autoHideFab", autoHideFab)
+				.putBoolean("allowRemoteLoading", allowRemoteLoading)
+				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
+				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
+				.putBoolean("showNavigationLabels", showNavigationLabels)
+				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)
+				.putBoolean("displayPronounsInThreads", displayPronounsInThreads)
+				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
+				.putBoolean("overlayMedia", overlayMedia)
+				.putBoolean("showSuicideHelp", showSuicideHelp)
+				.putBoolean("underlinedLinks", underlinedLinks)
+				.putString("color", color.name())
+				.putBoolean("likeIcon", likeIcon)
+				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
+				.putBoolean("doubleTapToSearch", doubleTapToSearch)
+				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
+				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
+				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
+				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
+				.putBoolean("hapticFeedback", hapticFeedback)
+				.putBoolean("mentionRebloggerAutomatically", mentionRebloggerAutomatically)
+				.putBoolean("showDividers", showDividers)
+				.putBoolean("relocatePublishButton", relocatePublishButton)
+				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
+				.putBoolean("showMediaPreview", showMediaPreview)
+				.putBoolean("removeTrackingParams", removeTrackingParams)
+//				.putBoolean("enhanceTextSize", enhanceTextSize)
+
 				.apply();
 	}
 
