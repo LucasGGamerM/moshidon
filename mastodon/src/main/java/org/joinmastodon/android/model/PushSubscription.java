@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 public class PushSubscription extends BaseModel implements Cloneable{
 	public int id;
 	public String endpoint;
+	public Boolean standard=false;
 	public Alerts alerts;
 	public String serverKey;
 	public Policy policy=Policy.ALL;
@@ -21,6 +22,7 @@ public class PushSubscription extends BaseModel implements Cloneable{
 		return "PushSubscription{"+
 				"id="+id+
 				", endpoint='"+endpoint+'\''+
+				", standard="+standard+
 				", alerts="+alerts+
 				", serverKey='"+serverKey+'\''+
 				", policy="+policy+

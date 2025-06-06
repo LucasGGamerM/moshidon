@@ -319,20 +319,22 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 			bannerText.setText(R.string.notifications_disabled_in_system);
 			bannerButton.setText(R.string.open_system_notification_settings);
 			bannerButton.setOnClickListener(v->openSystemNotificationSettings());
-		}else if(BuildConfig.BUILD_TYPE.equals("fdroidRelease") && useUnifiedPush){
+		}else if(BuildConfig.BUILD_TYPE.equals("fdroidRelease") && !useUnifiedPush){
 			bannerAdapter.setVisible(true);
 			bannerIcon.setImageResource(R.drawable.ic_fluent_warning_24_filled);
 			bannerTitle.setVisibility(View.VISIBLE);
 			bannerTitle.setText(R.string.mo_settings_unifiedpush_warning);
-			if(!hasAnyUnifiedPushDistrib) {
-				bannerText.setText(R.string.mo_settings_unifiedpush_warning_no_distributors);
-				bannerButton.setText(R.string.info);
-				bannerButton.setOnClickListener(v->UiUtils.launchWebBrowser(getContext(), "https://unifiedpush.org/"));
-			} else {
-				bannerText.setText(R.string.mo_settings_unifiedpush_warning_disabled);
-				bannerButton.setText(R.string.mo_settings_unifiedpush_enable);
-				bannerButton.setOnClickListener(v->onUnifiedPushClick());
-			}
+			bannerText.setText(R.string.mo_settings_unifiedpush_warning_disabled);
+			bannerButton.setText(R.string.mo_settings_unifiedpush_enable);
+			bannerButton.setOnClickListener(v->onUnifiedPushClick());
+		}else if(useUnifiedPush && !hasAnyUnifiedPushDistrib) {
+			bannerAdapter.setVisible(true);
+			bannerIcon.setImageResource(R.drawable.ic_fluent_warning_24_filled);
+			bannerTitle.setVisibility(View.VISIBLE);
+			bannerTitle.setText(R.string.mo_settings_unifiedpush_warning);
+			bannerText.setText(R.string.mo_settings_unifiedpush_warning_no_distributors);
+			bannerButton.setText(R.string.info);
+			bannerButton.setOnClickListener(v->UiUtils.launchWebBrowser(getContext(), "https://unifiedpush.org/"));
 		}else if(pauseTime>System.currentTimeMillis()){
 			bannerAdapter.setVisible(true);
 			bannerIcon.setImageResource(R.drawable.ic_fluent_alert_snooze_24_regular);
@@ -354,6 +356,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		unifiedPushItem.toggle();
 		rebindItem(unifiedPushItem);
 		useUnifiedPush = false;
+		updateBanner();
 	}
 
 	private void showUnifiedPushRegisterDialog(List<String> distributors){
@@ -365,6 +368,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 					unifiedPushItem.toggle();
 					rebindItem(unifiedPushItem);
 					useUnifiedPush = true;
+					updateBanner();
 				}).setOnCancelListener(d->rebindItem(unifiedPushItem)).show();
 	}
 
