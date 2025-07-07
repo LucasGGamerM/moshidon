@@ -2,6 +2,7 @@ package org.joinmastodon.android.api;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.StringRes;
@@ -102,10 +104,17 @@ public abstract class MastodonAPIRequest<T> extends APIRequest<T>{
 		return this;
 	}
 
-	public MastodonAPIRequest<T> wrapProgress(Activity activity, @StringRes int message, boolean cancelable){
-		progressDialog=new ProgressDialog(activity);
-		progressDialog.setMessage(activity.getString(message));
+	// MOSHIDON:
+	public MastodonAPIRequest<T> wrapProgress(Context context, @StringRes int message, boolean cancelable){
+		return wrapProgress(context, message, cancelable, null);
+	}
+
+	// MOSHIDON: custom dialogs
+	public MastodonAPIRequest<T> wrapProgress(Context context, @StringRes int message, boolean cancelable, Consumer<ProgressDialog> transform){
+		progressDialog=new ProgressDialog(context);
+		progressDialog.setMessage(context.getString(message));
 		progressDialog.setCancelable(cancelable);
+		if (transform != null) transform.accept(progressDialog);
 		if(cancelable){
 			progressDialog.setOnCancelListener(dialog->cancel());
 		}
