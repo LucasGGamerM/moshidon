@@ -94,7 +94,7 @@ public class AccountSession{
 	public Preferences preferences;
 	public boolean needReRegisterForPush;
 	private transient MastodonAPIController apiController;
-	private transient StatusInteractionController statusInteractionController;
+	private transient StatusInteractionController statusInteractionController, remoteStatusInteractionController;
 	private transient CacheController cacheController;
 	private transient PushSubscriptionManager pushSubscriptionManager;
 	private transient SharedPreferences prefs;
@@ -368,6 +368,13 @@ public class AccountSession{
 				.scheme("https")
 				.authority(getInstance().map(i -> i.normalizedUri).orElse(domain))
 				.build();
+	}
+
+	// MOSHIDON: remove interactions:
+	public StatusInteractionController getRemoteStatusInteractionController(){
+		if(remoteStatusInteractionController==null)
+			remoteStatusInteractionController=new StatusInteractionController(getID(), false);
+		return remoteStatusInteractionController;
 	}
 
 	public void updateAccountInfo(){
