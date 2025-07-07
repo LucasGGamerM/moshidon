@@ -6,11 +6,13 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.app.UiModeManager;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -68,6 +70,8 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonAPIRequest;
+import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
@@ -87,8 +91,10 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Hashtag;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.SearchResults;
+import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.ColorContrastMode;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -115,13 +121,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.recyclerview.widget.DiffUtil;
@@ -1319,6 +1329,98 @@ public class UiUtils{
 		AccountSwitcherSheet sheet = new AccountSwitcherSheet((Activity) context, null, iconRes, titleRes == 0 ? R.string.choose_account : titleRes, exceptFor, false);
 		sheet.setOnClick((accountId, open) ->sessionConsumer.accept(AccountSessionManager.get(accountId)));
 		sheet.show();
+	}
+
+	// MOSHIDON:
+	@FunctionalInterface
+	public interface InteractionPerformer {
+		void interact(StatusInteractionController ic, Status status, Consumer<Status> resultConsumer);
+	}
+
+	// MOSHIDON:
+	public static void pickInteractAs(Context context, String accountID, Status sourceStatus, Predicate<Status> checkInteracted, InteractionPerformer interactionPerformer, @StringRes int interactAsRes, @StringRes int interactedAsAccountRes, @StringRes int alreadyInteractedRes, @DrawableRes int iconRes) {
+		pickAccount(context, accountID, interactAsRes, iconRes, session -> {
+			lookupStatus(context, sourceStatus, session.getID(), accountID, status -> {
+				if (status == null) return;
+
+				if (checkInteracted.test(status)) {
+					Toast.makeText(context, alreadyInteractedRes, Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				StatusInteractionController ic = AccountSessionManager.getInstance().getAccount(session.getID()).getRemoteStatusInteractionController();
+				interactionPerformer.interact(ic, status, s -> {
+					if (checkInteracted.test(s)) {
+						Toast.makeText(context, context.getString(interactedAsAccountRes, session.getFullUsername()), Toast.LENGTH_SHORT).show();
+					}
+				});
+			});
+		}, null);
+	}
+
+	// MOSHIDON:
+	public static Optional<MastodonAPIRequest<SearchResults>> lookupStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> resultConsumer) {
+		return lookup(context, queryStatus, targetAccountID, sourceAccountID, GetSearchResults.Type.STATUSES, resultConsumer, results ->
+				!results.statuses.isEmpty() ? Optional.of(results.statuses.get(0)) : Optional.empty()
+		);
+	}
+
+	// MOSHIDON:
+	public static Optional<MastodonAPIRequest<SearchResults>> lookupAccount(Context context, Account queryAccount, String targetAccountID, @Nullable String sourceAccountID, Consumer<Account> resultConsumer) {
+		return lookup(context, queryAccount, targetAccountID, sourceAccountID, GetSearchResults.Type.ACCOUNTS, resultConsumer, results ->
+				!results.accounts.isEmpty() ? Optional.of(results.accounts.get(0)) : Optional.empty()
+		);
+	}
+
+	// MOSHIDON:
+	public static <T extends Searchable> Optional<MastodonAPIRequest<SearchResults>> lookup(Context context, T query, String targetAccountID, @Nullable String sourceAccountID, @Nullable GetSearchResults.Type type, Consumer<T> resultConsumer, Function<SearchResults, Optional<T>> extractResult) {
+		if (sourceAccountID != null && targetAccountID.startsWith(sourceAccountID.substring(0, sourceAccountID.indexOf('_')))) {
+			resultConsumer.accept(query);
+			return Optional.empty();
+		}
+
+		return Optional.of(new GetSearchResults(query.getQuery(), type, true, null, 0, 0).setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(SearchResults results) {
+						Optional<T> result = extractResult.apply(results);
+						if (result.isPresent()) resultConsumer.accept(result.get());
+						else {
+							Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+							resultConsumer.accept(null);
+						}
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(context);
+					}
+				})
+				.wrapProgress((Activity) context, R.string.loading, true,
+						d -> transformDialogForLookup(context, targetAccountID, null, d))
+				.exec(targetAccountID));
+	}
+
+	// MOSHIDON:
+	public static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
+		if (accountID != null) {
+			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, getInstanceName(accountID)));
+		} else {
+			dialog.setTitle(R.string.sk_loading_fediverse_resource_title);
+		}
+		dialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (d, which) -> d.cancel());
+		if (url != null) {
+			dialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.open_in_browser), (d, which) -> {
+				d.cancel();
+				launchWebBrowser(context, url);
+			});
+		}
+	}
+
+	// MOSHIDON:
+	public static String getInstanceName(String accountID) {
+		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		Optional<Instance> instance = session.getInstance();
+		return instance.isPresent() && !instance.get().title.isBlank() ? instance.get().title : session.domain;
 	}
 
 	// MOSHIDON:
