@@ -18,7 +18,7 @@ import java.util.Objects;
 import androidx.annotation.NonNull;
 
 @Parcel
-public class Status extends BaseModel implements DisplayItemsParent{
+public class Status extends BaseModel implements DisplayItemsParent, Searchable {
 	@RequiredField
 	public String id;
 	@RequiredField
@@ -230,4 +230,9 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		return s;
 	}
 
+	// MOSHIDON:
+	@Override
+	public String getQuery() {
+		return url;
+	}
 }
