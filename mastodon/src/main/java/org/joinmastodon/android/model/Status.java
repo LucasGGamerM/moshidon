@@ -75,6 +75,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable 
 	public boolean localOnly;
 	public boolean isRemote;
 	public transient boolean sensitiveRevealed;
+	public transient boolean preview; // for akkoma compose previews
+
 
 	public List<EmojiReaction> reactions;
 	protected List<EmojiReaction> emojiReactions; // akkoma
