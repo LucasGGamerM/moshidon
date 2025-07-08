@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -91,7 +92,8 @@ public class AccountSwitcherSheet extends BottomSheet{
 				.map(WrappedAccount::new).collect(Collectors.toList());
 		// /MOSHIDON
 
-		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
+		// MOSHIDON:
+//		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
 
 		list=new UsableRecyclerView(activity);
 		imgLoader=new ListImageLoaderWrapper(activity, list, list, null);
@@ -271,16 +273,25 @@ public class AccountSwitcherSheet extends BottomSheet{
 		private final ImageView avatar;
 		private final CheckableRelativeLayout view;
 
+		// MOSHIDON:
+		private final View radioButton, extraBtnWrap;
+		private final ImageButton extraBtn;
+
 		public AccountViewHolder(){
-			super(activity, R.layout.item_account_switcher, list);
+			super(activity, R.layout.item_account_switcher_custom, list);
 			name=findViewById(R.id.name);
 			username=findViewById(R.id.username);
-			View radioButton=findViewById(R.id.radiobtn);
+			radioButton=findViewById(R.id.radiobtn);
 			radioButton.setBackground(new RadioButton(activity).getButtonDrawable());
 			avatar=findViewById(R.id.avatar);
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(OutlineProviders.RADIUS_MEDIUM));
 			avatar.setClipToOutline(true);
 			view=(CheckableRelativeLayout) itemView;
+
+			// MOSHIDON:
+			extraBtnWrap = findViewById(R.id.extra_btn_wrap);
+			extraBtn = findViewById(R.id.extra_btn);
+			extraBtn.setOnClickListener(this::onExtraBtnClick);
 		}
 
 		@SuppressLint("SetTextI18n")
@@ -288,7 +299,20 @@ public class AccountSwitcherSheet extends BottomSheet{
 		public void onBind(AccountSession item){
 			name.setText(item.self.displayName);
 			username.setText(item.getFullUsername());
-			view.setChecked(AccountSessionManager.getInstance().getLastActiveAccountID().equals(item.getID()));
+
+			// MOSHIDON:
+//			view.setChecked(AccountSessionManager.getInstance().getLastActiveAccountID().equals(item.getID()));
+
+			// MOSHIDON:
+			radioButton.setVisibility(accountChooser ? View.GONE : View.VISIBLE);
+			extraBtnWrap.setVisibility(accountChooser && openInApp ? View.VISIBLE : View.GONE);
+			if (accountChooser) view.setCheckable(false);
+			else {
+				String accountId = fragment != null
+						? fragment.getAccountID()
+						: AccountSessionManager.getInstance().getLastActiveAccountID();
+				view.setChecked(accountId.equals(item.getID()));
+			}
 		}
 
 		@Override
@@ -301,6 +325,13 @@ public class AccountSwitcherSheet extends BottomSheet{
 		@Override
 		public void clearImage(int index){
 			setImage(index, null);
+		}
+
+		// MOSHIDON:
+		private void onExtraBtnClick(View view) {
+			setOnDismissListener(null);
+			dismiss();
+			onClick.accept(item.getID(), true);
 		}
 
 		@Override
