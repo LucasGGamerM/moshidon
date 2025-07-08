@@ -58,7 +58,7 @@ import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class HomeFragment extends AppKitFragment implements AssistContentProviderFragment{
+public class HomeFragment extends AppKitFragment implements AssistContentProviderFragment, HasAccountID {
 	private FragmentRootLinearLayout content;
 	private HomeTabFragment homeTabFragment;
 	private NotificationsListFragment notificationsFragment;
@@ -398,6 +398,11 @@ public class HomeFragment extends AppKitFragment implements AssistContentProvide
 //			homeTabFragment.rebuildAllDisplayItems();
 		if(notificationsFragment.loaded)
 			notificationsFragment.rebuildAllDisplayItems();
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
 	}
 
 	@Override
