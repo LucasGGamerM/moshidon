@@ -7,27 +7,58 @@ import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.api.requests.statuses.SetStatusBookmarked;
 import org.joinmastodon.android.api.requests.statuses.SetStatusFavorited;
 import org.joinmastodon.android.api.requests.statuses.SetStatusReblogged;
+import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
+import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.EmojiCategory;
+import org.joinmastodon.android.model.EmojiReaction;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 
 public class StatusInteractionController{
 	private final String accountID;
+
+	// MOSHIDON: for remote interactions
+	private final boolean updateCounters;
+
 	private final HashMap<String, SetStatusFavorited> runningFavoriteRequests=new HashMap<>();
 	private final HashMap<String, SetStatusReblogged> runningReblogRequests=new HashMap<>();
 	private final HashMap<String, SetStatusBookmarked> runningBookmarkRequests=new HashMap<>();
 
-	public StatusInteractionController(String accountID){
+	public StatusInteractionController(String accountID, boolean updateCounters){
 		this.accountID=accountID;
+		// MOSHIDON:
+		this.updateCounters=updateCounters;
+	}
+
+	// MOSHIDON: may the overflow helps us all
+	public StatusInteractionController(String accountID){
+		this(accountID, true);
 	}
 
 	public void setFavorited(Status status, boolean favorited){
+		setFavorited(status, favorited, r->{});
+	}
+
+
+	public void setFavorited(Status status, boolean favorited, Consumer<Status> cb){
 		if(!Looper.getMainLooper().isCurrentThread())
 			throw new IllegalStateException("Can only be called from main thread");
+
+		// MOSHIDON:
+		AccountSession session=AccountSessionManager.get(accountID);
+		Instance instance=session.getInstance().get();
 
 		SetStatusFavorited current=runningFavoriteRequests.remove(status.id);
 		if(current!=null){
@@ -38,7 +69,11 @@ public class StatusInteractionController{
 					@Override
 					public void onSuccess(Status result){
 						runningFavoriteRequests.remove(status.id);
-						E.post(new StatusCountersUpdatedEvent(result));
+
+						// MOSHIDON:
+						cb.accept(result);
+						if(updateCounters) E.post(new StatusCountersUpdatedEvent(result));
+						if(instance.isIceshrimpJs()) E.post(new EmojiReactionsUpdatedEvent(status.id, result.reactions, false, null));
 					}
 
 					@Override
@@ -50,7 +85,11 @@ public class StatusInteractionController{
 							status.favouritesCount--;
 						else
 							status.favouritesCount++;
-						E.post(new StatusCountersUpdatedEvent(status));
+
+						// MOSHIDON:
+						cb.accept(status);
+						if(updateCounters) E.post(new StatusCountersUpdatedEvent(status));
+						if(instance.isIceshrimpJs()) E.post(new EmojiReactionsUpdatedEvent(status.id, status.reactions, false, null));
 					}
 				})
 				.exec(accountID);
@@ -60,7 +99,56 @@ public class StatusInteractionController{
 			status.favouritesCount++;
 		else
 			status.favouritesCount--;
-		E.post(new StatusCountersUpdatedEvent(status));
+
+		// MOSHIDON:
+		if(updateCounters) E.post(new StatusCountersUpdatedEvent(status));
+
+		// MOSHIDON: all below is for the emojis
+		if(instance.configuration==null || instance.configuration.reactions==null)
+			return;
+
+		String defaultReactionEmojiRaw=instance.configuration.reactions.defaultReaction;
+		if(!instance.isIceshrimpJs() || defaultReactionEmojiRaw==null)
+			return;
+
+		boolean reactionIsCustom=defaultReactionEmojiRaw.startsWith(":");
+		String defaultReactionEmoji=reactionIsCustom ? defaultReactionEmojiRaw.substring(1, defaultReactionEmojiRaw.length()-1) : defaultReactionEmojiRaw;
+		ArrayList<EmojiReaction> reactions=new ArrayList<>(status.reactions.size());
+		for(EmojiReaction reaction:status.reactions){
+			reactions.add(reaction.copy());
+		}
+		Optional<EmojiReaction> existingReaction=reactions.stream().filter(r->r.me).findFirst();
+		Optional<EmojiReaction> existingDefaultReaction=reactions.stream().filter(r->r.name.equals(defaultReactionEmoji)).findFirst();
+		if(existingReaction.isPresent() && !favorited){
+			existingReaction.get().me=false;
+			existingReaction.get().count--;
+			existingReaction.get().pendingChange=true;
+		}else if(existingDefaultReaction.isPresent() && favorited){
+			existingDefaultReaction.get().count++;
+			existingDefaultReaction.get().me=true;
+			existingDefaultReaction.get().pendingChange=true;
+		}else if(favorited){
+			EmojiReaction reaction=null;
+			if(reactionIsCustom){
+				List<EmojiCategory> customEmojis=AccountSessionManager.getInstance().getCustomEmojis(session.domain);
+				for(EmojiCategory category:customEmojis){
+					for(Emoji emoji:category.emojis){
+						if(emoji.shortcode.equals(defaultReactionEmoji)){
+							reaction=EmojiReaction.of(emoji, session.self);
+							break;
+						}
+					}
+				}
+				if(reaction==null)
+					reaction=EmojiReaction.of(defaultReactionEmoji, session.self);
+			}else{
+				reaction=EmojiReaction.of(defaultReactionEmoji, session.self);
+			}
+			reaction.pendingChange=true;
+			reactions.add(reaction);
+		}
+		E.post(new EmojiReactionsUpdatedEvent(status.id, reactions, false, null));
+
 	}
 
 	public void setReblogged(Status status, boolean reblogged){
@@ -76,7 +164,9 @@ public class StatusInteractionController{
 					@Override
 					public void onSuccess(Status result){
 						runningReblogRequests.remove(status.id);
-						E.post(new StatusCountersUpdatedEvent(result));
+
+						// MOSHIDON:
+						if(updateCounters) E.post(new StatusCountersUpdatedEvent(result));
 					}
 
 					@Override
@@ -98,7 +188,9 @@ public class StatusInteractionController{
 			status.reblogsCount++;
 		else
 			status.reblogsCount--;
-		E.post(new StatusCountersUpdatedEvent(status));
+
+		// MOSHIDON:
+		if(updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 	}
 
 	public void setBookmarked(Status status, boolean bookmarked){
@@ -128,6 +220,8 @@ public class StatusInteractionController{
 				.exec(accountID);
 		runningBookmarkRequests.put(status.id, req);
 		status.bookmarked=bookmarked;
-		E.post(new StatusCountersUpdatedEvent(status));
+
+		// MOSHIDON:
+		if(updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 	}
 }
