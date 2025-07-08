@@ -164,6 +164,9 @@ public abstract class Instance extends BaseModel{
 		public MediaAttachmentsConfiguration mediaAttachments;
 		public PollsConfiguration polls;
 		public URLsConfiguration urls;
+
+		// MOSHIDON: the reactions stuff
+		public ReactionsConfiguration reactions;
 	}
 
 	@Parcel
@@ -198,6 +201,13 @@ public abstract class Instance extends BaseModel{
 		public String about;
 		public String privacyPolicy;
 		public String termsOfService;
+	}
+
+	// MOSHIDON: the reactions stuff
+	@Parcel
+	public static class ReactionsConfiguration {
+		public int maxReactions;
+		public String defaultReaction;
 	}
 
 	// MOSHIDON: we check for translation support, so this needs to be here
