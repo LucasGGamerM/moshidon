@@ -100,6 +100,11 @@ public abstract class Instance extends BaseModel{
 		return version.contains("compatible; Pixelfed");
 	}
 
+	// MOSHIDON: Only for Iceshrimp-JS
+	public boolean isIceshrimpJs() {
+		return version.contains("compatible; Iceshrimp "); // Iceshrimp.NET will not have a space immediately after
+	}
+
 	public enum Feature {
 		BUBBLE_TIMELINE,
 		MACHINE_TRANSLATION
