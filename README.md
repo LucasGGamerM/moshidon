@@ -85,6 +85,18 @@ Moshidon is available on GitHub, Google Play, F-Droid, and the IzzyOnDroid repo.
 ### Nightly Version
 All ` moshidon-night.apk ` nightly builds can be downloaded on the [Nightly Releases](https://github.com/LucasGGamerM/moshidon-nightly/releases) page. This is an unstable version with an integrated updater for development and testing purposes. If you find any bugs with it, please file a bug report on our [Issues](https://github.com/LucasGGamerM/moshidon/issues) page.
 
+### APK Verification
+
+- Moshidon SHA-256 certificate hash on GitHub :
+`1D:D4:D6:DB:71:38:33:58:34:E3:92:7C:C7:45:AD:48:23:6A:BC:52:25:2B:BB:83:69:E9:6B:8B:BA:77:77:20`
+
+- Moshidon SHA-256 certificate hash on Google Play Store :
+`1C:B7:C6:2F:65:30:13:83:71:1F:C1:56:04:4A:2C:1D:BE:67:E0:B4:30:C8:F8:C6:9A:D4:32:DE:AF:2D:91:DA`
+
+- Moshidon SHA-256 certificate hash of nightly version :
+`FD:B2:BE:A4:6B:FD:3F:97:2F:2B:3A:96:03:F1:E2:7C:A5:FC:DA:51:FD:C1:C8:6B:88:4F:ED:61:40:51:72:4C`
+
+
 ## Building & Contributing
 
 As this app is using Java 17 features, you need JDK 17 or newer to build it. Other than that, everything is pretty standard. You can either import the project into Android Studio and build it from there, or run the following command in the project directory:
