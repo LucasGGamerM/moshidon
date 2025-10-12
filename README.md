@@ -101,7 +101,7 @@ This project is released under the [GPL-3 License](./LICENSE).
 
 **<a rel="me" href="https://floss.social/@moshidon">@moshidon@floss.social</a>**
 
-[Official Matrix Chatroom](https://matrix.to/#/#moshidon:floss.social) 
+[Official Matrix Chatroom](https://matrix.to/#/#moshidon:floss.social) / [Official Matrix Space](https://matrix.to/#/#moshidon-space:floss.social) 
 
 [F.A.Q.](FAQ.md)
 
