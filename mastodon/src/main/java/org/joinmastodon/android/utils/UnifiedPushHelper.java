@@ -10,6 +10,8 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.PushSubscription;
 import org.unifiedpush.android.connector.UnifiedPush;
 
+import java.util.regex.Pattern;
+
 public class UnifiedPushHelper {
 
 	/**
@@ -33,9 +35,13 @@ public class UnifiedPushHelper {
 		for (AccountSession accountSession : AccountSessionManager.getInstance().getLoggedInAccounts()){
 			String vapidKey = accountSession.app.vapidKey;
 			// Sometimes this is null when the account's server has died (don't ask me how I know this)
-			if (vapidKey == null) {
+
+			Pattern pattern=Pattern.compile("^[A-Za-z0-9_-]{87}=*$");
+			if (vapidKey != null && vapidKey.isEmpty()) {
+				Toast.makeText(context, accountSession.domain + " doesn't support push notifications.", Toast.LENGTH_LONG).show();
+			} else if (vapidKey == null || !pattern.matcher(vapidKey).find()) {
 				// TODO: throw this on a translatable string and tell the user to log out and back in
-				Toast.makeText(context, "Error on unified push subscription: no valid vapid key for account " + accountSession.getFullUsername(), Toast.LENGTH_LONG).show();
+				Toast.makeText(context, "Error on UnifiedPush subscription: no valid vapid key for account " + accountSession.getFullUsername(), Toast.LENGTH_LONG).show();
 				break;
 			}
 			PushSubscription sub = accountSession.pushSubscription;
