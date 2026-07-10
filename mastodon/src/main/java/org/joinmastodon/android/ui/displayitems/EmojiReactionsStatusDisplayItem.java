@@ -117,7 +117,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Consumer<Status> cb, Runnable err){
 		setActionProgressVisible(vh, true);
-		boolean ak=parentFragment.isInstanceAkkoma();
+		boolean akOrMitra=parentFragment.isInstanceAkkoma() || parentFragment.isInstanceMitra();
 		boolean keepSpinning=delete && count == 1;
 		if(forAnnouncement){
 			MastodonAPIRequest<Object> req=delete
@@ -138,8 +138,8 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			});
 		}else{
 			MastodonAPIRequest<Status> req=delete
-					? (ak ? new PleromaDeleteStatusReaction(status.id, name) : new DeleteStatusReaction(status.id, name))
-					: (ak ? new PleromaAddStatusReaction(status.id, name) : new AddStatusReaction(status.id, name));
+					? (akOrMitra ? new PleromaDeleteStatusReaction(status.id, name) : new DeleteStatusReaction(status.id, name))
+					: (akOrMitra ? new PleromaAddStatusReaction(status.id, name) : new AddStatusReaction(status.id, name));
 			return req.setCallback(new Callback<>(){
 				@Override
 				public void onSuccess(Status result){

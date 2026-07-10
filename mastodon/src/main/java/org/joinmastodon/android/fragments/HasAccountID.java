@@ -30,6 +30,10 @@ public interface HasAccountID {
 		return getInstance().map(Instance::isIceshrimpJs).orElse(false);
 	}
 
+	default boolean isInstanceMitra() {
+		return getInstance().map(Instance::isMitra).orElse(false);
+	}
+
     default Optional<Instance> getInstance() {
         return getSession().getInstance();
     }

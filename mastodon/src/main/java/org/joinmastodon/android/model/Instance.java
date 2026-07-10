@@ -168,6 +168,10 @@ public class Instance extends BaseModel{
 		return version.contains("compatible; Iceshrimp "); // Iceshrimp.NET will not have a space immediately after
 	}
 
+	public boolean isMitra() {
+		return version.contains("compatible; Mitra");
+	}
+
 	public boolean hasFeature(Feature feature) {
 		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
 				.map(p -> p.metadata)
