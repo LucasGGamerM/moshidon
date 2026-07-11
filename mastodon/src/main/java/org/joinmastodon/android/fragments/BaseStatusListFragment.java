@@ -320,11 +320,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	protected String getMaxID(){
-		if(!preloadedData.isEmpty())
-			return preloadedData.get(preloadedData.size()-1).getID();
-		else if(!data.isEmpty())
-			return data.get(data.size()-1).getID();
-		else
+//		if(!preloadedData.isEmpty())
+//			return preloadedData.get(preloadedData.size()-1).getID();
+//		else if(!data.isEmpty())
+//			return data.get(data.size()-1).getID();
+//		else
 			return null;
 	}
 
