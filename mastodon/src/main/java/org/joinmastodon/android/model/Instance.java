@@ -81,6 +81,11 @@ public class Instance extends BaseModel{
 
 	public List<Rule> rules;
 	public Configuration configuration;
+	/**
+	 * Non-standard capabilities advertised by Fedibird-compatible servers.
+	 * Hollo uses this to advertise Misskey-style emoji reactions.
+	 */
+	public List<String> fedibirdCapabilities;
 
 	// non-standard field in some Mastodon forks
 	public int maxTootChars;
@@ -166,6 +171,11 @@ public class Instance extends BaseModel{
 	// Only for Iceshrimp-JS
 	public boolean isIceshrimpJs() {
 		return version.contains("compatible; Iceshrimp "); // Iceshrimp.NET will not have a space immediately after
+	}
+
+	public boolean supportsEmojiReactions(){
+		return isAkkoma() || isIceshrimp()
+				|| (fedibirdCapabilities!=null && fedibirdCapabilities.contains("emoji_reaction"));
 	}
 
 	public boolean hasFeature(Feature feature) {

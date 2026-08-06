@@ -87,7 +87,7 @@ public class AccountLocalPreferences{
 		publishButtonText=prefs.getString("publishButtonText", null);
 		timelineReplyVisibility=prefs.getString("timelineReplyVisibility", null);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
-		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", instance.map(i->i.isAkkoma() || i.isIceshrimp()).orElse(false));
+		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", instance.map(Instance::supportsEmojiReactions).orElse(false));
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
 		color=prefs.contains("color") ? ColorPreference.valueOf(prefs.getString("color", null)) : null;
 		recentCustomEmoji=fromJson(prefs.getString("recentCustomEmoji", null), recentCustomEmojiType, new ArrayList<>());

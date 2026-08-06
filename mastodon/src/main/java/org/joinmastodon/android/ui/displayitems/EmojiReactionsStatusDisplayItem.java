@@ -36,13 +36,13 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.fragments.account_list.StatusEmojiReactionsListFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiReaction;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
+import org.joinmastodon.android.ui.sheets.EmojiReactionDetailsSheet;
 import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.EmojiReactionButton;
@@ -91,7 +91,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 	@Override
 	public ImageLoaderRequest getImageRequest(int index){
-		return status.reactions.get(index).request;
+		int imageIndex=0;
+		for(EmojiReaction reaction:status.reactions){
+			if(reaction.getUrl(playGifs)!=null && imageIndex++==index)
+				return reaction.request;
+		}
+		return null;
 	}
 
     @Override
@@ -573,21 +578,19 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					}, null).exec(parent.parentFragment.getAccountID());
 				});
 
-				if (parent.parentFragment.isInstanceAkkoma()) {
-					// glitch-soc doesn't have this, afaik
-					btn.setOnLongClickListener(e->{
-						EmojiReaction emojiReaction=parent.status.reactions.get(getAbsoluteAdapterPosition());
-						Bundle args=new Bundle();
-						args.putString("account", parent.parentFragment.getAccountID());
-						args.putString("statusID", parent.status.id);
-						int atSymbolIndex = emojiReaction.name.indexOf("@");
-						args.putString("emoji", atSymbolIndex != -1 ? emojiReaction.name.substring(0, atSymbolIndex) : emojiReaction.name);
-						args.putString("url", emojiReaction.getUrl(parent.playGifs));
-						args.putInt("count", emojiReaction.count);
-						Nav.go(parent.parentFragment.getActivity(), StatusEmojiReactionsListFragment.class, args);
-						return true;
-					});
-				}
+				btn.setOnLongClickListener(e->{
+					int position=getAbsoluteAdapterPosition();
+					if(position==RecyclerView.NO_POSITION) return false;
+					new EmojiReactionDetailsSheet(
+							parent.parentFragment.getActivity(),
+							parent.parentFragment.getAccountID(),
+							parent.status.id,
+							parent.status.reactions,
+							position,
+							parent.parentFragment.isInstanceAkkoma()
+					).show();
+					return true;
+				});
 			}
 		}
 	}
