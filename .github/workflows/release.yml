@@ -1,0 +1,79 @@
+name: Publish release APK
+
+on:
+  push:
+    branches:
+      - release
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    name: Build and publish release APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the release commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Read the application version
+        id: version
+        run: |
+          VERSION=$(sed -nE 's/^[[:space:]]*versionName[[:space:]]+"([^"]+)".*/\1/p' mastodon/build.gradle | head -n 1)
+          test -n "$VERSION"
+          echo "name=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Ensure this version has not already been published
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "A release for $TAG already exists. Increase mastodon/build.gradle versionName before publishing again." >&2
+            exit 1
+          fi
+
+      - name: Restore the release signing key
+        env:
+          EMOJIDON_RELEASE_KEYSTORE_BASE64: ${{ secrets.EMOJIDON_RELEASE_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$EMOJIDON_RELEASE_KEYSTORE_BASE64"
+          mkdir -p mastodon/keystore
+          echo "$EMOJIDON_RELEASE_KEYSTORE_BASE64" | base64 --decode > mastodon/keystore/e-mojidon-release.jks
+          chmod 600 mastodon/keystore/e-mojidon-release.jks
+
+      - name: Build signed release APK
+        env:
+          CURRENT_DATE: ${{ github.run_number }}
+          SIGNING_STORE_PASSWORD: unused
+          SIGNING_KEY_ALIAS: unused
+          SIGNING_KEY_PASSWORD: unused
+          EMOJIDON_RELEASE_STORE_PASSWORD: ${{ secrets.EMOJIDON_RELEASE_STORE_PASSWORD }}
+          EMOJIDON_RELEASE_KEY_ALIAS: ${{ secrets.EMOJIDON_RELEASE_KEY_ALIAS }}
+          EMOJIDON_RELEASE_KEY_PASSWORD: ${{ secrets.EMOJIDON_RELEASE_KEY_PASSWORD }}
+        run: ./gradlew --no-daemon :mastodon:assembleRelease --console=plain
+
+      - name: Create GitHub Release and upload APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.name }}
+          APK: mastodon/build/outputs/apk/release/e-mojidon-release.apk
+        run: |
+          gh release create "$TAG" "$APK#e-mojidon-$VERSION.apk" \
+            --target "$GITHUB_SHA" \
+            --title "e-mojidon $VERSION" \
+            --generate-notes
