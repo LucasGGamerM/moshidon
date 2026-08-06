@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_app_name" translatable="false">Moshidon</string>
-    <string name="mo_app_name_debug" translatable="false">Moshidon Debug</string>
-    <string name="mo_app_name_nightly" translatable="false">Moshidon Nightly</string>
+    <string name="mo_app_name" translatable="false">e-mojidon</string>
+    <string name="mo_app_name_debug" translatable="false">e-mojidon</string>
+    <string name="mo_app_name_nightly" translatable="false">e-mojidon Nightly</string>
 
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_color_palette_black_and_white">Black and White</string>

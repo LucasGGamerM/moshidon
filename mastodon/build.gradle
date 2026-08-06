@@ -11,9 +11,9 @@ java {
 android {
 	compileSdk 33
 	defaultConfig {
-		manifestPlaceholders = [oAuthScheme:"moshidon-android-auth"]
-		archivesBaseName = "moshidon"
-		applicationId "org.joinmastodon.android.moshinda"
+		manifestPlaceholders = [oAuthScheme:"e-mojidon-android-auth"]
+		archivesBaseName = "e-mojidon"
+		applicationId "dev.noveb.emojidon"
 		minSdk 23
 		targetSdk 34
 		versionCode 110
@@ -30,6 +30,12 @@ android {
 	}
 
 	signingConfigs {
+		release{
+			storeFile = file("keystore/e-mojidon-release.jks")
+			storePassword System.getenv("EMOJIDON_RELEASE_STORE_PASSWORD")
+			keyAlias System.getenv("EMOJIDON_RELEASE_KEY_ALIAS")
+			keyPassword System.getenv("EMOJIDON_RELEASE_KEY_PASSWORD")
+		}
 		nightly{
 			storeFile = file("keystore/nightly_keystore.jks")
 			storePassword System.getenv("SIGNING_STORE_PASSWORD")
@@ -77,6 +83,7 @@ android {
 
 	buildTypes {
 		release {
+			signingConfig signingConfigs.release
 			minifyEnabled true
 			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -85,7 +92,7 @@ android {
 			debuggable true
 			versionNameSuffix '-debug'
 			applicationIdSuffix '.debug'
-			manifestPlaceholders = [oAuthScheme:"moshidon-android-debug-auth"]
+			manifestPlaceholders = [oAuthScheme:"e-mojidon-android-debug-auth"]
 		}
 		githubRelease{
 			initWith release
@@ -101,7 +108,7 @@ android {
 			applicationIdSuffix '.nightly'
 
 			signingConfig signingConfigs.nightly
-			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
+			manifestPlaceholders = [oAuthScheme:"e-mojidon-android-nightly-auth"]
 		}
 		playRelease{
 			initWith release

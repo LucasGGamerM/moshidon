@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_app_name" translatable="false">Moshidon</string>
+    <string name="mo_app_name" translatable="false">e-mojidon</string>
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_app_username" translatable="false">\@moshidon</string>
     <string name="mo_disable_dividers">Beitrags-Trennlinien deaktivieren</string>
