@@ -85,10 +85,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
+import okhttp3.Request;
+import okhttp3.Response;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -746,14 +753,74 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		return null;
 	}
 
-	private OutputStream destinationStreamForFile(Attachment att) throws IOException{
-		String fileName=Uri.parse(att.url).getLastPathSegment();
+	private static String extensionForMimeType(String mime){
+		if(TextUtils.isEmpty(mime))
+			return null;
+		return switch(mime.toLowerCase(Locale.ROOT)){
+			case "image/jpeg", "image/jpg" -> ".jpg";
+			case "image/png" -> ".png";
+			case "image/gif" -> ".gif";
+			case "image/webp" -> ".webp";
+			case "video/mp4" -> ".mp4";
+			case "video/webm" -> ".webm";
+			default -> null;
+		};
+	}
+
+	/**
+	 * Extracts a file name from a {@code Content-Disposition} header value. Handles both the
+	 * plain {@code filename="..."} form and the RFC 5987 {@code filename*=UTF-8''...} form.
+	 */
+	private static String filenameFromContentDisposition(String header){
+		if(TextUtils.isEmpty(header))
+			return null;
+		Matcher m=Pattern.compile("filename\\*\\s*=\\s*([^;]+)", Pattern.CASE_INSENSITIVE).matcher(header);
+		if(m.find()){
+			String value=m.group(1).trim().replaceAll("^\"|\"$", "");
+			int charsetSep=value.indexOf("''");
+			if(charsetSep!=-1)
+				value=value.substring(charsetSep+2);
+			try{
+				return URLDecoder.decode(value, "UTF-8");
+			}catch(UnsupportedEncodingException|IllegalArgumentException ignored){}
+		}
+		m=Pattern.compile("filename\\s*=\\s*(\"([^\"]*)\"|[^;]+)", Pattern.CASE_INSENSITIVE).matcher(header);
+		if(m.find())
+			return m.group(2)!=null ? m.group(2) : m.group(1).trim();
+		return null;
+	}
+
+	/**
+	 * Works out the file name to save an attachment under. Some instances (e.g. Sharkey) serve
+	 * media from URLs without a file extension, so we ask the server for the name it advertises
+	 * in {@code Content-Disposition} and fall back to the URL only if that is unavailable.
+	 * Must not be called on the main thread.
+	 */
+	private String resolveFileName(Attachment att){
+		String fileName=null;
+		String contentType=null;
+		try{
+			Request req=new Request.Builder().url(att.url).head().build();
+			try(Response resp=MastodonAPIController.getHttpClient().newCall(req).execute()){
+				fileName=filenameFromContentDisposition(resp.header("Content-Disposition"));
+				contentType=resp.header("Content-Type");
+			}
+		}catch(IOException x){
+			Log.w(TAG, "resolveFileName: HEAD request failed, falling back to the URL", x);
+		}
+		if(TextUtils.isEmpty(fileName))
+			fileName=Uri.parse(att.url).getLastPathSegment();
 		if(TextUtils.isEmpty(fileName))
 			fileName="MastodonImage_"+System.currentTimeMillis()+".jpg";
 		int dotIndex=fileName.lastIndexOf('.');
 		if(dotIndex==-1 || dotIndex<fileName.length()-5){
-			fileName+=".jpg";
+			String ext=extensionForMimeType(contentType);
+			fileName+=ext!=null ? ext : ".jpg";
 		}
+		return fileName;
+	}
+
+	private OutputStream destinationStreamForFile(String fileName) throws IOException{
 		if(Build.VERSION.SDK_INT>=29){
 			Uri itemUri;
 			try{
@@ -799,10 +866,13 @@ public class PhotoViewer implements ZoomPanView.Listener{
 					return;
 				}
 				MastodonAPIController.runInBackground(()->{
-					try(Source src=Okio.source(file); Sink sink=Okio.sink(destinationStreamForFile(att))){
-						BufferedSink buf=Okio.buffer(sink);
-						buf.writeAll(src);
-						buf.flush();
+					try{
+						String fileName=resolveFileName(att);
+						try(Source src=Okio.source(file); Sink sink=Okio.sink(destinationStreamForFile(fileName))){
+							BufferedSink buf=Okio.buffer(sink);
+							buf.writeAll(src);
+							buf.flush();
+						}
 						activity.runOnUiThread(()->{
 							new Snackbar.Builder(activity)
 									.setText(R.string.image_saved)
@@ -810,7 +880,6 @@ public class PhotoViewer implements ZoomPanView.Listener{
 									.show();
 						});
 						if(Build.VERSION.SDK_INT<29){
-							String fileName=Uri.parse(att.url).getLastPathSegment();
 							File dstFile=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
 							MediaScannerConnection.scanFile(activity, new String[]{dstFile.getAbsolutePath()}, new String[]{mimeTypeForFileName(fileName)}, null);
 						}
@@ -835,20 +904,26 @@ public class PhotoViewer implements ZoomPanView.Listener{
 	}
 
 	private void saveViaDownloadManager(Attachment att){
-		Uri uri=Uri.parse(att.url);
-		DownloadManager.Request req=new DownloadManager.Request(uri);
-		req.allowScanningByMediaScanner();
-		req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-		req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, uri.getLastPathSegment());
-		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU)
-			activity.registerReceiver(downloadCompletedReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
-		else
-			activity.registerReceiver(downloadCompletedReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-		receiverRegistered=true;
-		lastDownloadID=activity.getSystemService(DownloadManager.class).enqueue(req);
-		new Snackbar.Builder(activity)
-				.setText(R.string.downloading)
-				.show();
+		// Resolving the file name may require a network request, so keep it off the main thread.
+		MastodonAPIController.runInBackground(()->{
+			String fileName=resolveFileName(att);
+			activity.runOnUiThread(()->{
+				Uri uri=Uri.parse(att.url);
+				DownloadManager.Request req=new DownloadManager.Request(uri);
+				req.allowScanningByMediaScanner();
+				req.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+				req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+				if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU)
+					activity.registerReceiver(downloadCompletedReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+				else
+					activity.registerReceiver(downloadCompletedReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+				receiverRegistered=true;
+				lastDownloadID=activity.getSystemService(DownloadManager.class).enqueue(req);
+				new Snackbar.Builder(activity)
+						.setText(R.string.downloading)
+						.show();
+			});
+		});
 	}
 
 	private void onAudioFocusChanged(int change){
