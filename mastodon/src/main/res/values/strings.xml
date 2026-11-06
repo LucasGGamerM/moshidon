@@ -305,6 +305,7 @@
 	<string name="privacy_policy_subtitle">Although the Mastodon app does not collect any data, the server you sign up through may have a different policy.\n\nIf you disagree with the policy for %s, you can go back and pick a different server.</string>
 	<string name="i_agree">I agree</string>
 	<string name="empty_list">This list is empty</string>
+	<string name="account_hides_collections">This user has chosen to not make this information available</string>
 	<string name="instance_signup_closed">This server does not accept new registrations.</string>
 	<string name="text_copied">Copied to clipboard</string>
 	<string name="add_bookmark">Bookmark</string>

@@ -136,6 +136,11 @@ public class Account extends BaseModel implements Searchable{
 	 */
 	public Instant muteExpiresAt;
 	public boolean noindex;
+	/**
+	 * Whether the user has chosen to hide their followers and following lists.
+	 * Serialized as {@code hide_collections} (Mastodon 4.2+, GoToSocial, Sharkey).
+	 */
+	public boolean hideCollections;
 
 	public List<Role> roles;
 
